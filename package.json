@@ -1,0 +1,13 @@
+{
+  "name": "octohealth-mfe-v2",
+  "private": true,
+  "scripts": {
+    "dev:shell":     "pnpm --filter shell dev",
+    "dev:shared-ui": "pnpm --filter shared-ui dev",
+    "dev:crm":       "pnpm --filter remote-crm dev",
+    "build:all":     "pnpm --filter shared-ui build && pnpm --filter remote-crm build"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["@swc/core", "esbuild"]
+  }
+}

@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%; /* 1rem = 10px */
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.4rem;
+  color: #101828;
+  background: #f8f9fa;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NProgress bar colour override */
+#nprogress .bar {
+  background: #0c6525 !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #0c6525, 0 0 5px #0c6525 !important;
+}

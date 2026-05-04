@@ -1,0 +1,10 @@
+declare module 'shell/auth-store';
+declare module 'sharedUi/AppButton';
+declare module 'sharedUi/AppInput';
+declare module 'sharedUi/ReusableDataTable';
+declare module 'sharedUi/ActionMenu';
+declare module 'sharedUi/AnimatedModal';
+declare module 'sharedUi/ConfirmDeleteModal';
+declare module 'sharedUi/CustomSelect';
+declare module 'sharedUi/GridCard';
+declare module 'sharedUi/BaseDataTable';
