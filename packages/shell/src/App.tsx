@@ -7,11 +7,12 @@ import PrivateWrapper from './wrappers/PrivateWrapper';
 import LoginPage from './pages/login/LoginPage';
 
 const ContactsModule = lazy(() => import('remoteCrm/ContactsModule'));
+const SettingsModule  = lazy(() => import('remoteAdmin/SettingsModule'));
 
 function PageLoader() {
   return (
     <Flex h="100vh" align="center" justify="center">
-      <Spinner size="xl" color="#0C6525" borderWidth="3px" />
+      <Spinner size="xl" color="var(--brand-primary)" borderWidth="3px" />
     </Flex>
   );
 }
@@ -47,6 +48,21 @@ export default function App() {
             <PrivateWrapper>
               <Suspense fallback={<PageLoader />}>
                 <ContactsModule />
+              </Suspense>
+            </PrivateWrapper>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Admin remote — mounted at /admin/settings/* to avoid colliding with
+          other /admin/* routes (e.g. /admin/users from the API menu) */}
+      <Route
+        path="/admin/settings/*"
+        element={
+          <ProtectedRoute>
+            <PrivateWrapper>
+              <Suspense fallback={<PageLoader />}>
+                <SettingsModule />
               </Suspense>
             </PrivateWrapper>
           </ProtectedRoute>

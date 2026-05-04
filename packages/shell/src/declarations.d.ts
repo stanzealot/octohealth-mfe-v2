@@ -9,3 +9,4 @@ declare module 'sharedUi/GridCard';
 declare module 'sharedUi/ConfirmDeleteModal';
 declare module 'sharedUi/CustomSelect';
 declare module 'remoteCrm/ContactsModule';
+declare module 'remoteAdmin/SettingsModule';

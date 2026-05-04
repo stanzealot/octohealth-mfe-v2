@@ -57,13 +57,15 @@ function NavItem({ item, depth = 0 }: { item: MenuItem; depth?: number }) {
   const paddingLeft = depth > 0 ? '2.8rem' : '1.4rem';
 
   const activeStyle: React.CSSProperties = {
-    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     padding: `1.1rem 1.4rem 1.1rem ${paddingLeft}`,
     borderRadius: '6px',
-    background: '#F0F9F5',
-    borderLeft: '0.3rem solid #0C6525',
+    background: 'var(--brand-primary-light)',
+    borderLeft: '0.3rem solid var(--brand-primary)',
     fontWeight: 600,
-    color: '#0C6525',
+    color: 'var(--brand-primary)',
     textDecoration: 'none',
     width: '100%',
     cursor: 'pointer',
@@ -73,13 +75,15 @@ function NavItem({ item, depth = 0 }: { item: MenuItem; depth?: number }) {
   };
 
   const normalStyle: React.CSSProperties = {
-    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     padding: `1.1rem 1.4rem 1.1rem ${paddingLeft}`,
     borderRadius: '6px',
     background: 'transparent',
     borderLeft: '0.3rem solid transparent',
     fontWeight: 400,
-    color: '#344054',
+    color: 'var(--text-secondary)',
     textDecoration: 'none',
     width: '100%',
     cursor: 'pointer',
@@ -89,7 +93,13 @@ function NavItem({ item, depth = 0 }: { item: MenuItem; depth?: number }) {
   };
 
   const Dot = () => (
-    <Box w="8px" h="8px" borderRadius="50%" bg={isActive ? '#0C6525' : '#D0D5DD'} flexShrink={0} />
+    <Box
+      w="8px"
+      h="8px"
+      borderRadius="50%"
+      bg={isActive ? 'var(--brand-primary)' : 'var(--surface-border)'}
+      flexShrink={0}
+    />
   );
 
   /* Parent with children */
@@ -99,21 +109,29 @@ function NavItem({ item, depth = 0 }: { item: MenuItem; depth?: number }) {
         <Box
           style={isActive ? activeStyle : normalStyle}
           onClick={() => setOpen((p) => !p)}
-          _hover={{ background: '#F0F9F5' }}
+          _hover={{ background: 'var(--brand-primary-light)' }}
           role="button"
         >
           <Flex align="center" gap="1rem">
             <Dot />
-            <Text as="span" fontSize="1.4rem" fontFamily="Montserrat, sans-serif"
-              fontWeight={isActive ? 600 : 400} color={isActive ? '#0C6525' : '#344054'}>
+            <Text
+              as="span"
+              fontSize="1.4rem"
+              fontFamily="Montserrat, sans-serif"
+              fontWeight={isActive ? 600 : 400}
+              color={isActive ? 'var(--brand-primary)' : 'var(--text-secondary)'}
+            >
               {item.label}
             </Text>
           </Flex>
           <Box
             as={ChevronRight}
             size={16}
-            color="#98A2B3"
-            style={{ transition: 'transform 0.25s ease', transform: open ? 'rotate(90deg)' : 'rotate(0deg)' }}
+            color="var(--text-placeholder)"
+            style={{
+              transition: 'transform 0.25s ease',
+              transform: open ? 'rotate(90deg)' : 'rotate(0deg)',
+            }}
           />
         </Box>
 
@@ -144,11 +162,15 @@ function NavItem({ item, depth = 0 }: { item: MenuItem; depth?: number }) {
     return (
       <NavLink
         to={itemPath}
-        style={({ isActive: navActive }) =>
-          navActive ? activeStyle : { ...normalStyle }
-        }
-        onMouseEnter={(e) => { if (!(e.currentTarget as HTMLAnchorElement).classList.contains('active')) (e.currentTarget as HTMLElement).style.background = '#F0F9F5'; }}
-        onMouseLeave={(e) => { if (!(e.currentTarget as HTMLAnchorElement).classList.contains('active')) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+        style={({ isActive: navActive }) => (navActive ? activeStyle : { ...normalStyle })}
+        onMouseEnter={(e) => {
+          if (!(e.currentTarget as HTMLAnchorElement).classList.contains('active'))
+            (e.currentTarget as HTMLElement).style.background = 'var(--brand-primary-light)';
+        }}
+        onMouseLeave={(e) => {
+          if (!(e.currentTarget as HTMLAnchorElement).classList.contains('active'))
+            (e.currentTarget as HTMLElement).style.background = 'transparent';
+        }}
       >
         <Flex align="center" gap="1rem">
           <Dot />
@@ -161,10 +183,10 @@ function NavItem({ item, depth = 0 }: { item: MenuItem; depth?: number }) {
   }
 
   return (
-    <Box style={normalStyle} _hover={{ background: '#F0F9F5' }}>
+    <Box style={normalStyle} _hover={{ background: 'var(--brand-primary-light)' }}>
       <Flex align="center" gap="1rem">
         <Dot />
-        <Text as="span" fontSize="1.4rem" fontFamily="Montserrat, sans-serif" color="#344054">
+        <Text as="span" fontSize="1.4rem" fontFamily="Montserrat, sans-serif" color="var(--text-secondary)">
           {item.label}
         </Text>
       </Flex>
@@ -183,7 +205,7 @@ export default function Sidebar({ isOpen, menu = [] }: SidebarProps) {
       zIndex={999}
       w={isOpen ? '25rem' : 0}
       h="100vh"
-      bg="white"
+      bg="var(--surface-sidebar)"
       overflow="hidden"
       transition="width 0.25s ease"
       boxShadow="4px 4px 40px rgba(0,0,0,0.05)"
@@ -191,10 +213,12 @@ export default function Sidebar({ isOpen, menu = [] }: SidebarProps) {
       flexDir="column"
     >
       {/* Header */}
-      <Flex bg="#0C6525" h="7.2rem" flexShrink={0} align="center" px="1.6rem" gap="1rem">
+      <Flex bg="var(--brand-primary)" h="7.2rem" flexShrink={0} align="center" px="1.6rem" gap="1rem">
         <Flex
-          align="center" justify="center"
-          w="32px" h="32px"
+          align="center"
+          justify="center"
+          w="32px"
+          h="32px"
           bg="rgba(255,255,255,0.2)"
           borderRadius="8px"
           flexShrink={0}
@@ -215,13 +239,13 @@ export default function Sidebar({ isOpen, menu = [] }: SidebarProps) {
         css={{
           '&::-webkit-scrollbar': { width: '6px' },
           '&::-webkit-scrollbar-track': { background: 'transparent' },
-          '&::-webkit-scrollbar-thumb': { background: '#CBD5E0', borderRadius: '3px' },
+          '&::-webkit-scrollbar-thumb': { background: 'var(--surface-border)', borderRadius: '3px' },
         }}
       >
         <VStack px="1rem" py="2.4rem" align="stretch" gap="0.2rem">
           {menu.length === 0 ? (
             <Box px="1.4rem" py="1rem">
-              <Text fontSize="1.2rem" color="#98A2B3" fontFamily="Montserrat, sans-serif">
+              <Text fontSize="1.2rem" color="var(--text-placeholder)" fontFamily="Montserrat, sans-serif">
                 No menu items
               </Text>
             </Box>
@@ -235,22 +259,26 @@ export default function Sidebar({ isOpen, menu = [] }: SidebarProps) {
 
       {/* Footer */}
       <Flex
-        h="7.6rem" flexShrink={0}
-        borderTop="1px solid #E2E8F0"
-        align="center" px="1.6rem"
-        bg="white"
+        h="7.6rem"
+        flexShrink={0}
+        borderTop="1px solid var(--surface-border)"
+        align="center"
+        px="1.6rem"
+        bg="var(--surface-sidebar)"
         gap="0.8rem"
       >
         <Flex
-          align="center" justify="center"
-          w="28px" h="28px"
-          bg="#0C6525"
+          align="center"
+          justify="center"
+          w="28px"
+          h="28px"
+          bg="var(--brand-primary)"
           borderRadius="6px"
           flexShrink={0}
         >
           <Text color="white" fontWeight="800" fontSize="1.3rem">O</Text>
         </Flex>
-        <Text fontWeight="700" fontSize="1.4rem" color="#0C6525" fontFamily="Montserrat, sans-serif">
+        <Text fontWeight="700" fontSize="1.4rem" color="var(--brand-primary)" fontFamily="Montserrat, sans-serif">
           OctoHealth
         </Text>
       </Flex>

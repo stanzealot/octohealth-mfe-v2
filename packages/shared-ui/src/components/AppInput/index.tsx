@@ -34,7 +34,7 @@ export function AppInput({
           display="block"
           fontSize="1.4rem"
           fontWeight="500"
-          color="#344054"
+          color="var(--text-secondary)"
           fontFamily="Montserrat, sans-serif"
           mb="0.6rem"
           style={labelStyle}
@@ -52,23 +52,23 @@ export function AppInput({
             height: '4.4rem',
             padding: '0 1.4rem',
             paddingRight: toggleVisibility ? '4.4rem' : '1.4rem',
-            border: `1px solid ${errorMessage ? '#FDA29B' : '#D0D5DD'}`,
+            border: `1px solid ${errorMessage ? '#FDA29B' : 'var(--surface-border)'}`,
             borderRadius: '8px',
             fontSize: '1.4rem',
             fontFamily: 'Montserrat, sans-serif',
-            color: '#101828',
-            background: disabled ? '#F9FAFB' : '#fff',
+            color: 'var(--text-primary)',
+            background: disabled ? 'var(--hover-bg)' : 'var(--surface-card)',
             outline: 'none',
             transition: 'all 0.2s ease',
             boxSizing: 'border-box',
             ...style,
           }}
           onFocus={(e) => {
-            e.target.style.borderColor = '#0C6525';
+            e.target.style.borderColor = 'var(--brand-primary)';
             e.target.style.boxShadow = '0 0 0 4px rgba(12,101,37,0.06)';
           }}
           onBlur={(e) => {
-            e.target.style.borderColor = errorMessage ? '#FDA29B' : '#D0D5DD';
+            e.target.style.borderColor = errorMessage ? '#FDA29B' : 'var(--surface-border)';
             e.target.style.boxShadow = 'none';
           }}
           {...rest}
@@ -82,7 +82,7 @@ export function AppInput({
             cursor="pointer"
             display="flex"
             alignItems="center"
-            color="#667085"
+            color="var(--text-muted)"
             onClick={() => setShowPassword((p) => !p)}
           >
             {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}

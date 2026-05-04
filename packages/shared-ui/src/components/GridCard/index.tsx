@@ -60,8 +60,8 @@ export function GridCard({
 
   return (
     <Box
-      bg="white"
-      border="1px solid #EAECF0"
+      bg="var(--surface-card)"
+      border="1px solid var(--surface-border)"
       borderRadius="1.2rem"
       overflow="hidden"
       cursor={onCardClick ? 'pointer' : 'default'}
@@ -95,8 +95,8 @@ export function GridCard({
             w="6rem"
             h="6rem"
             borderRadius="50%"
-            bg={avatar.bg ?? '#E0FAEC'}
-            color={avatar.color ?? '#0C6525'}
+            bg={avatar.bg ?? 'var(--brand-primary-light)'}
+            color={avatar.color ?? 'var(--brand-primary)'}
             fontWeight="700"
             fontSize="2rem"
             fontFamily="Montserrat, sans-serif"
@@ -107,7 +107,7 @@ export function GridCard({
           <Text
             fontSize="1.5rem"
             fontWeight={600}
-            color="#101828"
+            color="var(--text-primary)"
             fontFamily="Montserrat, sans-serif"
             textAlign="center"
             noOfLines={1}
@@ -124,10 +124,10 @@ export function GridCard({
         >
           {details.map((d, i) => (
             <Box key={i}>
-              <Text fontSize="1.1rem" color="#98A2B3" fontFamily="Montserrat, sans-serif" mb="0.2rem">
+              <Text fontSize="1.1rem" color="var(--text-placeholder)" fontFamily="Montserrat, sans-serif" mb="0.2rem">
                 {d.label}
               </Text>
-              <Text fontSize="1.3rem" fontWeight={500} color="#344054" fontFamily="Montserrat, sans-serif">
+              <Text fontSize="1.3rem" fontWeight={500} color="var(--text-secondary)" fontFamily="Montserrat, sans-serif">
                 {d.value}
               </Text>
             </Box>
@@ -137,8 +137,8 @@ export function GridCard({
 
       {/* Footer — actions */}
       <Flex
-        borderTop="1px solid #EAECF0"
-        bg="#FAFAFA"
+        borderTop="1px solid var(--surface-border)"
+        bg="var(--table-header-bg)"
         px="1.6rem"
         py="1.2rem"
         justify="flex-end"

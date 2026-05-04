@@ -8,6 +8,63 @@
   padding: 0;
 }
 
+/* ─── Branding CSS Custom Properties ──────────────────────────────── */
+:root {
+  /* Brand colors — overridden at runtime by branding-store */
+  --brand-primary:       #0C6525;
+  --brand-primary-light: #F0F9F5;
+  --brand-primary-dark:  #094a1b;
+  --brand-accent:        #C7522A;   /* avatar bg — separate from primary */
+  --brand-secondary:     #667085;
+
+  /* Surfaces */
+  --surface-bg:          #F8F9FA;
+  --surface-card:        #FFFFFF;
+  --surface-border:      #E2E8F0;
+  --surface-sidebar:     #FFFFFF;
+  --surface-topbar:      #FFFFFF;
+
+  /* Text */
+  --text-primary:        #101828;
+  --text-secondary:      #344054;
+  --text-muted:          #667085;
+  --text-placeholder:    #98A2B3;
+
+  /* Interaction */
+  --hover-bg:            #F0F2F5;
+  --focus-ring:          var(--brand-primary);
+
+  /* Table */
+  --table-header-bg:     #F9FAFB;
+  --table-border:        #E5E7EB;
+  --table-row-hover:     #F9FAFB;
+
+  /* Status */
+  --status-success:      #12B76A;
+  --status-warning:      #F79009;
+  --status-danger:       #F04438;
+  --status-info:         #2E90FA;
+}
+
+/* ─── Dark Mode Overrides ──────────────────────────────────────────── */
+[data-theme="dark"] {
+  --surface-bg:          #0F1117;
+  --surface-card:        #1A1D27;
+  --surface-border:      #2D3148;
+  --surface-sidebar:     #13161F;
+  --surface-topbar:      #1A1D27;
+
+  --text-primary:        #F9FAFB;
+  --text-secondary:      #D1D5DB;
+  --text-muted:          #9CA3AF;
+  --text-placeholder:    #6B7280;
+
+  --hover-bg:            #252836;
+  --table-header-bg:     #1E2130;
+  --table-border:        #2D3148;
+  --table-row-hover:     #1E2130;
+}
+
 html {
   font-size: 62.5%; /* 1rem = 10px */
 }
@@ -15,16 +72,16 @@ html {
 body {
   font-family: 'Montserrat', sans-serif;
   font-size: 1.4rem;
-  color: #101828;
-  background: #f8f9fa;
+  color: var(--text-primary);
+  background: var(--surface-bg);
   -webkit-font-smoothing: antialiased;
 }
 
-/* NProgress bar colour override */
+/* ─── NProgress uses brand-primary ────────────────────────────────── */
 #nprogress .bar {
-  background: #0c6525 !important;
+  background: var(--brand-primary) !important;
 }
 
 #nprogress .peg {
-  box-shadow: 0 0 10px #0c6525, 0 0 5px #0c6525 !important;
+  box-shadow: 0 0 10px var(--brand-primary), 0 0 5px var(--brand-primary) !important;
 }

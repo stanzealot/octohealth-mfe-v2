@@ -10,15 +10,15 @@ interface PublicWrapperProps {
 
 export default function PublicWrapper({ children, title, description }: PublicWrapperProps) {
   return (
-    <Flex flexDir="column" bg="#F5F8F5" minH="100vh">
+    <Flex flexDir="column" bg="var(--surface-bg)" minH="100vh">
       {/* Header bar */}
       <Flex
         w="100%"
         h="86px"
         align="center"
-        bg="white"
+        bg="var(--surface-card)"
         justify="center"
-        borderBottom="1px solid #0C6526"
+        borderBottom="1px solid var(--brand-primary)"
         flexShrink={0}
       >
         <Link to="/" style={{ textDecoration: 'none' }}>
@@ -26,7 +26,7 @@ export default function PublicWrapper({ children, title, description }: PublicWr
             <Box
               w="36px"
               h="36px"
-              bg="#0C6525"
+              bg="var(--brand-primary)"
               borderRadius="8px"
               display="flex"
               alignItems="center"
@@ -34,7 +34,7 @@ export default function PublicWrapper({ children, title, description }: PublicWr
             >
               <Text color="white" fontWeight="800" fontSize="18px">B</Text>
             </Box>
-            <Text fontWeight="700" fontSize="18px" color="#0C6525" fontFamily="Montserrat, sans-serif">
+            <Text fontWeight="700" fontSize="18px" color="var(--brand-primary)" fontFamily="Montserrat, sans-serif">
               Bastion
             </Text>
           </Flex>
@@ -47,7 +47,7 @@ export default function PublicWrapper({ children, title, description }: PublicWr
           w="100%"
           maxW="1200px"
           h="calc(100vh - 146px)"
-          bg="white"
+          bg="var(--surface-card)"
           align="center"
           rounded="24px"
           overflow="hidden"
@@ -70,7 +70,7 @@ export default function PublicWrapper({ children, title, description }: PublicWr
                 <Box
                   w="48px"
                   h="48px"
-                  bg="#0C6525"
+                  bg="var(--brand-primary)"
                   borderRadius="12px"
                   display="flex"
                   alignItems="center"
@@ -81,12 +81,12 @@ export default function PublicWrapper({ children, title, description }: PublicWr
                   <Text color="white" fontWeight="800" fontSize="22px">O</Text>
                 </Box>
                 {title && (
-                  <Text fontSize="24px" fontWeight="600" color="#101828" mb="8px" fontFamily="Montserrat, sans-serif">
+                  <Text fontSize="24px" fontWeight="600" color="var(--text-primary)" mb="8px" fontFamily="Montserrat, sans-serif">
                     {title}
                   </Text>
                 )}
                 {description && (
-                  <Text fontSize="16px" color="#717784" fontFamily="Montserrat, sans-serif">
+                  <Text fontSize="16px" color="var(--text-muted)" fontFamily="Montserrat, sans-serif">
                     {description}
                   </Text>
                 )}

@@ -8,6 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'nprogress/nprogress.css';
 import { system } from './theme';
 import { useAuthStore } from './store/auth-store';
+import { useBrandingStore } from './store/branding-store';
+import { useColorModeStore } from './store/color-mode-store';
 import App from './App';
 import './index.css';
 
@@ -18,15 +20,15 @@ const queryClient = new QueryClient({
 });
 
 function Root() {
-  // Hydrate auth state from sessionStorage once on mount
-  // (replaces Zustand persist middleware — avoids React 19 concurrent-mode conflict)
+  // Hydrate all stores from localStorage/sessionStorage once on mount.
+  // Called AFTER FOUC prevention script has already applied initial CSS vars.
   useEffect(() => {
     useAuthStore.getState().hydrateFromStorage();
+    useBrandingStore.getState().fetchBranding();
+    useColorModeStore.getState().hydrateColorMode();
   }, []);
 
-  return (
-    <App />
-  );
+  return <App />;
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

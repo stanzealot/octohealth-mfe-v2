@@ -30,13 +30,13 @@ export default function ConfirmDeleteModal({
           bg="#FEF2F2"
           flexShrink={0}
         >
-          <Trash2 size={28} color="#DC2626" />
+          <Trash2 size={28} color="var(--status-danger)" />
         </Flex>
         <Box>
-          <Text fontSize="1.8rem" fontWeight={700} color="#101828" fontFamily="Montserrat, sans-serif" mb="0.8rem">
+          <Text fontSize="1.8rem" fontWeight={700} color="var(--text-primary)" fontFamily="Montserrat, sans-serif" mb="0.8rem">
             {title}
           </Text>
-          <Text fontSize="1.4rem" color="#667085" fontFamily="Montserrat, sans-serif">
+          <Text fontSize="1.4rem" color="var(--text-muted)" fontFamily="Montserrat, sans-serif">
             {description}
           </Text>
         </Box>
@@ -46,14 +46,14 @@ export default function ConfirmDeleteModal({
             flex={1}
             h="4.4rem"
             borderRadius="8px"
-            border="1px solid #D0D5DD"
-            bg="white"
-            color="#344054"
+            border="1px solid var(--surface-border)"
+            bg="var(--surface-card)"
+            color="var(--text-secondary)"
             fontSize="1.4rem"
             fontWeight={600}
             fontFamily="Montserrat, sans-serif"
             cursor="pointer"
-            _hover={{ bg: '#F9FAFB' }}
+            _hover={{ bg: 'var(--hover-bg)' }}
             onClick={onClose}
           >
             Cancel
@@ -63,8 +63,8 @@ export default function ConfirmDeleteModal({
             flex={1}
             h="4.4rem"
             borderRadius="8px"
-            border="1px solid #DC2626"
-            bg="#DC2626"
+            border="1px solid var(--status-danger)"
+            bg="var(--status-danger)"
             color="white"
             fontSize="1.4rem"
             fontWeight={600}

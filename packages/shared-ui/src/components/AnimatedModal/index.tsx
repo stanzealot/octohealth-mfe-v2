@@ -58,7 +58,7 @@ export default function AnimatedModal({
               maxWidth: '95vw',
               maxHeight: '90vh',
               overflowY: 'auto',
-              background: 'white',
+              background: 'var(--surface-card)',
               borderRadius: '16px',
               boxShadow: '0 20px 60px rgba(16,24,40,0.18)',
             }}
@@ -70,12 +70,12 @@ export default function AnimatedModal({
                 justify="space-between"
                 px="2.4rem"
                 py="2rem"
-                borderBottom="1px solid #EAECF0"
+                borderBottom="1px solid var(--surface-border)"
               >
                 <Text
                   fontSize="1.8rem"
                   fontWeight={700}
-                  color="#101828"
+                  color="var(--text-primary)"
                   fontFamily="Montserrat, sans-serif"
                 >
                   {title}
@@ -88,11 +88,11 @@ export default function AnimatedModal({
                   w="3.6rem"
                   h="3.6rem"
                   borderRadius="8px"
-                  border="1px solid #EAECF0"
-                  bg="white"
+                  border="1px solid var(--surface-border)"
+                  bg="var(--surface-card)"
                   cursor="pointer"
-                  color="#667085"
-                  _hover={{ bg: '#F9FAFB', color: '#344054' }}
+                  color="var(--text-muted)"
+                  _hover={{ bg: 'var(--hover-bg)', color: 'var(--text-secondary)' }}
                   transition="all 0.15s"
                   onClick={onClose}
                 >

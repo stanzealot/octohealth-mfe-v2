@@ -4,6 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OctoHealth</title>
+    <!-- FOUC prevention: apply dark mode + branding BEFORE first paint -->
+    <script>
+      (function () {
+        try {
+          var mode = localStorage.getItem('octohealth-color-mode');
+          if (mode === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+          var raw = localStorage.getItem('octohealth-branding');
+          if (raw) {
+            var b = JSON.parse(raw);
+            var r = document.documentElement;
+            if (b.primaryColor)      r.style.setProperty('--brand-primary',       b.primaryColor);
+            if (b.primaryLightColor) r.style.setProperty('--brand-primary-light', b.primaryLightColor);
+            if (b.primaryDarkColor)  r.style.setProperty('--brand-primary-dark',  b.primaryDarkColor);
+          }
+        } catch (e) {}
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />

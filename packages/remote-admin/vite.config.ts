@@ -19,16 +19,13 @@ export default defineConfig({
   plugins: [
     react(),
     federation({
-      name: 'shell',
+      name: 'remoteAdmin',
       exposes: {
-        './auth-store':       './src/store/auth-store.ts',
-        './branding-store':   './src/store/branding-store.ts',
-        './color-mode-store': './src/store/color-mode-store.ts',
+        './SettingsModule': './src/pages/settings/SettingsModule.tsx',
       },
       remotes: {
-        sharedUi:    'http://localhost:3005/assets/remoteEntry.js',
-        remoteCrm:   'http://localhost:3001/assets/remoteEntry.js',
-        remoteAdmin: 'http://localhost:3002/assets/remoteEntry.js',
+        shell:    'http://localhost:3000/assets/remoteEntry.js',
+        sharedUi: 'http://localhost:3005/assets/remoteEntry.js',
       },
       shared,
     }),
@@ -36,8 +33,5 @@ export default defineConfig({
   build: {
     target: 'esnext',
     minify: false,
-  },
-  server: {
-    port: 3000,
   },
 });

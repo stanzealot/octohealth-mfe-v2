@@ -5,7 +5,11 @@
     "dev:shell":     "pnpm --filter shell dev",
     "dev:shared-ui": "pnpm --filter shared-ui dev",
     "dev:crm":       "pnpm --filter remote-crm dev",
-    "build:all":     "pnpm --filter shared-ui build && pnpm --filter remote-crm build"
+    "dev:admin":     "pnpm --filter remote-admin dev",
+    "build:all":     "pnpm --filter shared-ui build && pnpm --filter remote-crm build && pnpm --filter remote-admin build",
+    "build:shared-ui": "pnpm --filter shared-ui build",
+    "build:crm":     "pnpm --filter remote-crm build",
+    "build:admin":   "pnpm --filter remote-admin build"
   },
   "pnpm": {
     "onlyBuiltDependencies": ["@swc/core", "esbuild"]

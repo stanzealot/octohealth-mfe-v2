@@ -5,9 +5,10 @@ const customConfig = defineConfig({
     tokens: {
       colors: {
         brand: {
-          primary:      { value: '#0C6525' },
-          primaryLight: { value: '#F0F9F5' },
-          secondary:    { value: '#667085' },
+          primary:      { value: 'var(--brand-primary)' },
+          primaryLight: { value: 'var(--brand-primary-light)' },
+          primaryDark:  { value: 'var(--brand-primary-dark)' },
+          secondary:    { value: 'var(--brand-secondary)' },
         },
       },
       fonts: {
@@ -17,7 +18,7 @@ const customConfig = defineConfig({
     },
     semanticTokens: {
       colors: {
-        boxBg: { value: { base: 'white', _dark: '{colors.gray.900}' } },
+        boxBg: { value: { base: 'var(--surface-card)', _dark: 'var(--surface-card)' } },
       },
     },
   },

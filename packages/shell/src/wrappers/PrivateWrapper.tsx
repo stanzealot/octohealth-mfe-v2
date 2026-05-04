@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/auth-store';
 import { authService } from '../lib/auth/auth-service';
 import { useAuthActions } from '../store/auth-store';
+import { useColorMode, useColorModeActions } from '../store/color-mode-store';
 
 const Sidebar = lazy(() => import('sharedUi/Sidebar'));
 const TopBar  = lazy(() => import('sharedUi/TopBar'));
@@ -27,6 +28,8 @@ export default function PrivateWrapper({ children }: Props) {
   // Read auth data directly — PrivateWrapper is in the same shell package as the store
   const { user, menu } = useAuth();
   const { logout } = useAuthActions();
+  const { colorMode } = useColorMode();
+  const { toggleColorMode } = useColorModeActions();
 
   const handleLogout = () => {
     authService.logout().finally(() => {
@@ -62,6 +65,8 @@ export default function PrivateWrapper({ children }: Props) {
             onToggleSidebar={() => setSidebarOpen((p) => !p)}
             user={user}
             onLogout={handleLogout}
+            colorMode={colorMode}
+            onToggleColorMode={toggleColorMode}
           />
         </Suspense>
 
