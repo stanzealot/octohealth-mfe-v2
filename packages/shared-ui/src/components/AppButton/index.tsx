@@ -79,24 +79,31 @@ function buildVariants(primaryGlow25: string, primaryGlow35: string): Record<Var
       rippleBg: (g) => g,
     },
 
+    /* Matches monolith outline exactly:
+       neutral gray start → brand primary on hover (border + text + bg all shift) */
     outline: {
       base: {
-        bg: 'transparent',
-        color: 'var(--brand-primary)',
-        border: '1px solid var(--brand-primary)',
+        bg: 'var(--surface-card)',
+        color: 'var(--text-secondary)',
+        border: '1px solid var(--surface-border)',
       },
-      hover: () => ({
+      hover: (g) => ({
         bg: 'var(--brand-primary-light)',
         color: 'var(--brand-primary)',
-        transform: 'translateY(-2px)',
-        boxShadow: `0 4px 12px ${primaryGlow25}`,
         borderColor: 'var(--brand-primary)',
+        transform: 'translateY(-2px)',
+        boxShadow: `0 4px 12px ${g}`,
       }),
-      active: { transform: 'translateY(-1px)', bg: 'var(--brand-primary-light)' },
+      active: {
+        transform: 'translateY(-1px)',
+        bg: 'var(--brand-primary-light)',
+        borderColor: 'var(--brand-primary)',
+      },
       shineColor: 'var(--brand-primary-light)',
       rippleBg: (g) => g,
     },
 
+    /* Subtle variant — stays neutral on hover, no color shift */
     'gray-outline': {
       base: {
         bg: 'var(--surface-card)',
@@ -278,7 +285,8 @@ export function AdvancedButton({
           top={`${r.y}px`}
           zIndex={0}
           pointerEvents="none"
-          style={{
+          css={{
+            /* css prop (not style) so emotion injects the @keyframes rule */
             animation: `${rippleAnim} 0.6s ease-out forwards`,
           }}
         />
