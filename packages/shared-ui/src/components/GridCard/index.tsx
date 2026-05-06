@@ -65,9 +65,9 @@ export function GridCard({
       borderRadius="1.2rem"
       overflow="hidden"
       cursor={onCardClick ? 'pointer' : 'default'}
-      transition="all 0.2s ease"
-      transform={hoverEffect && hovered ? 'scale(1.02)' : 'scale(1)'}
-      boxShadow={hovered ? '0 8px 24px rgba(0,0,0,0.10)' : '0 1px 4px rgba(0,0,0,0.05)'}
+      transition="all 0.22s ease"
+      transform={hoverEffect && hovered ? 'translateY(-3px) scale(1.01)' : 'translateY(0) scale(1)'}
+      boxShadow={hovered ? '0 12px 32px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06)' : 'var(--shadow-card)'}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={() => onCardClick?.(id)}
@@ -95,8 +95,8 @@ export function GridCard({
             w="6rem"
             h="6rem"
             borderRadius="50%"
-            bg={avatar.bg ?? 'var(--brand-primary-light)'}
-            color={avatar.color ?? 'var(--brand-primary)'}
+            bg={avatar.bg ?? 'var(--avatar-fallback-bg)'}
+            color={avatar.color ?? 'var(--avatar-fallback-color)'}
             fontWeight="700"
             fontSize="2rem"
             fontFamily="Montserrat, sans-serif"

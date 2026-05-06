@@ -79,7 +79,7 @@ function ReusableDataTable<T>({
                   left="1.2rem"
                   top="50%"
                   transform="translateY(-50%)"
-                  color="#98A2B3"
+                  color="var(--text-placeholder)"
                   pointerEvents="none"
                   display="flex"
                 >
@@ -94,22 +94,22 @@ function ReusableDataTable<T>({
                     height: '4rem',
                     paddingLeft: '3.6rem',
                     paddingRight: '1.2rem',
-                    border: '1px solid #D0D5DD',
+                    border: '1px solid var(--surface-border)',
                     borderRadius: '8px',
                     fontSize: '1.4rem',
-                    color: '#344054',
+                    color: 'var(--text-secondary)',
                     fontFamily: 'Montserrat, sans-serif',
                     outline: 'none',
-                    background: '#fff',
+                    background: 'var(--surface-card)',
                     transition: 'all 0.3s ease-in-out',
                     boxSizing: 'border-box',
                   }}
                   onFocus={(e) => {
-                    e.target.style.borderColor = '#0C6525';
-                    e.target.style.boxShadow = '0 0 0 4px rgba(12,101,37,0.06)';
+                    e.target.style.borderColor = 'var(--brand-primary)';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(12,101,37,0.12)';
                   }}
                   onBlur={(e) => {
-                    e.target.style.borderColor = '#D0D5DD';
+                    e.target.style.borderColor = 'var(--surface-border)';
                     e.target.style.boxShadow = 'none';
                   }}
                 />
@@ -124,16 +124,16 @@ function ReusableDataTable<T>({
                 gap="0.6rem"
                 h="4rem"
                 px="1.4rem"
-                border="1px solid #D0D5DD"
+                border="1px solid var(--surface-border)"
                 borderRadius="8px"
-                bg="white"
+                bg="var(--surface-card)"
                 cursor="pointer"
                 fontSize="1.4rem"
-                color="#344054"
+                color="var(--text-secondary)"
                 fontFamily="Montserrat, sans-serif"
                 transition="all 0.2s ease"
                 whiteSpace="nowrap"
-                _hover={{ borderColor: '#0C6525', color: '#0C6525', bg: '#F0F9F5' }}
+                _hover={{ borderColor: 'var(--brand-primary)', color: 'var(--brand-primary)', bg: 'var(--brand-primary-light)' }}
               >
                 <SlidersHorizontal size={15} />
                 Filter

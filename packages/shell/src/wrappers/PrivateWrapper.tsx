@@ -39,7 +39,7 @@ export default function PrivateWrapper({ children }: Props) {
   };
 
   return (
-    <Flex h="100vh" overflow="hidden" bg="#F8F9FA">
+    <Flex h="100vh" overflow="hidden" bg="var(--surface-bg)">
       {/* Sidebar — receives menu from auth-store via props */}
       <Suspense fallback={null}>
         <Sidebar
@@ -71,7 +71,7 @@ export default function PrivateWrapper({ children }: Props) {
         </Suspense>
 
         {/* Page content */}
-        <Box as="main" flex={1} minH={0} overflowY="auto" overflowX="hidden" mt="7.2rem" p="2rem">
+        <Box as="main" flex={1} minH={0} overflowY="auto" overflowX="hidden" mt="7.2rem" p="2rem" bg="var(--surface-bg)">
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}

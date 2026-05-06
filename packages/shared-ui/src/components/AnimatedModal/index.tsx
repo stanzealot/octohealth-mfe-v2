@@ -60,7 +60,7 @@ export default function AnimatedModal({
               overflowY: 'auto',
               background: 'var(--surface-card)',
               borderRadius: '16px',
-              boxShadow: '0 20px 60px rgba(16,24,40,0.18)',
+              boxShadow: 'var(--shadow-modal)',
             }}
           >
             {/* Header */}

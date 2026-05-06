@@ -17,13 +17,21 @@ import { toast } from 'react-toastify';
 /* ─── Helpers ────────────────────────────────────────────────── */
 function StatusBadge({ status }: { status: Contact['contactStatus'] }) {
   const map: Record<string, { bg: string; color: string }> = {
-    Active:    { bg: '#E0FAEC', color: '#12B76A' },
-    Inactive:  { bg: '#F2F5F8', color: '#475467' },
-    Suspended: { bg: '#FFEBEC', color: '#B42318' },
+    Active:    { bg: 'rgba(18,183,106,0.12)',  color: 'var(--status-success)' },
+    Inactive:  { bg: 'var(--hover-bg)',         color: 'var(--text-muted)' },
+    Suspended: { bg: 'rgba(240,68,56,0.12)',    color: 'var(--status-danger)' },
   };
   const s = map[status] ?? map.Inactive;
   return (
-    <span style={{ display: 'inline-block', padding: '0.3rem 1rem', borderRadius: '2rem', fontSize: '1.2rem', fontWeight: 500, background: s.bg, color: s.color }}>
+    <span style={{
+      display: 'inline-block',
+      padding: '0.3rem 1rem',
+      borderRadius: '2rem',
+      fontSize: '1.2rem',
+      fontWeight: 500,
+      background: s.bg,
+      color: s.color,
+    }}>
       {status}
     </span>
   );
@@ -31,7 +39,15 @@ function StatusBadge({ status }: { status: Contact['contactStatus'] }) {
 
 function ContactAvatar({ firstName, lastName }: { firstName: string; lastName: string }) {
   return (
-    <Flex align="center" justify="center" w="4rem" h="4rem" borderRadius="50%" bg="#E0FAEC" color="#0C6525" fontWeight={700} fontSize="1.3rem" flexShrink={0} fontFamily="Montserrat, sans-serif">
+    <Flex
+      align="center" justify="center"
+      w="4rem" h="4rem"
+      borderRadius="50%"
+      bg="var(--avatar-fallback-bg)"
+      color="var(--avatar-fallback-color)"
+      fontWeight={700} fontSize="1.3rem"
+      flexShrink={0} fontFamily="Montserrat, sans-serif"
+    >
       {firstName[0]}{lastName[0]}
     </Flex>
   );
@@ -67,7 +83,9 @@ export default function ContactsList() {
       cell: (row) => (
         <Flex align="center" gap="1rem" cursor="pointer" onClick={() => navigate(row.id)}>
           <ContactAvatar firstName={row.firstName} lastName={row.lastName} />
-          <Text fontFamily="Montserrat, sans-serif">{`${row.firstName} ${row.lastName}`}</Text>
+          <Text fontFamily="Montserrat, sans-serif" color="var(--text-primary)">
+            {`${row.firstName} ${row.lastName}`}
+          </Text>
         </Flex>
       ),
       minWidth: '20rem',
@@ -94,8 +112,14 @@ export default function ContactsList() {
   ];
 
   return (
-    <Box bg="white" p="2rem 2.5rem" borderRadius="0.8rem" border="1px solid #EAECF0">
-      <Text fontSize="1.8rem" fontWeight={700} color="#1D2939" mb="2rem" fontFamily="Montserrat, sans-serif">
+    <Box
+      bg="var(--surface-card)"
+      p="2rem 2.5rem"
+      borderRadius="1.2rem"
+      border="1px solid var(--surface-border)"
+      boxShadow="var(--shadow-card)"
+    >
+      <Text fontSize="1.8rem" fontWeight={700} color="var(--text-primary)" mb="2rem" fontFamily="Montserrat, sans-serif">
         Contacts
       </Text>
 
@@ -103,14 +127,34 @@ export default function ContactsList() {
       <Flex flexWrap="wrap" justify="space-between" align="center" gap="1.2rem" mb="1.6rem">
         <Flex align="center" gap="1rem">
           <Box position="relative">
-            <Box position="absolute" left="1.2rem" top="50%" transform="translateY(-50%)" color="#98A2B3" display="flex" pointerEvents="none">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <Box
+              position="absolute" left="1.2rem" top="50%" transform="translateY(-50%)"
+              color="var(--text-placeholder)" display="flex" pointerEvents="none"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+              </svg>
             </Box>
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search here..."
-              style={{ height: '4rem', paddingLeft: '3.6rem', paddingRight: '1.2rem', border: '1px solid #D0D5DD', borderRadius: '0.8rem', fontSize: '1.4rem', fontFamily: 'Montserrat, sans-serif', outline: 'none', width: '26rem', color: '#1D2939' }}
+              style={{
+                height: '4rem',
+                paddingLeft: '3.6rem',
+                paddingRight: '1.2rem',
+                border: '1px solid var(--surface-border)',
+                borderRadius: '0.8rem',
+                fontSize: '1.4rem',
+                fontFamily: 'Montserrat, sans-serif',
+                outline: 'none',
+                width: '26rem',
+                color: 'var(--text-primary)',
+                background: 'var(--surface-bg)',
+                transition: 'border-color 0.2s',
+              }}
+              onFocus={(e) => { e.target.style.borderColor = 'var(--brand-primary)'; }}
+              onBlur={(e)  => { e.target.style.borderColor = 'var(--surface-border)'; }}
             />
           </Box>
           <AdvancedButton variant="gray-outline" leftIcon={<SlidersHorizontal size={15} />} onClick={() => toast.info('Filter — coming soon')}>
@@ -120,7 +164,7 @@ export default function ContactsList() {
 
         <Flex align="center" gap="1rem">
           {/* Grid/List toggle */}
-          <Flex border="1px solid #D0D5DD" borderRadius="0.8rem" overflow="hidden">
+          <Flex border="1px solid var(--surface-border)" borderRadius="0.8rem" overflow="hidden">
             {(['grid', 'list'] as const).map((v) => (
               <Box
                 key={v}
@@ -132,8 +176,8 @@ export default function ContactsList() {
                 display="flex"
                 alignItems="center"
                 gap="0.4rem"
-                bg={viewType === v ? '#F0F9F5' : '#fff'}
-                color={viewType === v ? '#0C6525' : '#667085'}
+                bg={viewType === v ? 'var(--brand-primary-light)' : 'var(--surface-card)'}
+                color={viewType === v ? 'var(--brand-primary)' : 'var(--text-muted)'}
                 fontSize="1.3rem"
                 fontFamily="Montserrat, sans-serif"
                 fontWeight={viewType === v ? 600 : 400}
@@ -160,17 +204,21 @@ export default function ContactsList() {
       {/* Status summary */}
       <Flex justify="space-between" align="center" mb="1.6rem" flexWrap="wrap" gap="1rem">
         <Flex gap="1rem">
-          <Flex align="center" px="0.8rem" h="3rem" bg="#E0FAEC" borderRadius="0.5rem">
-            <Text fontSize="1.3rem" color="#12B76A" fontWeight={500} fontFamily="Montserrat, sans-serif">Active</Text>
+          <Flex align="center" px="0.8rem" h="3rem" bg="rgba(18,183,106,0.12)" borderRadius="0.5rem">
+            <Text fontSize="1.3rem" color="var(--status-success)" fontWeight={500} fontFamily="Montserrat, sans-serif">
+              Active
+            </Text>
           </Flex>
-          <Flex align="center" px="0.8rem" h="3rem" bg="#FFEBEC" borderRadius="0.5rem">
-            <Text fontSize="1.3rem" color="#B42318" fontWeight={500} fontFamily="Montserrat, sans-serif">Inactive</Text>
+          <Flex align="center" px="0.8rem" h="3rem" bg="rgba(240,68,56,0.12)" borderRadius="0.5rem">
+            <Text fontSize="1.3rem" color="var(--status-danger)" fontWeight={500} fontFamily="Montserrat, sans-serif">
+              Inactive
+            </Text>
           </Flex>
         </Flex>
-        <Text fontSize="1.4rem" color="#A3AED0" fontFamily="Montserrat, sans-serif">
-          Total contacts: <strong style={{ color: '#1B2559' }}>{filtered.length}</strong>{' '}
-          Active: <strong style={{ color: '#1B2559' }}>{activeCount}</strong>{' '}
-          Inactive: <strong style={{ color: '#1B2559' }}>{inactiveCount}</strong>
+        <Text fontSize="1.4rem" color="var(--text-muted)" fontFamily="Montserrat, sans-serif">
+          Total contacts: <strong style={{ color: 'var(--text-primary)' }}>{filtered.length}</strong>{' '}
+          Active: <strong style={{ color: 'var(--status-success)' }}>{activeCount}</strong>{' '}
+          Inactive: <strong style={{ color: 'var(--status-danger)' }}>{inactiveCount}</strong>
         </Text>
       </Flex>
 

@@ -8,21 +8,25 @@
   padding: 0;
 }
 
-/* ─── Branding CSS Custom Properties ──────────────────────────────── */
+/* ─── Branding & Design System CSS Custom Properties ──────────────── */
 :root {
   /* Brand colors — overridden at runtime by branding-store */
   --brand-primary:       #0C6525;
   --brand-primary-light: #F0F9F5;
   --brand-primary-dark:  #094a1b;
-  --brand-accent:        #C7522A;   /* avatar bg — separate from primary */
+  --brand-accent:        #C7522A;
   --brand-secondary:     #667085;
 
   /* Surfaces */
-  --surface-bg:          #F8F9FA;
+  --surface-bg:          #F4F6F8;
   --surface-card:        #FFFFFF;
-  --surface-border:      #E2E8F0;
+  --surface-border:      #E4E7EC;
   --surface-sidebar:     #FFFFFF;
   --surface-topbar:      #FFFFFF;
+
+  /* Avatar defaults (overridden in dark mode) */
+  --avatar-fallback-bg:    var(--brand-primary-light);
+  --avatar-fallback-color: var(--brand-primary);
 
   /* Text */
   --text-primary:        #101828;
@@ -44,25 +48,67 @@
   --status-warning:      #F79009;
   --status-danger:       #F04438;
   --status-info:         #2E90FA;
+
+  /* Shadows — light mode (subtle) */
+  --shadow-card:     0 1px 3px rgba(16,24,40,0.06), 0 4px 12px rgba(16,24,40,0.04);
+  --shadow-sidebar:  4px 0 24px rgba(16,24,40,0.06);
+  --shadow-topbar:   0 4px 20px rgba(16,24,40,0.06);
+  --shadow-dropdown: 0 4px 20px rgba(16,24,40,0.12), 0 0 0 1px rgba(16,24,40,0.05);
+  --shadow-modal:    0 20px 60px rgba(16,24,40,0.18), 0 0 0 1px rgba(16,24,40,0.06);
 }
 
-/* ─── Dark Mode Overrides ──────────────────────────────────────────── */
+/* ─── Dark Mode ───────────────────────────────────────────────────── */
+/*
+ * Warm charcoal palette — inspired by VS Code dark+
+ * Uses rgba() borders and stronger shadows to create
+ * visual depth and elevation between layers.
+ */
 [data-theme="dark"] {
-  --surface-bg:          #0F1117;
-  --surface-card:        #1A1D27;
-  --surface-border:      #2D3148;
-  --surface-sidebar:     #13161F;
-  --surface-topbar:      #1A1D27;
+  /* Surface hierarchy: bg < sidebar < card < elevated */
+  --surface-bg:          #111113;   /* page background — deepest layer   */
+  --surface-sidebar:     #18181B;   /* sidebar — sits above bg            */
+  --surface-topbar:      #1C1C1F;   /* topbar — same elevation as card    */
+  --surface-card:        #1C1C1F;   /* cards, modals, inputs              */
 
-  --text-primary:        #F9FAFB;
-  --text-secondary:      #D1D5DB;
-  --text-muted:          #9CA3AF;
-  --text-placeholder:    #6B7280;
+  /* Borders: rgba white feels more natural than opaque dark colors */
+  --surface-border:      rgba(255, 255, 255, 0.09);
 
-  --hover-bg:            #252836;
-  --table-header-bg:     #1E2130;
-  --table-border:        #2D3148;
-  --table-row-hover:     #1E2130;
+  /* Avatar defaults for dark mode — translucent green tint */
+  --avatar-fallback-bg:    rgba(12, 101, 37, 0.25);
+  --avatar-fallback-color: #4ADE80;
+
+  /* Text */
+  --text-primary:        #E8E8EA;   /* off-white — easier on eyes than pure white */
+  --text-secondary:      #A1A1AB;   /* secondary labels                           */
+  --text-muted:          #6E6E7C;   /* hints, captions                            */
+  --text-placeholder:    #4E4E5A;   /* empty inputs                               */
+
+  /* Interaction */
+  --hover-bg:            rgba(255, 255, 255, 0.06);
+  --focus-ring:          var(--brand-primary);
+
+  /* Table */
+  --table-header-bg:     #18181B;   /* matches sidebar for cohesion */
+  --table-border:        rgba(255, 255, 255, 0.07);
+  --table-row-hover:     rgba(255, 255, 255, 0.04);
+
+  /* Status — slightly desaturated to not scream on dark bg */
+  --status-success:      #34D399;
+  --status-warning:      #FBBF24;
+  --status-danger:       #F87171;
+  --status-info:         #60A5FA;
+
+  /* Shadows — dark mode needs MUCH stronger shadows for depth */
+  --shadow-card:     0 2px 8px rgba(0,0,0,0.55),
+                     0 0 0 1px rgba(255,255,255,0.06);
+  --shadow-sidebar:  4px 0 32px rgba(0,0,0,0.6),
+                     1px 0 0 rgba(255,255,255,0.05);
+  --shadow-topbar:   0 4px 24px rgba(0,0,0,0.5),
+                     0 1px 0 rgba(255,255,255,0.05);
+  --shadow-dropdown: 0 8px 32px rgba(0,0,0,0.6),
+                     0 0 0 1px rgba(255,255,255,0.08);
+  --shadow-modal:    0 24px 80px rgba(0,0,0,0.7),
+                     0 0 0 1px rgba(255,255,255,0.07);
 }
 
 html {
@@ -84,4 +130,13 @@ body {
 
 #nprogress .peg {
   box-shadow: 0 0 10px var(--brand-primary), 0 0 5px var(--brand-primary) !important;
+}
+
+/* ─── Smooth dark mode transition ─────────────────────────────────── */
+*, *::before, *::after {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease;
+}
+/* Don't animate these — causes layout jitter */
+*:where(svg, img, video, canvas, input, select, textarea) {
+  transition: none;
 }

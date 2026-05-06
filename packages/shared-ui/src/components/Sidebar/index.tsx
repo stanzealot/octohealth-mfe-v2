@@ -208,7 +208,7 @@ export default function Sidebar({ isOpen, menu = [] }: SidebarProps) {
       bg="var(--surface-sidebar)"
       overflow="hidden"
       transition="width 0.25s ease"
-      boxShadow="4px 4px 40px rgba(0,0,0,0.05)"
+      boxShadow="var(--shadow-sidebar)"
       display="flex"
       flexDir="column"
     >

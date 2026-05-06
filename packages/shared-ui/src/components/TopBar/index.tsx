@@ -75,7 +75,7 @@ export default function TopBar({
       justify="space-between"
       bg="var(--surface-topbar)"
       px={{ base: '1.6rem', md: '2.4rem' }}
-      boxShadow="4px 4px 40px rgba(0,0,0,0.05)"
+      boxShadow="var(--shadow-topbar)"
       zIndex={100}
     >
       {/* Hamburger */}
@@ -176,7 +176,7 @@ export default function TopBar({
                 <Box
                   bg="var(--surface-card)"
                   borderRadius="12px"
-                  boxShadow="0 4px 20px rgba(0,0,0,0.12)"
+                  boxShadow="var(--shadow-dropdown)"
                   border="1px solid var(--surface-border)"
                   overflow="hidden"
                 >
