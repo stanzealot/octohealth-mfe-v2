@@ -70,6 +70,7 @@ export default function TopBar({
       right={0}
       width={sidebarOpen ? 'calc(100vw - 25rem)' : '100vw'}
       transition="width 0.25s ease"
+      css={{ '@media (max-width: 767px)': { width: '100vw !important' } }}
       h="7.2rem"
       align="center"
       justify="space-between"

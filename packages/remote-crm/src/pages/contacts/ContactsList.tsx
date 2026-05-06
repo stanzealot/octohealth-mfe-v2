@@ -218,7 +218,7 @@ export default function ContactsList() {
   return (
     <Box
       bg="var(--surface-card)"
-      p="2rem 2.5rem"
+      p={{ base: '1.4rem', md: '2rem 2.5rem' }}
       borderRadius="1.2rem"
       border="1px solid var(--surface-border)"
       boxShadow="var(--shadow-card)"
@@ -235,15 +235,16 @@ export default function ContactsList() {
 
       {/* ── Toolbar ──────────────────────────────────────────────── */}
       <Flex
-        flexWrap="wrap"
+        flexDir={{ base: 'column', md: 'row' }}
+        align={{ base: 'stretch', md: 'center' }}
         justify="space-between"
-        align="center"
         gap="1.2rem"
         mb="1.6rem"
       >
-        <Flex align="center" gap="1rem">
+        {/* Left — search + filter */}
+        <Flex align="center" gap="1rem" flexWrap="wrap">
           {/* Search */}
-          <Box position="relative">
+          <Box position="relative" flex={{ base: 1, md: 'none' }} minW={0}>
             <Box
               position="absolute"
               left="1.2rem"
@@ -278,7 +279,8 @@ export default function ContactsList() {
                 fontSize: '1.4rem',
                 fontFamily: 'Montserrat, sans-serif',
                 outline: 'none',
-                width: '26rem',
+                width: '100%',
+                minWidth: '0',
                 color: 'var(--text-primary)',
                 background: 'var(--surface-bg)',
                 transition: 'border-color 0.2s',
@@ -300,7 +302,8 @@ export default function ContactsList() {
           </AdvancedButton>
         </Flex>
 
-        <Flex align="center" gap="1rem">
+        {/* Right — view toggle + action buttons */}
+        <Flex align="center" gap="1rem" flexWrap="wrap" justify={{ base: 'flex-end', md: 'flex-start' }}>
           {/* Grid / List toggle */}
           <Flex
             border="1px solid var(--surface-border)"
@@ -500,17 +503,19 @@ export default function ContactsList() {
 
       {/* ── List view ────────────────────────────────────────────── */}
       {viewType === 'list' && (
-        <ReusableDataTable
-          data={filtered}
-          columns={columns}
-          showSearch={false}
-          showFilter={false}
-          showActions={false}
-          pagination
-          paginationPerPage={10}
-          paginationRowsPerPageOptions={[10, 20, 30]}
-          hasFixedActionColumn
-        />
+        <Box overflowX="auto" w="100%">
+          <ReusableDataTable
+            data={filtered}
+            columns={columns}
+            showSearch={false}
+            showFilter={false}
+            showActions={false}
+            pagination
+            paginationPerPage={10}
+            paginationRowsPerPageOptions={[10, 20, 30]}
+            hasFixedActionColumn
+          />
+        </Box>
       )}
 
       {/* ── Add Contact modal ─────────────────────────────────────── */}
@@ -520,7 +525,7 @@ export default function ContactsList() {
         title="Add Contact"
         size="md"
       >
-        <Box display="grid" gridTemplateColumns="1fr 1fr" gap="1.6rem">
+        <Box display="grid" gridTemplateColumns={{ base: '1fr', md: '1fr 1fr' }} gap="1.6rem">
           <CustomSelect
             label="Title"
             required

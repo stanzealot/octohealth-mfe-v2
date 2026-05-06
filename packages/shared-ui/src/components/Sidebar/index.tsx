@@ -3,6 +3,7 @@ import { Box, Flex, VStack, Text } from '@chakra-ui/react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { BASTION_WHITE_LOGO, OCTOHEALTH_LOGO } from '../../assets/logos';
 
 /* ─── Types ─────────────────────────────────────────────────────────── */
 export interface MenuItem {
@@ -38,7 +39,15 @@ const hasActiveChild = (children: MenuItem[] | undefined, currentPath: string): 
 };
 
 /* ─── NavItem ───────────────────────────────────────────────────────── */
-function NavItem({ item, depth = 0 }: { item: MenuItem; depth?: number }) {
+function NavItem({
+  item,
+  depth = 0,
+  onClose,
+}: {
+  item: MenuItem;
+  depth?: number;
+  onClose?: () => void;
+}) {
   const location = useLocation();
   const hasChildren = !!item.children?.length;
   const itemPath = normalizePath(item.path);
@@ -147,7 +156,12 @@ function NavItem({ item, depth = 0 }: { item: MenuItem; depth?: number }) {
             >
               <Box pl="0.8rem">
                 {item.children!.map((child, i) => (
-                  <NavItem key={child.id ?? child.label ?? i} item={child} depth={depth + 1} />
+                  <NavItem
+                    key={child.id ?? child.label ?? i}
+                    item={child}
+                    depth={depth + 1}
+                    onClose={onClose}
+                  />
                 ))}
               </Box>
             </motion.div>
@@ -163,6 +177,7 @@ function NavItem({ item, depth = 0 }: { item: MenuItem; depth?: number }) {
       <NavLink
         to={itemPath}
         style={({ isActive: navActive }) => (navActive ? activeStyle : { ...normalStyle })}
+        onClick={() => onClose?.()}
         onMouseEnter={(e) => {
           if (!(e.currentTarget as HTMLAnchorElement).classList.contains('active'))
             (e.currentTarget as HTMLElement).style.background = 'var(--brand-primary-light)';
@@ -195,7 +210,7 @@ function NavItem({ item, depth = 0 }: { item: MenuItem; depth?: number }) {
 }
 
 /* ─── Sidebar ───────────────────────────────────────────────────────── */
-export default function Sidebar({ isOpen, menu = [] }: SidebarProps) {
+export default function Sidebar({ isOpen, onToggle, menu = [] }: SidebarProps) {
   return (
     <Box
       id="left-panel"
@@ -212,22 +227,23 @@ export default function Sidebar({ isOpen, menu = [] }: SidebarProps) {
       display="flex"
       flexDir="column"
     >
-      {/* Header */}
-      <Flex bg="var(--brand-primary)" h="7.2rem" flexShrink={0} align="center" px="1.6rem" gap="1rem">
-        <Flex
-          align="center"
-          justify="center"
-          w="32px"
-          h="32px"
-          bg="rgba(255,255,255,0.2)"
-          borderRadius="8px"
-          flexShrink={0}
-        >
-          <Text color="white" fontWeight="800" fontSize="1.6rem">B</Text>
-        </Flex>
-        <Text color="white" fontWeight="700" fontSize="1.6rem" fontFamily="Montserrat, sans-serif">
-          Bastion
-        </Text>
+      {/* Header — Bastion white logo */}
+      <Flex
+        bg="var(--brand-primary)"
+        h="7.2rem"
+        flexShrink={0}
+        align="center"
+        justify="center"
+        px="2rem"
+      >
+        <Box
+          as="img"
+          src={BASTION_WHITE_LOGO}
+          alt="Bastion"
+          h="3.2rem"
+          maxW="15rem"
+          style={{ objectFit: 'contain' }}
+        />
       </Flex>
 
       {/* Scrollable nav */}
@@ -251,36 +267,34 @@ export default function Sidebar({ isOpen, menu = [] }: SidebarProps) {
             </Box>
           ) : (
             menu.map((item, i) => (
-              <NavItem key={item.id ?? item.label ?? i} item={item} />
+              <NavItem
+                key={item.id ?? item.label ?? i}
+                item={item}
+                onClose={onToggle}
+              />
             ))
           )}
         </VStack>
       </Box>
 
-      {/* Footer */}
+      {/* Footer — OctoHealth logo */}
       <Flex
         h="7.6rem"
         flexShrink={0}
         borderTop="1px solid var(--surface-border)"
         align="center"
-        px="1.6rem"
+        justify="center"
+        px="2rem"
         bg="var(--surface-sidebar)"
-        gap="0.8rem"
       >
-        <Flex
-          align="center"
-          justify="center"
-          w="28px"
-          h="28px"
-          bg="var(--brand-primary)"
-          borderRadius="6px"
-          flexShrink={0}
-        >
-          <Text color="white" fontWeight="800" fontSize="1.3rem">O</Text>
-        </Flex>
-        <Text fontWeight="700" fontSize="1.4rem" color="var(--brand-primary)" fontFamily="Montserrat, sans-serif">
-          OctoHealth
-        </Text>
+        <Box
+          as="img"
+          src={OCTOHEALTH_LOGO}
+          alt="OctoHealth"
+          h="2.2rem"
+          maxW="14rem"
+          style={{ objectFit: 'contain' }}
+        />
       </Flex>
     </Box>
   );

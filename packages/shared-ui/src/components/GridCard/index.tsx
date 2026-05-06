@@ -1,51 +1,35 @@
-import React, { useState } from 'react';
-import { Box, Flex, Text } from '@chakra-ui/react';
-import SharedActionMenu from '../ActionMenu';
+import React, { useState, memo } from 'react';
+import { Box, Flex, Text, Avatar } from '@chakra-ui/react';
+import CardActionMenu, { type CardAction } from '../CardActionMenu';
 
-type StatusType = 'Active' | 'Inactive' | 'Suspended' | string;
-
+/* ─── Status dot colours (matches monolith exactly) ─────────────── */
 const STATUS_DOT: Record<string, string> = {
   Active:    '#12B76A',
-  Inactive:  '#98A2B3',
-  Suspended: '#F79009',
+  Inactive:  '#475467',
+  Suspended: '#B42318',
 };
+
+/* ─── Types ──────────────────────────────────────────────────────── */
+type StatusType = 'Active' | 'Inactive' | 'Suspended' | string;
 
 interface Detail {
   label: string;
   value: string;
 }
 
-interface Action {
-  label: string;
-  cta: () => void;
-  allowPopover?: boolean;
-  confirmationText?: string;
-}
-
-interface AvatarConfig {
-  name: string;
-  bg?: string;
-  color?: string;
-}
-
 export interface GridCardProps {
   id: string;
   title: string;
   status: StatusType;
-  avatar: AvatarConfig;
+  avatar: { name: string };
   details: Detail[];
-  actions: Action[];
+  actions: CardAction[];
   onCardClick?: (id: string) => void;
   hoverEffect?: boolean;
 }
 
-function getInitials(name: string): string {
-  const parts = name.trim().split(/\s+/);
-  if (parts.length === 1) return parts[0][0]?.toUpperCase() ?? '?';
-  return ((parts[0][0] ?? '') + (parts[parts.length - 1][0] ?? '')).toUpperCase();
-}
-
-export function GridCard({
+/* ─── GridCard ───────────────────────────────────────────────────── */
+export const GridCard = memo(function GridCard({
   id,
   title,
   status,
@@ -56,100 +40,114 @@ export function GridCard({
   hoverEffect = true,
 }: GridCardProps) {
   const [hovered, setHovered] = useState(false);
-  const dotColor = STATUS_DOT[status] ?? '#98A2B3';
+  const dotColor = STATUS_DOT[status] ?? '#475467';
 
   return (
     <Box
       bg="var(--surface-card)"
+      borderRadius="1.6rem"
       border="1px solid var(--surface-border)"
-      borderRadius="1.2rem"
-      overflow="hidden"
-      cursor={onCardClick ? 'pointer' : 'default'}
-      transition="all 0.22s ease"
-      transform={hoverEffect && hovered ? 'translateY(-3px) scale(1.01)' : 'translateY(0) scale(1)'}
-      boxShadow={hovered ? '0 12px 32px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06)' : 'var(--shadow-card)'}
+      p="2rem"
+      position="relative"
+      boxShadow={hovered ? 'var(--shadow-card), 0 8px 24px rgba(0,0,0,0.10)' : 'var(--shadow-card)'}
+      transform={hoverEffect && hovered ? 'scale(1.02) translateY(-2px)' : 'scale(1) translateY(0)'}
+      transition="all 0.22s ease-in-out"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={() => onCardClick?.(id)}
-      position="relative"
     >
-      {/* Status dot */}
+      {/* ── Status dot ─────────────────────────────────────── */}
       <Box
         position="absolute"
-        top="1.2rem"
-        right="1.2rem"
+        top="1.4rem"
+        right="1.4rem"
         w="1rem"
         h="1rem"
         borderRadius="50%"
         bg={dotColor}
         title={status}
+        flexShrink={0}
       />
 
-      {/* Card body */}
-      <Box p="2rem">
+      {/* ── Clickable card body ────────────────────────────── */}
+      <Box
+        cursor={onCardClick ? 'pointer' : 'default'}
+        onClick={() => onCardClick?.(id)}
+      >
         {/* Avatar + name */}
-        <Flex direction="column" align="center" gap="1rem" mb="2rem">
-          <Flex
-            align="center"
-            justify="center"
-            w="6rem"
-            h="6rem"
-            borderRadius="50%"
-            bg={avatar.bg ?? 'var(--avatar-fallback-bg)'}
-            color={avatar.color ?? 'var(--avatar-fallback-color)'}
-            fontWeight="700"
-            fontSize="2rem"
-            fontFamily="Montserrat, sans-serif"
-            flexShrink={0}
+        <Flex flexDir="column" align="center" mb="1.2rem">
+          <Avatar.Root
+            h="5rem"
+            w="5rem"
+            mb="0.8rem"
           >
-            {getInitials(avatar.name)}
-          </Flex>
+            <Avatar.Fallback
+              name={avatar.name}
+              bg="var(--avatar-fallback-bg)"
+              color="var(--avatar-fallback-color)"
+              fontFamily="Montserrat, sans-serif"
+              fontWeight="700"
+              fontSize="1.6rem"
+            />
+          </Avatar.Root>
+
           <Text
-            fontSize="1.5rem"
-            fontWeight={600}
+            fontWeight="700"
+            fontSize="1.4rem"
             color="var(--text-primary)"
             fontFamily="Montserrat, sans-serif"
             textAlign="center"
-            noOfLines={1}
+            lineClamp={1}
           >
             {title}
           </Text>
         </Flex>
 
-        {/* Details grid */}
-        <Box
-          display="grid"
-          gridTemplateColumns="1fr 1fr"
-          gap="0.8rem 1.6rem"
+        {/* Detail rows — label left, value right */}
+        <Flex
+          flexDir="column"
+          gap="0.8rem"
+          w="100%"
+          maxW="18rem"
+          mx="auto"
+          mb="0.4rem"
         >
-          {details.map((d, i) => (
-            <Box key={i}>
-              <Text fontSize="1.1rem" color="var(--text-placeholder)" fontFamily="Montserrat, sans-serif" mb="0.2rem">
+          {details.map((d) => (
+            <Flex key={d.label} justify="space-between" w="100%" align="center">
+              <Text
+                fontSize="1.3rem"
+                color="var(--text-muted)"
+                fontFamily="Montserrat, sans-serif"
+              >
                 {d.label}
               </Text>
-              <Text fontSize="1.3rem" fontWeight={500} color="var(--text-secondary)" fontFamily="Montserrat, sans-serif">
+              <Text
+                fontSize="1.3rem"
+                fontWeight="600"
+                color="var(--text-secondary)"
+                fontFamily="Montserrat, sans-serif"
+              >
                 {d.value}
               </Text>
-            </Box>
+            </Flex>
           ))}
-        </Box>
+        </Flex>
       </Box>
 
-      {/* Footer — actions */}
-      <Flex
-        borderTop="1px solid var(--surface-border)"
-        bg="var(--table-header-bg)"
-        px="1.6rem"
-        py="1.2rem"
-        justify="flex-end"
+      {/* ── Action bar ─────────────────────────────────────── */}
+      <Box
+        mt="1.4rem"
+        p="1rem 1.4rem"
+        bg="var(--hover-bg)"
+        borderRadius="8px"
         onClick={(e) => e.stopPropagation()}
       >
-        <SharedActionMenu actions={actions} />
-      </Flex>
+        <CardActionMenu actions={actions} />
+      </Box>
     </Box>
   );
-}
+});
 
+/* ─── GridCardList (responsive grid wrapper) ────────────────────── */
 export function GridCardList({ children }: { children: React.ReactNode }) {
   return (
     <>
