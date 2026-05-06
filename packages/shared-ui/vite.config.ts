@@ -12,6 +12,7 @@ const shared = {
   'zustand':               { singleton: true },
   '@tanstack/react-query': { singleton: true },
   'axios':                 { singleton: true },
+  'react-hook-form':       { singleton: true },
 };
 
 export default defineConfig({
@@ -30,13 +31,17 @@ export default defineConfig({
         './AnimatedModal':     './src/components/AnimatedModal/index.tsx',
         './GridCard':          './src/components/GridCard/index.tsx',
         './ConfirmDeleteModal':'./src/components/ConfirmDeleteModal/index.tsx',
-        './CustomSelect':      './src/components/CustomSelect/index.tsx',
         './AppSelect':         './src/components/AppSelect/index.tsx',
         './AppPagination':    './src/components/AppPagination/index.tsx',
         './CardActionMenu':   './src/components/CardActionMenu/index.tsx',
-        './AppCheckbox':      './src/components/AppCheckbox/index.tsx',
-        './AppSwitch':        './src/components/AppSwitch/index.tsx',
-        './AppAsyncSelect':   './src/components/AppAsyncSelect/index.tsx',
+        './AppCheckbox':         './src/components/AppCheckbox/index.tsx',
+        './AppSwitch':           './src/components/AppSwitch/index.tsx',
+        './AppAsyncSelect':      './src/components/AppAsyncSelect/index.tsx',
+        './AppDatePicker':         './src/components/AppDatePicker/index.tsx',
+        './AppMultiPhoneInput':    './src/components/AppMultiPhoneInput/index.tsx',
+        './AppAccordionSection':   './src/components/AppAccordionSection/index.tsx',
+        './AppImageInput':         './src/components/AppImageInput/index.tsx',
+        './AppTextTagInput':       './src/components/AppTextTagInput/index.tsx',
       },
       remotes: {
         shell: 'http://localhost:3000/assets/remoteEntry.js',

@@ -12,6 +12,7 @@ const shared = {
   'zustand':               { singleton: true },
   '@tanstack/react-query': { singleton: true },
   'axios':                 { singleton: true },
+  'react-hook-form':       { singleton: true },
 };
 
 export default defineConfig({

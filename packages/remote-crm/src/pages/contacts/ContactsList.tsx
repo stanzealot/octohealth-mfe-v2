@@ -16,7 +16,7 @@ import { GridCard, GridCardList } from 'sharedUi/GridCard';
 import AnimatedModal from 'sharedUi/AnimatedModal';
 import ConfirmDeleteModal from 'sharedUi/ConfirmDeleteModal';
 import AppInput from 'sharedUi/AppInput';
-import CustomSelect from 'sharedUi/CustomSelect';
+import { AppSelect as CustomSelect } from 'sharedUi/AppSelect';
 import AppPagination from 'sharedUi/AppPagination';
 import { filterContacts, type Contact } from '../../mock/contacts';
 import { toast } from 'react-toastify';
@@ -151,7 +151,7 @@ export default function ContactsList() {
             align="center"
             gap="1rem"
             cursor="pointer"
-            onClick={() => navigate(row.id)}
+            onClick={() => navigate(`/crm/contacts/${row.id}`)}
           >
             <ContactAvatar firstName={row.firstName} lastName={row.lastName} />
             <Text
@@ -193,10 +193,10 @@ export default function ContactsList() {
         cell: (row) => (
           <CardActionMenu
             actions={[
-              { label: 'View', cta: () => navigate(row.id) },
+              { label: 'View', cta: () => navigate(`/crm/contacts/${row.id}`) },
               {
                 label: 'Edit',
-                cta: () => toast.info(`Edit ${row.firstName} — coming soon`),
+                cta: () => navigate(`/crm/contacts/${row.id}/edit`),
               },
               {
                 label: 'Delete',
@@ -359,9 +359,9 @@ export default function ContactsList() {
           </AdvancedButton>
           <AdvancedButton
             leftIcon={<Plus size={16} />}
-            onClick={() => setAddOpen(true)}
+            onClick={() => navigate('/crm/contacts/new')}
           >
-            Add Contacts
+            Add Contact
           </AdvancedButton>
         </Flex>
       </Flex>
@@ -467,13 +467,12 @@ export default function ContactsList() {
                         value: c.membership?.regNumber || '-',
                       },
                     ]}
-                    onCardClick={(id) => navigate(id)}
+                    onCardClick={(id) => navigate(`/crm/contacts/${id}`)}
                     actions={[
-                      { label: 'View', cta: () => navigate(c.id) },
+                      { label: 'View', cta: () => navigate(`/crm/contacts/${c.id}`) },
                       {
                         label: 'Edit',
-                        cta: () =>
-                          toast.info(`Edit ${c.firstName} — coming soon`),
+                        cta: () => navigate(`/crm/contacts/${c.id}/edit`),
                       },
                       {
                         label: 'Request Service',

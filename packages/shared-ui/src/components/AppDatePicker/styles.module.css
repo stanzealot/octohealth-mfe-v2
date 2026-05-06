@@ -1,0 +1,220 @@
+/* ─── Wrapper (the element react-datepicker renders around the input) ─ */
+.app_wrapper {
+  display: flex !important;
+  width: 100%;
+  min-height: 4.4rem;
+  background-color: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  font-size: 1.4rem;
+  font-weight: 400;
+  align-items: center;
+  padding: 0 !important;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.app_wrapper:focus-within {
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 3px rgba(12, 101, 37, 0.08) !important;
+}
+
+.app_wrapper:hover {
+  border-color: var(--brand-primary);
+}
+
+/* ─── The actual <input> inside the wrapper ─────────────────────────── */
+.app_date_picker {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 1.4rem;
+  font-family: Montserrat, sans-serif;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0 0.8rem;
+  caret-color: var(--brand-primary);
+}
+
+.app_date_picker::placeholder {
+  color: var(--text-placeholder);
+  font-family: Montserrat, sans-serif;
+}
+
+/* ─── Calendar popup ─────────────────────────────────────────────────── */
+.app_calender {
+  font-size: 1.4rem !important;
+  font-family: Montserrat, sans-serif !important;
+  background-color: var(--surface-card) !important;
+  border: 1px solid var(--surface-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+  overflow: hidden;
+}
+
+/* Header (month/year title bar) */
+.app_calender :global(.react-datepicker__header) {
+  background-color: var(--surface-card) !important;
+  border-bottom: 1px solid var(--surface-border) !important;
+  padding: 1.2rem 1.2rem 0.8rem !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.app_calender :global(.react-datepicker__current-month),
+.app_calender :global(.react-datepicker-time__header),
+.app_calender :global(.react-datepicker-year-header) {
+  color: var(--text-primary) !important;
+  font-size: 1.4rem !important;
+  font-weight: 600 !important;
+  font-family: Montserrat, sans-serif !important;
+}
+
+/* Nav arrows */
+.app_calender :global(.react-datepicker__navigation-icon::before) {
+  border-color: var(--text-secondary) !important;
+}
+
+.app_calender :global(.react-datepicker__navigation:hover .react-datepicker__navigation-icon::before) {
+  border-color: var(--brand-primary) !important;
+}
+
+/* Day names row */
+.app_calender :global(.react-datepicker__day-names) {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  padding: 0.4rem 0;
+}
+
+.app_calender :global(.react-datepicker__day-name) {
+  color: var(--text-muted) !important;
+  font-size: 1.2rem !important;
+  font-weight: 500 !important;
+  width: 3.2rem !important;
+  line-height: 3.2rem !important;
+  margin: 0 !important;
+  text-align: center;
+}
+
+/* Weeks */
+.app_calender :global(.react-datepicker__week) {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+/* Individual day cells */
+.app_calender :global(.react-datepicker__day),
+.app_calender :global(.react-datepicker__time-name) {
+  width: 3.2rem !important;
+  height: 3.2rem !important;
+  line-height: 3.2rem !important;
+  margin: 0.1rem !important;
+  padding: 0 !important;
+  font-size: 1.3rem !important;
+  font-family: Montserrat, sans-serif !important;
+  color: var(--text-primary) !important;
+  border-radius: 6px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.app_calender :global(.react-datepicker__day:hover) {
+  background-color: var(--brand-primary-light) !important;
+  color: var(--brand-primary) !important;
+}
+
+.app_calender :global(.react-datepicker__day--selected),
+.app_calender :global(.react-datepicker__day--keyboard-selected) {
+  background-color: var(--brand-primary) !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.app_calender :global(.react-datepicker__day--today) {
+  font-weight: 700 !important;
+  color: var(--brand-primary) !important;
+}
+
+.app_calender :global(.react-datepicker__day--today.react-datepicker__day--selected) {
+  color: white !important;
+}
+
+.app_calender :global(.react-datepicker__day--outside-month) {
+  color: var(--text-placeholder) !important;
+}
+
+.app_calender :global(.react-datepicker__day--disabled) {
+  color: var(--text-placeholder) !important;
+  cursor: not-allowed !important;
+}
+
+/* Month/Year picker cells */
+.app_calender :global(.react-datepicker__month-text),
+.app_calender :global(.react-datepicker__year-text),
+.app_calender :global(.react-datepicker__quarter-text) {
+  font-size: 1.3rem !important;
+  font-family: Montserrat, sans-serif !important;
+  color: var(--text-primary) !important;
+  border-radius: 6px !important;
+  padding: 0.6rem 1rem !important;
+  transition: background 0.15s;
+}
+
+.app_calender :global(.react-datepicker__month-text:hover),
+.app_calender :global(.react-datepicker__year-text:hover) {
+  background-color: var(--brand-primary-light) !important;
+  color: var(--brand-primary) !important;
+}
+
+.app_calender :global(.react-datepicker__month-text--selected),
+.app_calender :global(.react-datepicker__year-text--selected),
+.app_calender :global(.react-datepicker__month--selected) {
+  background-color: var(--brand-primary) !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+/* Month/Year dropdowns inside header */
+.app_calender :global(.react-datepicker__month-select),
+.app_calender :global(.react-datepicker__year-select) {
+  font-size: 1.3rem !important;
+  font-family: Montserrat, sans-serif !important;
+  background-color: var(--surface-card) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--surface-border) !important;
+  border-radius: 6px;
+  padding: 0.2rem 0.4rem;
+  cursor: pointer;
+}
+
+/* ─── Popper z-index ─────────────────────────────────────────────────── */
+.app_popper {
+  z-index: 99999 !important;
+}
+
+/* ─── Calendar icon ──────────────────────────────────────────────────── */
+.app_calender :global(.react-datepicker__calendar-icon) {
+  width: 2rem !important;
+  height: 2rem !important;
+  right: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0 !important;
+  fill: var(--text-muted);
+  color: var(--text-muted);
+}
+
+/* Shift input text so it doesn't overlap the icon */
+.app_calender :global(.react-datepicker__view-calendar-icon input) {
+  padding-left: 0.8rem !important;
+}
+
+/* Triangle/arrow above popper — hide it, use box-shadow instead */
+.app_popper :global(.react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle) {
+  display: none;
+}
