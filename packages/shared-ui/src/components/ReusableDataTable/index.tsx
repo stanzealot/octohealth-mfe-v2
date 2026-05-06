@@ -1,79 +1,58 @@
-import React, { type ReactNode } from 'react';
+import React, { type ReactNode, memo } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 import { Search, SlidersHorizontal } from 'lucide-react';
-import BaseDataTable from '../BaseDataTable';
-import type { TableColumn, TableStyles } from 'react-data-table-component';
+import BaseDataTable, { type BaseDataTableProps } from '../BaseDataTable';
+import type { TableStyles } from 'react-data-table-component';
 
-export interface ReusableDataTableProps<T> {
-  data: T[];
-  columns: TableColumn<T>[];
-  title?: string;
+/* ─── Props ────────────────────────────────────────────────────────── */
+export interface ReusableDataTableProps<T> extends BaseDataTableProps<T> {
+  /* ── Toolbar controls ────────────────────────────────────────────── */
   searchTerm?: string;
   onSearchChange?: (value: string) => void;
   searchPlaceholder?: string;
   showSearch?: boolean;
   showFilter?: boolean;
+  onFilterClick?: () => void;
   showActions?: boolean;
+  /** Slot for toolbar action buttons (Import, Add, etc.) */
   actionButtons?: ReactNode;
-  loading?: boolean;
-  noDataMessage?: string;
-  noDataText?: string;
-  customStyles?: Partial<TableStyles>;
-  pagination?: boolean;
-  paginationPerPage?: number;
-  paginationRowsPerPageOptions?: number[];
-  onRowClicked?: (row: T) => void;
-  selectableRows?: boolean;
-  onSelectedRowsChange?: (state: unknown) => void;
-  fixedHeader?: boolean;
-  fixedHeaderScrollHeight?: string;
-  responsive?: boolean;
-  hasFixedActionColumn?: boolean;
 }
 
+/* ─── Component ────────────────────────────────────────────────────── */
 function ReusableDataTable<T>({
-  data,
-  columns,
-  title,
+  /* Toolbar */
   searchTerm = '',
   onSearchChange,
   searchPlaceholder = 'Search here...',
   showSearch = true,
   showFilter = true,
+  onFilterClick,
   showActions = true,
   actionButtons,
-  loading = false,
-  noDataMessage,
-  noDataText,
-  customStyles = {},
-  pagination = true,
-  paginationPerPage = 10,
-  paginationRowsPerPageOptions = [10, 25, 50, 100],
-  onRowClicked,
-  selectableRows = false,
-  onSelectedRowsChange,
-  fixedHeader = true,
-  fixedHeaderScrollHeight = '580px',
-  responsive = true,
-  hasFixedActionColumn = false,
+  /* Everything else is forwarded to BaseDataTable */
+  ...baseProps
 }: ReusableDataTableProps<T>) {
-  const hasToolbar = showSearch || showFilter || (showActions && actionButtons);
+  const hasToolbar =
+    (showSearch && !!onSearchChange) ||
+    showFilter ||
+    (showActions && !!actionButtons);
 
   return (
-    <Box w="100%" overflowX="auto" overflowY="hidden">
+    <Box w="100%">
+      {/* ── Toolbar ──────────────────────────────────────────────────── */}
       {hasToolbar && (
         <Flex
-          flexDir="row"
+          flexDir={{ base: 'column', md: 'row' }}
           justify="space-between"
-          align="center"
+          align={{ base: 'stretch', md: 'center' }}
           gap="1.2rem"
           py="1.6rem"
           flexWrap="wrap"
         >
           {/* Left — search + filter */}
-          <Flex align="center" gap="1rem" flex={1}>
+          <Flex align="center" gap="1rem" flex={1} flexWrap="wrap">
             {showSearch && onSearchChange && (
-              <Box position="relative" maxW="32rem" flex={1}>
+              <Box position="relative" flex={{ base: 1, md: 'none' }} w={{ base: '100%', md: '32rem' }} minW={0}>
                 <Box
                   position="absolute"
                   left="1.2rem"
@@ -101,12 +80,12 @@ function ReusableDataTable<T>({
                     fontFamily: 'Montserrat, sans-serif',
                     outline: 'none',
                     background: 'var(--surface-card)',
-                    transition: 'all 0.3s ease-in-out',
+                    transition: 'border-color 0.2s, box-shadow 0.2s',
                     boxSizing: 'border-box',
                   }}
                   onFocus={(e) => {
                     e.target.style.borderColor = 'var(--brand-primary)';
-                    e.target.style.boxShadow = '0 0 0 3px rgba(12,101,37,0.12)';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(12,101,37,0.10)';
                   }}
                   onBlur={(e) => {
                     e.target.style.borderColor = 'var(--surface-border)';
@@ -131,9 +110,14 @@ function ReusableDataTable<T>({
                 fontSize="1.4rem"
                 color="var(--text-secondary)"
                 fontFamily="Montserrat, sans-serif"
-                transition="all 0.2s ease"
                 whiteSpace="nowrap"
-                _hover={{ borderColor: 'var(--brand-primary)', color: 'var(--brand-primary)', bg: 'var(--brand-primary-light)' }}
+                transition="all 0.2s ease"
+                _hover={{
+                  borderColor: 'var(--brand-primary)',
+                  color: 'var(--brand-primary)',
+                  bg: 'var(--brand-primary-light)',
+                }}
+                onClick={onFilterClick}
               >
                 <SlidersHorizontal size={15} />
                 Filter
@@ -141,35 +125,23 @@ function ReusableDataTable<T>({
             )}
           </Flex>
 
-          {/* Right — action buttons */}
+          {/* Right — caller-supplied action buttons */}
           {showActions && actionButtons && (
-            <Flex align="center" gap="1rem">
+            <Flex align="center" gap="1rem" flexWrap="wrap" justify={{ base: 'flex-end', md: 'flex-start' }}>
               {actionButtons}
             </Flex>
           )}
         </Flex>
       )}
 
-      <BaseDataTable
-        data={data}
-        columns={columns}
-        title={title}
-        loading={loading}
-        noDataMessage={noDataMessage ?? noDataText}
-        customStyles={customStyles}
-        pagination={pagination}
-        paginationPerPage={paginationPerPage}
-        paginationRowsPerPageOptions={paginationRowsPerPageOptions}
-        onRowClicked={onRowClicked}
-        selectableRows={selectableRows}
-        onSelectedRowsChange={onSelectedRowsChange}
-        fixedHeader={fixedHeader}
-        fixedHeaderScrollHeight={fixedHeaderScrollHeight}
-        responsive={responsive}
-        hasFixedActionColumn={hasFixedActionColumn}
-      />
+      {/* ── Data table ───────────────────────────────────────────────── */}
+      <BaseDataTable<T> {...baseProps} />
     </Box>
   );
 }
 
-export default ReusableDataTable;
+/*
+ * React.memo with a generic is tricky — we cast to preserve the generic
+ * signature so callers still get type-checked column/data types.
+ */
+export default memo(ReusableDataTable) as typeof ReusableDataTable;

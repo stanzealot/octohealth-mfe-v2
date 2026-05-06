@@ -11,7 +11,7 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 import type { TableColumn } from 'react-data-table-component';
 import ReusableDataTable from 'sharedUi/ReusableDataTable';
 import { AdvancedButton } from 'sharedUi/AppButton';
-import SharedActionMenu from 'sharedUi/ActionMenu';
+import CardActionMenu from 'sharedUi/CardActionMenu';
 import { GridCard, GridCardList } from 'sharedUi/GridCard';
 import AnimatedModal from 'sharedUi/AnimatedModal';
 import ConfirmDeleteModal from 'sharedUi/ConfirmDeleteModal';
@@ -191,7 +191,7 @@ export default function ContactsList() {
       {
         name: 'Actions',
         cell: (row) => (
-          <SharedActionMenu
+          <CardActionMenu
             actions={[
               { label: 'View', cta: () => navigate(row.id) },
               {
@@ -201,8 +201,6 @@ export default function ContactsList() {
               {
                 label: 'Delete',
                 cta: () => setDeleteTarget(row),
-                allowPopover: true,
-                confirmationText: `Delete ${row.firstName} ${row.lastName}? This cannot be undone.`,
               },
             ]}
           />
@@ -303,7 +301,12 @@ export default function ContactsList() {
         </Flex>
 
         {/* Right — view toggle + action buttons */}
-        <Flex align="center" gap="1rem" flexWrap="wrap" justify={{ base: 'flex-end', md: 'flex-start' }}>
+        <Flex
+          align="center"
+          gap="1rem"
+          flexWrap="wrap"
+          justify={{ base: 'flex-end', md: 'flex-start' }}
+        >
           {/* Grid / List toggle */}
           <Flex
             border="1px solid var(--surface-border)"
@@ -503,19 +506,18 @@ export default function ContactsList() {
 
       {/* ── List view ────────────────────────────────────────────── */}
       {viewType === 'list' && (
-        <Box overflowX="auto" w="100%">
-          <ReusableDataTable
-            data={filtered}
-            columns={columns}
-            showSearch={false}
-            showFilter={false}
-            showActions={false}
-            pagination
-            paginationPerPage={10}
-            paginationRowsPerPageOptions={[10, 20, 30]}
-            hasFixedActionColumn
-          />
-        </Box>
+        <ReusableDataTable
+          data={filtered}
+          columns={columns}
+          showSearch={false}
+          showFilter={false}
+          showActions={false}
+          pagination
+          paginationPerPage={10}
+          paginationRowsPerPageOptions={[10, 20, 30]}
+          hasFixedActionColumn={false}
+          noDataMessage="No contacts found"
+        />
       )}
 
       {/* ── Add Contact modal ─────────────────────────────────────── */}
@@ -525,7 +527,11 @@ export default function ContactsList() {
         title="Add Contact"
         size="md"
       >
-        <Box display="grid" gridTemplateColumns={{ base: '1fr', md: '1fr 1fr' }} gap="1.6rem">
+        <Box
+          display="grid"
+          gridTemplateColumns={{ base: '1fr', md: '1fr 1fr' }}
+          gap="1.6rem"
+        >
           <CustomSelect
             label="Title"
             required
