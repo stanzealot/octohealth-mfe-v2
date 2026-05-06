@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev":     "vite build --watch --mode development & vite preview --port 3005 --strictPort",
-    "build":   "vite build",
+    "dev": "vite build --watch --mode development & vite preview --port 3005 --strictPort",
+    "build": "vite build",
     "preview": "vite preview --port 3005 --strictPort"
   },
   "dependencies": {
@@ -13,12 +13,15 @@
     "@emotion/react": "^11.14.0",
     "@tanstack/react-query": "^5.90.2",
     "axios": "^1.12.2",
+    "chakra-react-select": "^6.1.1",
     "framer-motion": "^12.23.26",
     "lucide-react": "^0.542.0",
     "react": "^19.1.1",
     "react-data-table-component": "^7.7.0",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.0.0",
+    "react-select": "^5.10.2",
+    "react-select-async-paginate": "^0.7.11",
     "react-toastify": "^11.0.5",
     "zustand": "^5.0.8"
   },

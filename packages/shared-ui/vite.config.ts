@@ -31,8 +31,12 @@ export default defineConfig({
         './GridCard':          './src/components/GridCard/index.tsx',
         './ConfirmDeleteModal':'./src/components/ConfirmDeleteModal/index.tsx',
         './CustomSelect':      './src/components/CustomSelect/index.tsx',
+        './AppSelect':         './src/components/AppSelect/index.tsx',
         './AppPagination':    './src/components/AppPagination/index.tsx',
         './CardActionMenu':   './src/components/CardActionMenu/index.tsx',
+        './AppCheckbox':      './src/components/AppCheckbox/index.tsx',
+        './AppSwitch':        './src/components/AppSwitch/index.tsx',
+        './AppAsyncSelect':   './src/components/AppAsyncSelect/index.tsx',
       },
       remotes: {
         shell: 'http://localhost:3000/assets/remoteEntry.js',
