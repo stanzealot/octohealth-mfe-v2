@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Upload, SlidersHorizontal, LayoutGrid, List } from 'lucide-react';
 import { Box, Flex, Text } from '@chakra-ui/react';
@@ -11,10 +11,15 @@ import AnimatedModal from 'sharedUi/AnimatedModal';
 import ConfirmDeleteModal from 'sharedUi/ConfirmDeleteModal';
 import AppInput from 'sharedUi/AppInput';
 import CustomSelect from 'sharedUi/CustomSelect';
+import AppPagination from 'sharedUi/AppPagination';
 import { filterContacts, type Contact } from '../../mock/contacts';
 import { toast } from 'react-toastify';
 
-/* ─── Helpers ────────────────────────────────────────────────── */
+/* ─── Constants ──────────────────────────────────────────────────── */
+const GRID_PAGE_SIZE_OPTIONS = [8, 12, 20, 32];
+const DEFAULT_GRID_PAGE_SIZE = 12; // divisible by 4 — fills the 4-column grid cleanly
+
+/* ─── Helpers ────────────────────────────────────────────────────── */
 function StatusBadge({ status }: { status: Contact['contactStatus'] }) {
   const map: Record<string, { bg: string; color: string }> = {
     Active:    { bg: 'rgba(18,183,106,0.12)',  color: 'var(--status-success)' },
@@ -63,21 +68,49 @@ function calculateAge(dob: string | undefined): string {
   return String(age);
 }
 
-/* ─── Component ──────────────────────────────────────────────── */
+/* ─── Component ──────────────────────────────────────────────────── */
 export default function ContactsList() {
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
+
+  /* ── UI state ──────────────────────────────────────────────────── */
   const [search,       setSearch]       = useState('');
   const [viewType,     setViewType]     = useState<'grid' | 'list'>('grid');
   const [addOpen,      setAddOpen]      = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Contact | null>(null);
-  const [form, setForm] = useState({ firstName: '', lastName: '', prefix: 'Mr.', gender: 'Male', email: '', phone: '' });
+  const [form, setForm] = useState({
+    firstName: '', lastName: '', prefix: 'Mr.', gender: 'Male', email: '', phone: '',
+  });
 
-  const filtered      = filterContacts(search);
-  const activeCount   = filtered.filter((c) => c.contactStatus === 'Active').length;
-  const inactiveCount = filtered.filter((c) => c.contactStatus === 'Inactive').length;
+  /* ── Grid pagination state ─────────────────────────────────────── */
+  const [gridPage,        setGridPage]        = useState(1);
+  const [gridRowsPerPage, setGridRowsPerPage] = useState(DEFAULT_GRID_PAGE_SIZE);
 
-  /* Table columns */
-  const columns: TableColumn<Contact>[] = [
+  /* ── Derived data — memoised so filter only re-runs when search changes ── */
+  const filtered = useMemo(() => filterContacts(search), [search]);
+
+  const activeCount   = useMemo(() => filtered.filter((c) => c.contactStatus === 'Active').length,   [filtered]);
+  const inactiveCount = useMemo(() => filtered.filter((c) => c.contactStatus === 'Inactive').length, [filtered]);
+
+  /* Grid slice — only recomputes when page / pageSize / filtered list changes */
+  const gridSlice = useMemo(() => {
+    const start = (gridPage - 1) * gridRowsPerPage;
+    return filtered.slice(start, start + gridRowsPerPage);
+  }, [filtered, gridPage, gridRowsPerPage]);
+
+  /* Reset to page 1 whenever the search changes so you never land on an empty page */
+  useEffect(() => {
+    setGridPage(1);
+  }, [search]);
+
+  /* Stable callbacks — won't cause GridCard re-renders */
+  const handleGridPageChange        = useCallback((p: number) => setGridPage(p), []);
+  const handleGridRowsPerPageChange = useCallback((size: number) => {
+    setGridRowsPerPage(size);
+    setGridPage(1);
+  }, []);
+
+  /* ── Table columns ─────────────────────────────────────────────── */
+  const columns: TableColumn<Contact>[] = useMemo(() => [
     {
       name: 'Full Name',
       cell: (row) => (
@@ -109,8 +142,9 @@ export default function ContactsList() {
       width: '13rem',
       right: true,
     },
-  ];
+  ], [navigate]);
 
+  /* ── Render ────────────────────────────────────────────────────── */
   return (
     <Box
       bg="var(--surface-card)"
@@ -123,9 +157,10 @@ export default function ContactsList() {
         Contacts
       </Text>
 
-      {/* Toolbar */}
+      {/* ── Toolbar ──────────────────────────────────────────────── */}
       <Flex flexWrap="wrap" justify="space-between" align="center" gap="1.2rem" mb="1.6rem">
         <Flex align="center" gap="1rem">
+          {/* Search */}
           <Box position="relative">
             <Box
               position="absolute" left="1.2rem" top="50%" transform="translateY(-50%)"
@@ -163,23 +198,18 @@ export default function ContactsList() {
         </Flex>
 
         <Flex align="center" gap="1rem">
-          {/* Grid/List toggle */}
+          {/* Grid / List toggle */}
           <Flex border="1px solid var(--surface-border)" borderRadius="0.8rem" overflow="hidden">
             {(['grid', 'list'] as const).map((v) => (
               <Box
                 key={v}
                 as="button"
-                h="4rem"
-                px="1.2rem"
-                border="none"
-                cursor="pointer"
-                display="flex"
-                alignItems="center"
-                gap="0.4rem"
+                h="4rem" px="1.2rem"
+                border="none" cursor="pointer"
+                display="flex" alignItems="center" gap="0.4rem"
                 bg={viewType === v ? 'var(--brand-primary-light)' : 'var(--surface-card)'}
                 color={viewType === v ? 'var(--brand-primary)' : 'var(--text-muted)'}
-                fontSize="1.3rem"
-                fontFamily="Montserrat, sans-serif"
+                fontSize="1.3rem" fontFamily="Montserrat, sans-serif"
                 fontWeight={viewType === v ? 600 : 400}
                 onClick={() => setViewType(v)}
                 transition="all 0.15s"
@@ -201,7 +231,7 @@ export default function ContactsList() {
         </Flex>
       </Flex>
 
-      {/* Status summary */}
+      {/* ── Status summary ───────────────────────────────────────── */}
       <Flex justify="space-between" align="center" mb="1.6rem" flexWrap="wrap" gap="1rem">
         <Flex gap="1rem">
           <Flex align="center" px="0.8rem" h="3rem" bg="rgba(18,183,106,0.12)" borderRadius="0.5rem">
@@ -222,35 +252,61 @@ export default function ContactsList() {
         </Text>
       </Flex>
 
-      {/* Grid view */}
+      {/* ── Grid view ────────────────────────────────────────────── */}
       {viewType === 'grid' && (
-        <GridCardList>
-          {filtered.map((c) => (
-            <GridCard
-              key={c.id}
-              id={c.id}
-              title={`${c.prefix ? c.prefix + ' ' : ''}${c.firstName} ${c.lastName}`}
-              status={c.contactStatus}
-              avatar={{ name: `${c.firstName} ${c.lastName}` }}
-              details={[
-                { label: 'Gender',    value: c.gender || '-' },
-                { label: 'Age',       value: calculateAge(c.dateOfBirth) },
-                { label: 'Reg. Date', value: new Date(c.createdAt).toLocaleDateString() },
-                { label: 'Reg. Num',  value: c.membership?.regNumber || '-' },
-              ]}
-              onCardClick={(id) => navigate(id)}
-              actions={[
-                { label: 'View',            cta: () => navigate(c.id) },
-                { label: 'Edit',            cta: () => toast.info(`Edit ${c.firstName} — coming soon`) },
-                { label: 'Request Service', cta: () => toast.info('Request service — coming soon') },
-                { label: 'Delete',          cta: () => setDeleteTarget(c), allowPopover: true, confirmationText: `Delete ${c.firstName} ${c.lastName}?` },
-              ]}
-            />
-          ))}
-        </GridCardList>
+        <Box
+          border="1px solid var(--surface-border)"
+          borderRadius="1rem"
+          overflow="hidden"
+        >
+          {filtered.length === 0 ? (
+            <Flex align="center" justify="center" minH="20rem">
+              <Text color="var(--text-muted)" fontSize="1.4rem" fontFamily="Montserrat, sans-serif">
+                No contacts found
+              </Text>
+            </Flex>
+          ) : (
+            <Box p="2rem">
+              <GridCardList>
+                {gridSlice.map((c) => (
+                  <GridCard
+                    key={c.id}
+                    id={c.id}
+                    title={`${c.prefix ? c.prefix + ' ' : ''}${c.firstName} ${c.lastName}`}
+                    status={c.contactStatus}
+                    avatar={{ name: `${c.firstName} ${c.lastName}` }}
+                    details={[
+                      { label: 'Gender',    value: c.gender || '-' },
+                      { label: 'Age',       value: calculateAge(c.dateOfBirth) },
+                      { label: 'Reg. Date', value: new Date(c.createdAt).toLocaleDateString() },
+                      { label: 'Reg. Num',  value: c.membership?.regNumber || '-' },
+                    ]}
+                    onCardClick={(id) => navigate(id)}
+                    actions={[
+                      { label: 'View',            cta: () => navigate(c.id) },
+                      { label: 'Edit',            cta: () => toast.info(`Edit ${c.firstName} — coming soon`) },
+                      { label: 'Request Service', cta: () => toast.info('Request service — coming soon') },
+                      { label: 'Delete',          cta: () => setDeleteTarget(c), allowPopover: true, confirmationText: `Delete ${c.firstName} ${c.lastName}?` },
+                    ]}
+                  />
+                ))}
+              </GridCardList>
+            </Box>
+          )}
+
+          {/* Pagination bar — same visual style as react-data-table */}
+          <AppPagination
+            totalRows={filtered.length}
+            currentPage={gridPage}
+            rowsPerPage={gridRowsPerPage}
+            rowsPerPageOptions={GRID_PAGE_SIZE_OPTIONS}
+            onPageChange={handleGridPageChange}
+            onRowsPerPageChange={handleGridRowsPerPageChange}
+          />
+        </Box>
       )}
 
-      {/* List view */}
+      {/* ── List view ────────────────────────────────────────────── */}
       {viewType === 'list' && (
         <ReusableDataTable
           data={filtered}
@@ -265,7 +321,7 @@ export default function ContactsList() {
         />
       )}
 
-      {/* Add Contact modal */}
+      {/* ── Add Contact modal ─────────────────────────────────────── */}
       <AnimatedModal isOpen={addOpen} onClose={() => setAddOpen(false)} title="Add Contact" size="md">
         <Box display="grid" gridTemplateColumns="1fr 1fr" gap="1.6rem">
           <CustomSelect label="Title" required value={form.prefix}
@@ -298,6 +354,7 @@ export default function ContactsList() {
         </Flex>
       </AnimatedModal>
 
+      {/* ── Confirm delete modal ──────────────────────────────────── */}
       <ConfirmDeleteModal
         isOpen={Boolean(deleteTarget)}
         onClose={() => setDeleteTarget(null)}

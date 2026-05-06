@@ -31,6 +31,7 @@ export default defineConfig({
         './GridCard':          './src/components/GridCard/index.tsx',
         './ConfirmDeleteModal':'./src/components/ConfirmDeleteModal/index.tsx',
         './CustomSelect':      './src/components/CustomSelect/index.tsx',
+        './AppPagination':    './src/components/AppPagination/index.tsx',
       },
       remotes: {
         shell: 'http://localhost:3000/assets/remoteEntry.js',

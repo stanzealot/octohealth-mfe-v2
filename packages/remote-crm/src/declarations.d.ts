@@ -8,3 +8,4 @@ declare module 'sharedUi/ConfirmDeleteModal';
 declare module 'sharedUi/CustomSelect';
 declare module 'sharedUi/GridCard';
 declare module 'sharedUi/BaseDataTable';
+declare module 'sharedUi/AppPagination';
