@@ -4,6 +4,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BASTION_WHITE_LOGO, OCTOHEALTH_LOGO } from '../../assets/logos';
+import { getNavIcon } from './icons';
 
 /* ─── Types ─────────────────────────────────────────────────────────── */
 export interface MenuItem {
@@ -101,15 +102,21 @@ function NavItem({
     transition: 'background 0.15s',
   };
 
-  const Dot = () => (
-    <Box
-      w="8px"
-      h="8px"
-      borderRadius="50%"
-      bg={isActive ? 'var(--brand-primary)' : 'var(--surface-border)'}
-      flexShrink={0}
-    />
-  );
+  /* Icon for top-level: module SVG icon; for children: small accent dot */
+  const NavIcon = () =>
+    depth === 0 ? (
+      <Box flexShrink={0} display="flex" alignItems="center" opacity={isActive ? 1 : 0.55}>
+        {getNavIcon(item.code)}
+      </Box>
+    ) : (
+      <Box
+        w="6px"
+        h="6px"
+        borderRadius="50%"
+        flexShrink={0}
+        bg={isActive ? 'var(--brand-primary)' : 'var(--text-placeholder)'}
+      />
+    );
 
   /* Parent with children */
   if (hasChildren) {
@@ -122,7 +129,7 @@ function NavItem({
           role="button"
         >
           <Flex align="center" gap="1rem">
-            <Dot />
+            <NavIcon />
             <Text
               as="span"
               fontSize="1.4rem"
@@ -177,7 +184,7 @@ function NavItem({
       <NavLink
         to={itemPath}
         style={({ isActive: navActive }) => (navActive ? activeStyle : { ...normalStyle })}
-        onClick={() => onClose?.()}
+        onClick={() => { if (window.innerWidth < 768) onClose?.(); }}
         onMouseEnter={(e) => {
           if (!(e.currentTarget as HTMLAnchorElement).classList.contains('active'))
             (e.currentTarget as HTMLElement).style.background = 'var(--brand-primary-light)';
@@ -188,7 +195,7 @@ function NavItem({
         }}
       >
         <Flex align="center" gap="1rem">
-          <Dot />
+          <NavIcon />
           <Text as="span" fontSize="1.4rem" fontFamily="Montserrat, sans-serif" color="inherit">
             {item.label}
           </Text>
@@ -200,7 +207,7 @@ function NavItem({
   return (
     <Box style={normalStyle} _hover={{ background: 'var(--brand-primary-light)' }}>
       <Flex align="center" gap="1rem">
-        <Dot />
+        <NavIcon />
         <Text as="span" fontSize="1.4rem" fontFamily="Montserrat, sans-serif" color="var(--text-secondary)">
           {item.label}
         </Text>
@@ -234,15 +241,13 @@ export default function Sidebar({ isOpen, onToggle, menu = [] }: SidebarProps) {
         flexShrink={0}
         align="center"
         justify="center"
-        px="2rem"
       >
         <Box
           as="img"
           src={BASTION_WHITE_LOGO}
           alt="Bastion"
           h="3.2rem"
-          maxW="15rem"
-          style={{ objectFit: 'contain' }}
+          display="block"
         />
       </Flex>
 
@@ -284,7 +289,6 @@ export default function Sidebar({ isOpen, onToggle, menu = [] }: SidebarProps) {
         borderTop="1px solid var(--surface-border)"
         align="center"
         justify="center"
-        px="2rem"
         bg="var(--surface-sidebar)"
       >
         <Box
@@ -292,8 +296,7 @@ export default function Sidebar({ isOpen, onToggle, menu = [] }: SidebarProps) {
           src={OCTOHEALTH_LOGO}
           alt="OctoHealth"
           h="2.2rem"
-          maxW="14rem"
-          style={{ objectFit: 'contain' }}
+          display="block"
         />
       </Flex>
     </Box>
