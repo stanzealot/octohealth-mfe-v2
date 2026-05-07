@@ -197,23 +197,6 @@
   z-index: 99999 !important;
 }
 
-/* ─── Calendar icon ──────────────────────────────────────────────────── */
-.app_calender :global(.react-datepicker__calendar-icon) {
-  width: 2rem !important;
-  height: 2rem !important;
-  right: 0.8rem;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 0 !important;
-  fill: var(--text-muted);
-  color: var(--text-muted);
-}
-
-/* Shift input text so it doesn't overlap the icon */
-.app_calender :global(.react-datepicker__view-calendar-icon input) {
-  padding-left: 0.8rem !important;
-}
-
 /* Triangle/arrow above popper — hide it, use box-shadow instead */
 .app_popper :global(.react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle) {
   display: none;

@@ -28,13 +28,55 @@ function toISODate(date: Date | null): string | null {
   return `${y}-${m}-${d}`;
 }
 
-/* ─── CalendarSVG icon ──────────────────────────────────────────────── */
-const CalendarSvgIcon = () => (
-  <Calendar
-    size={18}
-    style={{ color: 'var(--text-muted)', cursor: 'pointer', flexShrink: 0 }}
-  />
+/* ─── Custom input (forwardRef) ─────────────────────────────────────── */
+/**
+ * react-datepicker passes `value`, `onClick`, and `ref` down to the customInput.
+ * We own the full layout, so icon positioning is trivial inline flex.
+ */
+interface DateCustomInputProps {
+  value?: string;
+  onClick?: () => void;
+  placeholder?: string;
+  disabled?: boolean;
+}
+
+const DateCustomInput = forwardRef<HTMLInputElement, DateCustomInputProps>(
+  ({ value, onClick, placeholder, disabled }, ref) => (
+    <div
+      className={styles.app_wrapper}
+      onClick={!disabled ? onClick : undefined}
+      style={{
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.6 : 1,
+      }}
+    >
+      <input
+        ref={ref}
+        value={value ?? ''}
+        readOnly
+        placeholder={placeholder}
+        disabled={disabled}
+        className={styles.app_date_picker}
+        style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
+        onChange={() => {/* react-datepicker controls value — suppress React warning */}}
+      />
+      <span
+        style={{
+          paddingRight: '0.8rem',
+          display: 'flex',
+          alignItems: 'center',
+          flexShrink: 0,
+        }}
+      >
+        <Calendar
+          size={18}
+          style={{ color: 'var(--text-muted)', display: 'block' }}
+        />
+      </span>
+    </div>
+  ),
 );
+DateCustomInput.displayName = 'DateCustomInput';
 
 /* ─── Props ─────────────────────────────────────────────────────────── */
 export interface AppDatePickerProps<T extends FieldValues = FieldValues> {
@@ -126,13 +168,8 @@ function AppDatePickerBase<T extends FieldValues = FieldValues>({
               showMonthYearPicker={showMonthYearPicker}
               showYearPicker={showYearPicker}
               disabled={disabled}
-              placeholderText={placeholder ?? 'Select date…'}
               minDate={minDate}
               maxDate={maxDate}
-              /* Show inline calendar icon that opens picker on click */
-              showIcon
-              icon={<CalendarSvgIcon />}
-              toggleCalendarOnIconClick
               /* Always show month + year dropdowns in the header */
               showMonthDropdown
               showYearDropdown
@@ -140,12 +177,17 @@ function AppDatePickerBase<T extends FieldValues = FieldValues>({
               /* Peek adjacent months for context */
               peekNextMonth
               /* CSS classes */
-              className={styles.app_date_picker}
               calendarClassName={styles.app_calender}
-              wrapperClassName={styles.app_wrapper}
               popperClassName={styles.app_popper}
-              /* Keep popper above modals */
+              /* Use fixed strategy so the popup escapes overflow:hidden parents (e.g. accordions) */
               popperProps={{ strategy: 'fixed' }}
+              /* Custom input gives us full layout control — icon positioning is just inline flex */
+              customInput={
+                <DateCustomInput
+                  placeholder={placeholder ?? 'Select date…'}
+                  disabled={disabled}
+                />
+              }
             />
           );
         }}

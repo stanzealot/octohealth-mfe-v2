@@ -2,9 +2,9 @@ import React, { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Flex, Spinner } from '@chakra-ui/react';
 import ContactsList    from './ContactsList';
-import SingleContact   from './SingleContact';
+import SingleContact   from './single-contact';
 
-const ContactFormPage = lazy(() => import('./form/ContactFormPage'));
+const ContactFormPage = lazy(() => import('./add-contact'));
 
 function PageLoader() {
   return (

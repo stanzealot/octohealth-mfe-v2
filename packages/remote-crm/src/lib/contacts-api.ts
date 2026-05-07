@@ -176,9 +176,19 @@ export async function fetchCommunicationChannels(): Promise<CommunicationChannel
 }
 
 /* ─────────────────────────────────────────────────────────────────── */
+/*  FETCH SINGLE CONTACT                                               */
+/* ─────────────────────────────────────────────────────────────────── */
+import type { ContactDetail } from '../types/contact';
+
+export async function fetchContactById(id: string): Promise<ContactDetail> {
+  const { data } = await api.get(`/crm/contacts/${id}`);
+  return data?.data;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
 /*  SAVE CONTACT  (create or update)                                  */
 /* ─────────────────────────────────────────────────────────────────── */
-import type { ContactFormPayload } from '../pages/contacts/form/schema';
+import type { ContactFormPayload } from '../pages/contacts/add-contact/schema';
 import type { CommunicationSetting } from '../types/contact';
 
 export async function saveContact(

@@ -18,3 +18,7 @@ declare module 'sharedUi/AppMultiPhoneInput';
 declare module 'sharedUi/AppAccordionSection';
 declare module 'sharedUi/AppImageInput';
 declare module 'sharedUi/AppTextTagInput';
+declare module 'sharedUi/AppBreadcrumb';
+declare module 'sharedUi/DetailGrid';
+declare module 'sharedUi/DetailGridPresets';
+declare module 'sharedUi/PatientDetailCard';

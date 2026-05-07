@@ -42,6 +42,10 @@ export default defineConfig({
         './AppAccordionSection':   './src/components/AppAccordionSection/index.tsx',
         './AppImageInput':         './src/components/AppImageInput/index.tsx',
         './AppTextTagInput':       './src/components/AppTextTagInput/index.tsx',
+        './AppBreadcrumb':         './src/components/AppBreadcrumb/index.tsx',
+        './DetailGrid':            './src/components/DetailGrid/index.tsx',
+        './DetailGridPresets':     './src/components/DetailGridPresets/index.tsx',
+        './PatientDetailCard':     './src/components/PatientDetailCard/index.tsx',
       },
       remotes: {
         shell: 'http://localhost:3000/assets/remoteEntry.js',

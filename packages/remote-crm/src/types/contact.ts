@@ -38,6 +38,16 @@ export interface CommunicationChannel {
 
 /* ─── API shape of a saved contact (for pre-filling edit form) ───────── */
 export interface ContactDetail {
+  /** Membership / policy data (from /crm/contacts/:id or a separate policy API) */
+  membership?: {
+    regNumber?: string;
+    policyNo?: string;
+    policyStartDate?: string;
+    policyValidUpTo?: string;
+    groupName?: string;
+    planType?: string;
+    planName?: string;
+  } | null;
   id:            string;
   firstName:     string;
   lastName:      string;
