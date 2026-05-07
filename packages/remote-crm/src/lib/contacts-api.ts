@@ -182,7 +182,12 @@ import type { ContactDetail } from '../types/contact';
 
 export async function fetchContactById(id: string): Promise<ContactDetail> {
   const { data } = await api.get(`/crm/contacts/${id}`);
-  return data?.data;
+  const contact = data?.data;
+  // Throw so callers can catch and fall back to mock data when the API
+  // returns a successful response but with no contact payload (e.g. 404
+  // responses that don't use HTTP error codes, or mock IDs during dev).
+  if (!contact) throw new Error(`Contact ${id} not found`);
+  return contact;
 }
 
 /* ─────────────────────────────────────────────────────────────────── */

@@ -3,8 +3,14 @@ import { Routes, Route } from 'react-router-dom';
 import { Flex, Spinner } from '@chakra-ui/react';
 import ContactsList    from './ContactsList';
 import SingleContact   from './single-contact';
+import LeadsList       from '../leads/LeadsList';
+import SingleLead      from '../leads/single-lead';
+import CompaniesList   from '../companies/CompaniesList';
+import SingleCompany   from '../companies/single-company';
 
-const ContactFormPage = lazy(() => import('./add-contact'));
+const ContactFormPage  = lazy(() => import('./add-contact'));
+const AddLeadPage      = lazy(() => import('../leads/add-lead'));
+const AddCompanyPage   = lazy(() => import('../companies/add-company'));
 
 function PageLoader() {
   return (
@@ -43,6 +49,60 @@ export default function ContactsModule() {
 
       {/* Detail */}
       <Route path="contacts/:id" element={<SingleContact />} />
+
+      {/* ── Leads ──────────────────────────────────────────────── */}
+      {/* List */}
+      <Route path="leads" element={<LeadsList />} />
+
+      {/* Add */}
+      <Route
+        path="leads/add-lead"
+        element={
+          <Suspense fallback={<PageLoader />}>
+            <AddLeadPage />
+          </Suspense>
+        }
+      />
+
+      {/* Edit */}
+      <Route
+        path="leads/edit/:id"
+        element={
+          <Suspense fallback={<PageLoader />}>
+            <AddLeadPage />
+          </Suspense>
+        }
+      />
+
+      {/* Single lead */}
+      <Route path="leads/:id" element={<SingleLead />} />
+
+      {/* ── Companies / Entities ───────────────────────────────── */}
+      {/* List */}
+      <Route path="companies" element={<CompaniesList />} />
+
+      {/* Add */}
+      <Route
+        path="companies/add"
+        element={
+          <Suspense fallback={<PageLoader />}>
+            <AddCompanyPage />
+          </Suspense>
+        }
+      />
+
+      {/* Edit */}
+      <Route
+        path="companies/edit/:id"
+        element={
+          <Suspense fallback={<PageLoader />}>
+            <AddCompanyPage />
+          </Suspense>
+        }
+      />
+
+      {/* Single company */}
+      <Route path="companies/:id" element={<SingleCompany />} />
     </Routes>
   );
 }
