@@ -41,6 +41,7 @@ interface VariantConfig {
   hover: (primaryGlow: string) => object;
   active: object;
   shineColor: string;
+  shineOpacity: number;
   rippleBg: (primaryGlow: string) => string;
 }
 
@@ -60,6 +61,7 @@ function buildVariants(primaryGlow25: string, primaryGlow35: string): Record<Var
       }),
       active: { transform: 'translateY(-1px)', boxShadow: `0 4px 15px ${primaryGlow25}` },
       shineColor: 'var(--brand-primary-light)',
+      shineOpacity: 0.35,
       rippleBg: () => 'rgba(255,255,255,0.25)',
     },
 
@@ -76,11 +78,13 @@ function buildVariants(primaryGlow25: string, primaryGlow35: string): Record<Var
       }),
       active: { transform: 'translateY(-1px)' },
       shineColor: 'var(--brand-primary-light)',
+      shineOpacity: 0.45,
       rippleBg: (g) => g,
     },
 
     /* Matches monolith outline exactly:
-       neutral gray start → brand primary on hover (border + text + bg all shift) */
+       neutral gray start → brand primary on hover (border + text + bg all shift)
+       Shine uses white so it's visible against the light-green hover background */
     outline: {
       base: {
         bg: 'var(--surface-card)',
@@ -99,7 +103,8 @@ function buildVariants(primaryGlow25: string, primaryGlow35: string): Record<Var
         bg: 'var(--brand-primary-light)',
         borderColor: 'var(--brand-primary)',
       },
-      shineColor: 'var(--brand-primary-light)',
+      shineColor: 'rgba(255,255,255,0.6)',
+      shineOpacity: 1,
       rippleBg: (g) => g,
     },
 
@@ -118,9 +123,11 @@ function buildVariants(primaryGlow25: string, primaryGlow35: string): Record<Var
       }),
       active: { transform: 'translateY(0)' },
       shineColor: 'var(--hover-bg)',
+      shineOpacity: 0.6,
       rippleBg: () => 'rgba(0,0,0,0.05)',
     },
 
+    /* Ghost shine uses white so it's visible against the light-green hover background */
     ghost: {
       base: {
         bg: 'transparent',
@@ -133,7 +140,8 @@ function buildVariants(primaryGlow25: string, primaryGlow35: string): Record<Var
         transform: 'translateY(-1px)',
       }),
       active: { transform: 'translateY(0)' },
-      shineColor: 'var(--brand-primary-light)',
+      shineColor: 'rgba(255,255,255,0.5)',
+      shineOpacity: 1,
       rippleBg: (g) => g,
     },
 
@@ -151,6 +159,7 @@ function buildVariants(primaryGlow25: string, primaryGlow35: string): Record<Var
       }),
       active: { transform: 'translateY(0)' },
       shineColor: 'rgba(240,68,56,0.1)',
+      shineOpacity: 1,
       rippleBg: () => 'rgba(240,68,56,0.15)',
     },
   };
@@ -248,7 +257,7 @@ export function AdvancedButton({
           transition: 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
           zIndex: 0,
           pointerEvents: 'none',
-          opacity: 0.25,
+          opacity: cfg.shineOpacity,
         },
         '&:hover::after': {
           transform: 'translate(-50%, -50%) scale(1)',

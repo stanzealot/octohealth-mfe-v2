@@ -12,9 +12,24 @@ const Sidebar = lazy(() => import('sharedUi/Sidebar'));
 const TopBar  = lazy(() => import('sharedUi/TopBar'));
 
 const PAGE_VARIANTS: Variants = {
-  initial: { opacity: 0, y: 8 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.22, ease: [0.25, 0.1, 0.25, 1] } },
-  exit:    { opacity: 0, y: -4, transition: { duration: 0.15 } },
+  initial: { opacity: 0, y: 15 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.5,
+      duration: 0.5,
+      ease: 'easeOut',
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: 15,
+    transition: {
+      duration: 0.3,
+      ease: 'easeIn',
+    },
+  },
 };
 
 interface Props {
