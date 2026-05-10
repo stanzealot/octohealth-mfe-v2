@@ -1,6 +1,6 @@
 {
   "framework": null,
-  "buildCommand": "cd ../.. && pnpm --filter remote-sales build",
+  "buildCommand": "cd ../.. && NODE_OPTIONS='--max-old-space-size=3072' pnpm --filter remote-sales build",
   "outputDirectory": "dist",
   "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
   "headers": [

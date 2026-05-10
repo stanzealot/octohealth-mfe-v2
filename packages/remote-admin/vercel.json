@@ -1,6 +1,6 @@
 {
   "framework": null,
-  "buildCommand": "cd ../.. && pnpm --filter remote-admin build",
+  "buildCommand": "cd ../.. && NODE_OPTIONS='--max-old-space-size=3072' pnpm --filter remote-admin build",
   "outputDirectory": "dist",
   "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
   "headers": [
