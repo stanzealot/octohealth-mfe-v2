@@ -2,10 +2,10 @@ import React from 'react';
 import { Box, Flex, Text } from '@chakra-ui/react';
 
 interface BrandingPreviewProps {
-  primaryColor:      string;
+  primaryColor: string;
   primaryLightColor: string;
-  companyName:       string;
-  logoUrl:           string | null;
+  companyName: string;
+  logoUrl: string | null;
 }
 
 const MOCK_NAV = ['Dashboard', 'Contacts', 'Reports', 'Settings'];
@@ -23,15 +23,8 @@ export default function BrandingPreview({
       border="1px solid var(--surface-border)"
       boxShadow="0 4px 20px rgba(0,0,0,0.08)"
     >
-      {/* Mini sidebar header */}
-      <Flex
-        bg={primaryColor}
-        h="5rem"
-        align="center"
-        px="1.4rem"
-        gap="0.8rem"
-        flexShrink={0}
-      >
+      {}
+      <Flex bg={primaryColor} h="5rem" align="center" px="1.4rem" gap="0.8rem" flexShrink={0}>
         {logoUrl ? (
           <Box
             as="img"
@@ -56,14 +49,19 @@ export default function BrandingPreview({
                 {companyName[0]?.toUpperCase() ?? 'B'}
               </Text>
             </Flex>
-            <Text color="white" fontWeight="700" fontSize="1.3rem" fontFamily="Montserrat, sans-serif">
+            <Text
+              color="white"
+              fontWeight="700"
+              fontSize="1.3rem"
+              fontFamily="Montserrat, sans-serif"
+            >
               {companyName}
             </Text>
           </>
         )}
       </Flex>
 
-      {/* Mini nav items */}
+      {}
       <Box p="0.8rem" bg="white" minH="14rem">
         {MOCK_NAV.map((label, i) => {
           const isActive = i === 0;
@@ -100,7 +98,7 @@ export default function BrandingPreview({
         })}
       </Box>
 
-      {/* Footer */}
+      {}
       <Flex
         h="4rem"
         align="center"
@@ -118,9 +116,16 @@ export default function BrandingPreview({
           borderRadius="5px"
           flexShrink={0}
         >
-          <Text color="white" fontWeight="800" fontSize="1.1rem">O</Text>
+          <Text color="white" fontWeight="800" fontSize="1.1rem">
+            O
+          </Text>
         </Flex>
-        <Text fontWeight="700" fontSize="1.2rem" color={primaryColor} fontFamily="Montserrat, sans-serif">
+        <Text
+          fontWeight="700"
+          fontSize="1.2rem"
+          color={primaryColor}
+          fontFamily="Montserrat, sans-serif"
+        >
           OctoHealth
         </Text>
       </Flex>

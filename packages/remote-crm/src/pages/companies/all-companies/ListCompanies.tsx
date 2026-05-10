@@ -1,22 +1,17 @@
-/**
- * ListCompanies — data-table list view of entities/companies
- * Columns: Provider Name, Contact Info, CAC, Effective Date, Status, Actions
- */
-
 import React, { useMemo, memo } from 'react';
 import { Box, Badge } from '@chakra-ui/react';
 import type { TableColumn } from 'react-data-table-component';
 import ReusableDataTable from 'sharedUi/ReusableDataTable';
-import CardActionMenu   from 'sharedUi/CardActionMenu';
+import CardActionMenu from 'sharedUi/CardActionMenu';
 import type { Entity } from '../types';
 import { getStatusColor } from '../constants';
 
 interface Props {
-  entities:      Entity[];
-  searchTerm:    string;
+  entities: Entity[];
+  searchTerm: string;
   onSearchChange: (v: string) => void;
   onEntityClick: (id: string) => void;
-  onEditClick:   (id: string) => void;
+  onEditClick: (id: string) => void;
   onDeleteClick: (id: string) => void;
   actionButtons?: React.ReactNode;
 }
@@ -33,14 +28,11 @@ export const ListCompanies = memo(function ListCompanies({
   const columns: TableColumn<Entity>[] = useMemo(
     () => [
       {
-        name:     'Provider Name',
+        name: 'Provider Name',
         sortable: true,
         minWidth: '200px',
-        cell:     (row) => (
-          <Box
-            cursor="pointer"
-            onClick={() => onEntityClick(row.id)}
-          >
+        cell: (row) => (
+          <Box cursor="pointer" onClick={() => onEntityClick(row.id)}>
             <Box fontWeight="600" color="var(--text-primary)" fontSize="1.4rem">
               {row.name}
             </Box>
@@ -51,44 +43,48 @@ export const ListCompanies = memo(function ListCompanies({
         ),
       },
       {
-        name:     'Contact Info',
+        name: 'Contact Info',
         sortable: true,
         minWidth: '180px',
-        cell:     (row) => (
+        cell: (row) => (
           <Box>
-            <Box fontSize="1.4rem" color="var(--text-primary)">{row.email}</Box>
-            <Box fontSize="1.2rem" color="var(--text-muted)">{row.phone}</Box>
+            <Box fontSize="1.4rem" color="var(--text-primary)">
+              {row.email}
+            </Box>
+            <Box fontSize="1.2rem" color="var(--text-muted)">
+              {row.phone}
+            </Box>
           </Box>
         ),
       },
       {
-        name:     'CAC',
+        name: 'CAC',
         selector: (row) => row.cac,
         sortable: true,
-        width:    '110px',
-        cell:     (row) => (
+        width: '110px',
+        cell: (row) => (
           <Box fontSize="1.4rem" color="var(--text-primary)" fontWeight="500">
             {row.providerCode}
           </Box>
         ),
       },
       {
-        name:     'Effective Date',
+        name: 'Effective Date',
         selector: (row) => row.effectiveDate,
         sortable: true,
-        width:    '140px',
-        cell:     (row) => (
+        width: '140px',
+        cell: (row) => (
           <Box fontSize="1.4rem" color="var(--text-primary)">
             {row.effectiveDate}
           </Box>
         ),
       },
       {
-        name:     'Status',
+        name: 'Status',
         selector: (row) => row.status,
         sortable: true,
-        width:    '110px',
-        cell:     (row) => (
+        width: '110px',
+        cell: (row) => (
           <Badge
             colorPalette={getStatusColor(row.status)}
             variant="subtle"
@@ -102,15 +98,15 @@ export const ListCompanies = memo(function ListCompanies({
         ),
       },
       {
-        name:  'Actions',
+        name: 'Actions',
         width: '120px',
         right: true,
-        cell:  (row) => (
+        cell: (row) => (
           <CardActionMenu
             actions={[
-              { label: 'View',   cta: () => onEntityClick(row.id)  },
-              { label: 'Edit',   cta: () => onEditClick(row.id)    },
-              { label: 'Delete', cta: () => onDeleteClick(row.id)  },
+              { label: 'View', cta: () => onEntityClick(row.id) },
+              { label: 'Edit', cta: () => onEditClick(row.id) },
+              { label: 'Delete', cta: () => onDeleteClick(row.id) },
             ]}
           />
         ),

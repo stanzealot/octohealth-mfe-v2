@@ -2,14 +2,12 @@ import React, { useState, memo } from 'react';
 import { Box, Flex, Text, Avatar } from '@chakra-ui/react';
 import CardActionMenu, { type CardAction } from '../CardActionMenu';
 
-/* ─── Status dot colours (matches monolith exactly) ─────────────── */
 const STATUS_DOT: Record<string, string> = {
-  Active:    '#12B76A',
-  Inactive:  '#475467',
+  Active: '#12B76A',
+  Inactive: '#475467',
   Suspended: '#B42318',
 };
 
-/* ─── Types ──────────────────────────────────────────────────────── */
 type StatusType = 'Active' | 'Inactive' | 'Suspended' | string;
 
 interface Detail {
@@ -28,7 +26,6 @@ export interface GridCardProps {
   hoverEffect?: boolean;
 }
 
-/* ─── GridCard ───────────────────────────────────────────────────── */
 export const GridCard = memo(function GridCard({
   id,
   title,
@@ -55,7 +52,7 @@ export const GridCard = memo(function GridCard({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* ── Status dot ─────────────────────────────────────── */}
+      {}
       <Box
         position="absolute"
         top="1.4rem"
@@ -68,18 +65,11 @@ export const GridCard = memo(function GridCard({
         flexShrink={0}
       />
 
-      {/* ── Clickable card body ────────────────────────────── */}
-      <Box
-        cursor={onCardClick ? 'pointer' : 'default'}
-        onClick={() => onCardClick?.(id)}
-      >
-        {/* Avatar + name */}
+      {}
+      <Box cursor={onCardClick ? 'pointer' : 'default'} onClick={() => onCardClick?.(id)}>
+        {}
         <Flex flexDir="column" align="center" mb="1.2rem">
-          <Avatar.Root
-            h="5rem"
-            w="5rem"
-            mb="0.8rem"
-          >
+          <Avatar.Root h="5rem" w="5rem" mb="0.8rem">
             <Avatar.Fallback
               name={avatar.name}
               bg="var(--avatar-fallback-bg)"
@@ -102,22 +92,11 @@ export const GridCard = memo(function GridCard({
           </Text>
         </Flex>
 
-        {/* Detail rows — label left, value right */}
-        <Flex
-          flexDir="column"
-          gap="0.8rem"
-          w="100%"
-          maxW="18rem"
-          mx="auto"
-          mb="0.4rem"
-        >
+        {}
+        <Flex flexDir="column" gap="0.8rem" w="100%" maxW="18rem" mx="auto" mb="0.4rem">
           {details.map((d) => (
             <Flex key={d.label} justify="space-between" w="100%" align="center">
-              <Text
-                fontSize="1.3rem"
-                color="var(--text-muted)"
-                fontFamily="Montserrat, sans-serif"
-              >
+              <Text fontSize="1.3rem" color="var(--text-muted)" fontFamily="Montserrat, sans-serif">
                 {d.label}
               </Text>
               <Text
@@ -133,7 +112,7 @@ export const GridCard = memo(function GridCard({
         </Flex>
       </Box>
 
-      {/* ── Action bar ─────────────────────────────────────── */}
+      {}
       <Box
         mt="1.4rem"
         p="1rem 1.4rem"
@@ -147,7 +126,6 @@ export const GridCard = memo(function GridCard({
   );
 });
 
-/* ─── GridCardList (responsive grid wrapper) ────────────────────── */
 export function GridCardList({ children }: { children: React.ReactNode }) {
   return (
     <>

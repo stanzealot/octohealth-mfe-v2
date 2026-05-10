@@ -13,8 +13,14 @@ export default function SingleContact() {
   if (!contact) {
     return (
       <Box bg="white" p="2rem 2.5rem" borderRadius="0.8rem" border="1px solid #EAECF0">
-        <Text fontSize="1.6rem" color="#667085" fontFamily="Montserrat, sans-serif">Contact not found.</Text>
-        <AdvancedButton variant="gray-outline" onClick={() => navigate(-1)} style={{ marginTop: '1.6rem' }}>
+        <Text fontSize="1.6rem" color="#667085" fontFamily="Montserrat, sans-serif">
+          Contact not found.
+        </Text>
+        <AdvancedButton
+          variant="gray-outline"
+          onClick={() => navigate(-1)}
+          style={{ marginTop: '1.6rem' }}
+        >
           Go Back
         </AdvancedButton>
       </Box>
@@ -41,13 +47,18 @@ export default function SingleContact() {
         >
           <ArrowLeft size={18} />
         </Box>
-        <Text fontSize="1.8rem" fontWeight={700} color="#1D2939" fontFamily="Montserrat, sans-serif">
+        <Text
+          fontSize="1.8rem"
+          fontWeight={700}
+          color="#1D2939"
+          fontFamily="Montserrat, sans-serif"
+        >
           Contact Details
         </Text>
       </Flex>
 
       <Flex gap="2rem" align="flex-start" flexWrap="wrap">
-        {/* Avatar */}
+        {}
         <Flex
           align="center"
           justify="center"
@@ -61,10 +72,11 @@ export default function SingleContact() {
           fontFamily="Montserrat, sans-serif"
           flexShrink={0}
         >
-          {contact.firstName[0]}{contact.lastName[0]}
+          {contact.firstName[0]}
+          {contact.lastName[0]}
         </Flex>
 
-        {/* Info grid */}
+        {}
         <Box
           flex={1}
           display="grid"
@@ -73,23 +85,36 @@ export default function SingleContact() {
           minW={0}
         >
           {[
-            { label: 'First Name',     value: contact.firstName },
-            { label: 'Last Name',      value: contact.lastName },
-            { label: 'Title',          value: contact.prefix || '-' },
-            { label: 'Gender',         value: contact.gender || '-' },
-            { label: 'Email',          value: contact.email || '-' },
-            { label: 'Phone',          value: contact.phone || '-' },
-            { label: 'Date of Birth',  value: contact.dateOfBirth ? new Date(contact.dateOfBirth).toLocaleDateString() : '-' },
-            { label: 'Status',         value: contact.contactStatus },
-            { label: 'Reg. Number',    value: contact.membership?.regNumber || '-' },
-            { label: 'Reg. Date',      value: contact.membership?.regDate || '-' },
-            { label: 'Created At',     value: new Date(contact.createdAt).toLocaleDateString() },
+            { label: 'First Name', value: contact.firstName },
+            { label: 'Last Name', value: contact.lastName },
+            { label: 'Title', value: contact.prefix || '-' },
+            { label: 'Gender', value: contact.gender || '-' },
+            { label: 'Email', value: contact.email || '-' },
+            { label: 'Phone', value: contact.phone || '-' },
+            {
+              label: 'Date of Birth',
+              value: contact.dateOfBirth ? new Date(contact.dateOfBirth).toLocaleDateString() : '-',
+            },
+            { label: 'Status', value: contact.contactStatus },
+            { label: 'Reg. Number', value: contact.membership?.regNumber || '-' },
+            { label: 'Reg. Date', value: contact.membership?.regDate || '-' },
+            { label: 'Created At', value: new Date(contact.createdAt).toLocaleDateString() },
           ].map((field) => (
             <Box key={field.label}>
-              <Text fontSize="1.2rem" color="#98A2B3" fontFamily="Montserrat, sans-serif" mb="0.4rem">
+              <Text
+                fontSize="1.2rem"
+                color="#98A2B3"
+                fontFamily="Montserrat, sans-serif"
+                mb="0.4rem"
+              >
                 {field.label}
               </Text>
-              <Text fontSize="1.4rem" fontWeight={500} color="#344054" fontFamily="Montserrat, sans-serif">
+              <Text
+                fontSize="1.4rem"
+                fontWeight={500}
+                color="#344054"
+                fontFamily="Montserrat, sans-serif"
+              >
                 {field.value}
               </Text>
             </Box>

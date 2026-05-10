@@ -27,7 +27,7 @@ export default function ColorPickerField({ label, value, onChange }: ColorPicker
           style={{ width: '200px', height: '160px', borderRadius: '8px' }}
         />
         <Flex direction="column" gap="0.8rem" justify="flex-end" pt="0.4rem">
-          {/* Color preview swatch */}
+          {}
           <Box
             w="5.6rem"
             h="5.6rem"
@@ -36,7 +36,7 @@ export default function ColorPickerField({ label, value, onChange }: ColorPicker
             border="2px solid var(--surface-border)"
             boxShadow="0 2px 8px rgba(0,0,0,0.12)"
           />
-          {/* Hex input */}
+          {}
           <Box position="relative">
             <Text
               position="absolute"

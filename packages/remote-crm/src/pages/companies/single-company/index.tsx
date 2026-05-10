@@ -1,23 +1,13 @@
-/**
- * SingleCompany — `/crm/companies/:id`
- *
- * Matches the monolith's single-company/single-company.tsx:
- *  1. Breadcrumb: ← Entities | View Entity
- *  2. CompanyDetailsCard: logo/avatar + name + ThreeColumnDetailGrid
- *  3. CompanyTabs: 11 tabs
- */
-
 import React, { memo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Stack, Flex, Text } from '@chakra-ui/react';
 import { AlertCircle } from 'lucide-react';
-import AppBreadcrumb     from 'sharedUi/AppBreadcrumb';
-import AppButton         from 'sharedUi/AppButton';
+import AppBreadcrumb from 'sharedUi/AppBreadcrumb';
+import AppButton from 'sharedUi/AppButton';
 import CompanyDetailsCard from './CompanyDetailsCard';
-import CompanyTabs        from './CompanyTabs';
-import { getEntityById }  from '../mock/entities';
+import CompanyTabs from './CompanyTabs';
+import { getEntityById } from '../mock/entities';
 
-/* ─── Not found ──────────────────────────────────────────────────── */
 const NotFound = memo(function NotFound({ onBack }: { onBack: () => void }) {
   return (
     <Box
@@ -29,23 +19,29 @@ const NotFound = memo(function NotFound({ onBack }: { onBack: () => void }) {
     >
       <Flex direction="column" align="center" gap="1.6rem">
         <AlertCircle size={48} color="var(--text-muted)" />
-        <Text fontFamily="Montserrat, sans-serif" fontSize="1.8rem" fontWeight="600" color="var(--text-primary)">
+        <Text
+          fontFamily="Montserrat, sans-serif"
+          fontSize="1.8rem"
+          fontWeight="600"
+          color="var(--text-primary)"
+        >
           Entity not found
         </Text>
         <Text fontFamily="Montserrat, sans-serif" fontSize="1.4rem" color="var(--text-muted)">
           This entity may have been removed or the link is invalid.
         </Text>
-        <AppButton variant="outline" onClick={onBack}>Back to Entities</AppButton>
+        <AppButton variant="outline" onClick={onBack}>
+          Back to Entities
+        </AppButton>
       </Flex>
     </Box>
   );
 });
 
-/* ─── Main ───────────────────────────────────────────────────────── */
 function SingleCompanyPage() {
-  const { id }   = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const entity   = getEntityById(id ?? '');
+  const entity = getEntityById(id ?? '');
 
   const handleBack = () => navigate('/crm/companies');
 
@@ -69,7 +65,7 @@ function SingleCompanyPage() {
         ) : (
           <>
             <CompanyDetailsCard entity={entity} />
-            <CompanyTabs        entity={entity} />
+            <CompanyTabs entity={entity} />
           </>
         )}
       </Box>

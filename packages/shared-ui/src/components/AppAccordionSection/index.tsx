@@ -2,25 +2,18 @@ import React from 'react';
 import { Accordion, Flex, Stack, Text } from '@chakra-ui/react';
 import { ChevronDown } from 'lucide-react';
 
-/* ─── Props ──────────────────────────────────────────────────────────── */
 export interface AppAccordionSectionProps {
-  /** Section heading text */
   title: string;
-  /** Section body — rendered inside the collapsible area */
+
   children: React.ReactNode;
-  /** Expanded by default when true (default: true) */
+
   defaultOpen?: boolean;
-  /**
-   * Padding applied to the content area.
-   * Pass "0" or "" to let children manage their own padding.
-   * @default "2.4rem"
-   */
+
   contentPadding?: string | number;
-  /** Right-side slot in the header (e.g. a badge or count) */
+
   headerExtra?: React.ReactNode;
 }
 
-/* ─── Component ──────────────────────────────────────────────────────── */
 export function AppAccordionSection({
   title,
   children,
@@ -29,12 +22,9 @@ export function AppAccordionSection({
   headerExtra,
 }: AppAccordionSectionProps) {
   return (
-    <Accordion.Root
-      collapsible
-      defaultValue={defaultOpen ? ['section'] : []}
-    >
+    <Accordion.Root collapsible defaultValue={defaultOpen ? ['section'] : []}>
       <Accordion.Item value="section" borderWidth={0}>
-        {/* ── Trigger (header bar) ─────────────────────────────────── */}
+        {}
         <Accordion.ItemTrigger
           border="1px solid var(--surface-border)"
           bg="var(--table-header-bg)"
@@ -63,7 +53,7 @@ export function AppAccordionSection({
           </Flex>
         </Accordion.ItemTrigger>
 
-        {/* ── Content (body) ───────────────────────────────────────── */}
+        {}
         <Accordion.ItemContent
           bg="var(--surface-card)"
           border="1px solid var(--surface-border)"

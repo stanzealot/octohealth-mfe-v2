@@ -2,11 +2,8 @@ import React, { type ReactNode, memo } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import BaseDataTable, { type BaseDataTableProps } from '../BaseDataTable';
-import type { TableStyles } from 'react-data-table-component';
 
-/* ─── Props ────────────────────────────────────────────────────────── */
 export interface ReusableDataTableProps<T> extends BaseDataTableProps<T> {
-  /* ── Toolbar controls ────────────────────────────────────────────── */
   searchTerm?: string;
   onSearchChange?: (value: string) => void;
   searchPlaceholder?: string;
@@ -14,13 +11,11 @@ export interface ReusableDataTableProps<T> extends BaseDataTableProps<T> {
   showFilter?: boolean;
   onFilterClick?: () => void;
   showActions?: boolean;
-  /** Slot for toolbar action buttons (Import, Add, etc.) */
+
   actionButtons?: ReactNode;
 }
 
-/* ─── Component ────────────────────────────────────────────────────── */
 function ReusableDataTable<T>({
-  /* Toolbar */
   searchTerm = '',
   onSearchChange,
   searchPlaceholder = 'Search here...',
@@ -29,17 +24,15 @@ function ReusableDataTable<T>({
   onFilterClick,
   showActions = true,
   actionButtons,
-  /* Everything else is forwarded to BaseDataTable */
+
   ...baseProps
 }: ReusableDataTableProps<T>) {
   const hasToolbar =
-    (showSearch && !!onSearchChange) ||
-    showFilter ||
-    (showActions && !!actionButtons);
+    (showSearch && !!onSearchChange) || showFilter || (showActions && !!actionButtons);
 
   return (
     <Box w="100%">
-      {/* ── Toolbar ──────────────────────────────────────────────────── */}
+      {}
       {hasToolbar && (
         <Flex
           flexDir={{ base: 'column', md: 'row' }}
@@ -49,10 +42,15 @@ function ReusableDataTable<T>({
           py="1.6rem"
           flexWrap="wrap"
         >
-          {/* Left — search + filter */}
+          {}
           <Flex align="center" gap="1rem" flex={1} flexWrap="wrap">
             {showSearch && onSearchChange && (
-              <Box position="relative" flex={{ base: 1, md: 'none' }} w={{ base: '100%', md: '32rem' }} minW={0}>
+              <Box
+                position="relative"
+                flex={{ base: 1, md: 'none' }}
+                w={{ base: '100%', md: '32rem' }}
+                minW={0}
+              >
                 <Box
                   position="absolute"
                   left="1.2rem"
@@ -125,23 +123,24 @@ function ReusableDataTable<T>({
             )}
           </Flex>
 
-          {/* Right — caller-supplied action buttons */}
+          {}
           {showActions && actionButtons && (
-            <Flex align="center" gap="1rem" flexWrap="wrap" justify={{ base: 'flex-end', md: 'flex-start' }}>
+            <Flex
+              align="center"
+              gap="1rem"
+              flexWrap="wrap"
+              justify={{ base: 'flex-end', md: 'flex-start' }}
+            >
               {actionButtons}
             </Flex>
           )}
         </Flex>
       )}
 
-      {/* ── Data table ───────────────────────────────────────────────── */}
+      {}
       <BaseDataTable<T> {...baseProps} />
     </Box>
   );
 }
 
-/*
- * React.memo with a generic is tricky — we cast to preserve the generic
- * signature so callers still get type-checked column/data types.
- */
 export default memo(ReusableDataTable) as typeof ReusableDataTable;

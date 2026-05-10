@@ -1,8 +1,6 @@
 import React, { memo } from 'react';
 import { Box, Grid, Flex, Text } from '@chakra-ui/react';
 
-/* ─── Types ──────────────────────────────────────────────────────────── */
-
 export interface DetailItem {
   label: string;
   value: string | React.ReactNode;
@@ -20,8 +18,6 @@ export interface DetailGridProps {
   containerWidth?: { base?: string; md?: string; lg?: string };
   showSectionTitles?: boolean;
 }
-
-/* ─── DetailRow ──────────────────────────────────────────────────────── */
 
 export const DetailRow = memo(function DetailRow({ label, value }: DetailItem) {
   return (
@@ -58,8 +54,6 @@ export const DetailRow = memo(function DetailRow({ label, value }: DetailItem) {
   );
 });
 
-/* ─── DetailGrid ─────────────────────────────────────────────────────── */
-
 function DetailGridBase({
   sections,
   columns = { base: 1, md: 2, lg: 3 },
@@ -69,8 +63,8 @@ function DetailGridBase({
 }: DetailGridProps) {
   const templateColumns = {
     base: `repeat(${columns.base ?? 1}, 1fr)`,
-    md:   `repeat(${columns.md   ?? 2}, 1fr)`,
-    lg:   `repeat(${columns.lg   ?? 3}, 1fr)`,
+    md: `repeat(${columns.md ?? 2}, 1fr)`,
+    lg: `repeat(${columns.lg ?? 3}, 1fr)`,
   };
 
   return (

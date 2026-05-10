@@ -1,11 +1,11 @@
 import React, { memo, useCallback, useId } from 'react';
 import PhoneInputWithCountry from 'react-phone-number-input/react-hook-form';
 import 'react-phone-number-input/style.css';
-import { Controller, type UseFormReturn, type Control } from 'react-hook-form';
+import { Controller, type UseFormReturn, type Control, type FieldValues } from 'react-hook-form';
 import { Box, Flex, Text } from '@chakra-ui/react';
+import type { Country } from 'react-phone-number-input';
 import { Plus, X } from 'lucide-react';
 
-/* ─── Tag component ──────────────────────────────────────────────────── */
 interface TagProps {
   label: string;
   onRemove: () => void;
@@ -53,20 +53,11 @@ const PhoneTag = memo(function PhoneTag({ label, onRemove }: TagProps) {
   );
 });
 
-/* ─── Props ──────────────────────────────────────────────────────────── */
 export interface AppMultiPhoneInputProps {
-  /** react-hook-form return value */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handler: UseFormReturn<any>;
-  /**
-   * Field name for the *current* single phone input.
-   * The final list is stored in `phoneList` by default (override with `listName`).
-   */
+  handler: UseFormReturn<FieldValues>;
+
   title?: string;
-  /**
-   * Field name for the array of confirmed numbers.
-   * @default "phoneList"
-   */
+
   listName?: string;
 
   label?: string;
@@ -76,14 +67,11 @@ export interface AppMultiPhoneInputProps {
   errorMessage?: string;
   id?: string;
 
-  /** Default country code for the flag selector (@default "NG") */
   defaultCountry?: string;
 
-  /** Render the tag pills above or below the input (@default "bottom") */
   tagPlacement?: 'top' | 'bottom';
 }
 
-/* ─── Component ──────────────────────────────────────────────────────── */
 function AppMultiPhoneInputBase({
   handler,
   title = 'phone',
@@ -97,7 +85,7 @@ function AppMultiPhoneInputBase({
   defaultCountry = 'NG',
   tagPlacement = 'bottom',
 }: AppMultiPhoneInputProps) {
-  const uid   = useId();
+  const uid = useId();
   const htmlId = id ?? uid;
 
   const { control, watch, setValue } = handler;
@@ -113,9 +101,15 @@ function AppMultiPhoneInputBase({
     setValue(title, '');
   }, [currentInput, phoneList, listName, title, setValue]);
 
-  const handleDelete = useCallback((index: number) => {
-    setValue(listName, phoneList.filter((_, i) => i !== index));
-  }, [phoneList, listName, setValue]);
+  const handleDelete = useCallback(
+    (index: number) => {
+      setValue(
+        listName,
+        phoneList.filter((_, i) => i !== index),
+      );
+    },
+    [phoneList, listName, setValue],
+  );
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -137,7 +131,7 @@ function AppMultiPhoneInputBase({
 
   return (
     <Box display="flex" flexDir="column" gap="0.5rem" w="100%">
-      {/* Label */}
+      {}
       {label && (
         <Text
           as="label"
@@ -159,10 +153,10 @@ function AppMultiPhoneInputBase({
         </Text>
       )}
 
-      {/* Tags above */}
+      {}
       {tagPlacement === 'top' && phoneList.length > 0 && tagList}
 
-      {/* Input row */}
+      {}
       <Flex
         align="center"
         w="100%"
@@ -180,7 +174,7 @@ function AppMultiPhoneInputBase({
         }}
         onKeyDown={handleKeyDown}
       >
-        {/* Phone input with flag selector */}
+        {}
         <Box flex={1}>
           <Controller
             control={control as Control}
@@ -189,7 +183,7 @@ function AppMultiPhoneInputBase({
               <PhoneInputWithCountry
                 control={control as Control}
                 name={title}
-                defaultCountry={defaultCountry as any}
+                defaultCountry={defaultCountry as Country}
                 international
                 withCountryCallingCode
                 disabled={disabled}
@@ -210,7 +204,7 @@ function AppMultiPhoneInputBase({
           />
         </Box>
 
-        {/* Add button */}
+        {}
         {!disabled && (
           <Box
             as="button"
@@ -237,10 +231,10 @@ function AppMultiPhoneInputBase({
         )}
       </Flex>
 
-      {/* Tags below */}
+      {}
       {tagPlacement === 'bottom' && phoneList.length > 0 && tagList}
 
-      {/* Error */}
+      {}
       {errorMessage && (
         <Text
           fontSize="1.2rem"

@@ -1,0 +1,9 @@
+declare module 'shell/auth-store';
+declare module 'sharedUi/AppButton';
+declare module 'sharedUi/AppInput';
+declare module 'sharedUi/AppSelect';
+declare module 'sharedUi/AppBreadcrumb';
+declare module 'sharedUi/AppDatePicker';
+declare module 'sharedUi/StageSummaryCards';
+declare module 'sharedUi/OpportunityCard';
+declare module 'sharedUi/KanbanColumn';

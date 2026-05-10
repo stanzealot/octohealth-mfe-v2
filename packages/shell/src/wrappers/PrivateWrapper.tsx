@@ -6,10 +6,11 @@ import { useAuth } from '../store/auth-store';
 import { authService } from '../lib/auth/auth-service';
 import { useAuthActions } from '../store/auth-store';
 import { useColorMode, useColorModeActions } from '../store/color-mode-store';
+import { useBranding } from '../store/branding-store';
 import { useIsMobile } from '../hooks/useIsMobile';
 
 const Sidebar = lazy(() => import('sharedUi/Sidebar'));
-const TopBar  = lazy(() => import('sharedUi/TopBar'));
+const TopBar = lazy(() => import('sharedUi/TopBar'));
 
 const PAGE_VARIANTS: Variants = {
   initial: { opacity: 0, y: 15 },
@@ -39,24 +40,22 @@ interface Props {
 export default function PrivateWrapper({ children }: Props) {
   const isMobile = useIsMobile();
 
-  // Default open on desktop, closed on mobile
   const [sidebarOpen, setSidebarOpen] = useState(
-    () => typeof window !== 'undefined' && window.innerWidth >= 768
+    () => typeof window !== 'undefined' && window.innerWidth >= 768,
   );
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Auto-close sidebar on route change when mobile
   useEffect(() => {
     if (isMobile) setSidebarOpen(false);
   }, [location.pathname, isMobile]);
 
-  // Read auth data directly — PrivateWrapper is in the same shell package as the store
   const { user, menu } = useAuth();
   const { logout } = useAuthActions();
   const { colorMode } = useColorMode();
   const { toggleColorMode } = useColorModeActions();
+  const { branding } = useBranding();
 
   const handleLogout = () => {
     authService.logout().finally(() => {
@@ -67,16 +66,17 @@ export default function PrivateWrapper({ children }: Props) {
 
   return (
     <Flex h="100vh" overflow="hidden" bg="var(--surface-bg)">
-      {/* Sidebar — receives menu from auth-store via props */}
+      {}
       <Suspense fallback={null}>
         <Sidebar
           isOpen={sidebarOpen}
           onToggle={() => setSidebarOpen((p) => !p)}
           menu={menu}
+          logoUrl={branding.logoUrl}
         />
       </Suspense>
 
-      {/* Backdrop overlay — mobile only, shown when sidebar is open */}
+      {}
       {isMobile && sidebarOpen && (
         <Box
           position="fixed"
@@ -87,7 +87,7 @@ export default function PrivateWrapper({ children }: Props) {
         />
       )}
 
-      {/* Main column */}
+      {}
       <Flex
         flex={1}
         flexDir="column"
@@ -95,11 +95,11 @@ export default function PrivateWrapper({ children }: Props) {
         overflow="hidden"
         minW={0}
         style={{
-          marginLeft: isMobile ? 0 : (sidebarOpen ? '25rem' : 0),
+          marginLeft: isMobile ? 0 : sidebarOpen ? '25rem' : 0,
           transition: 'margin-left 0.25s ease',
         }}
       >
-        {/* TopBar — receives user from auth-store via props */}
+        {}
         <Suspense fallback={null}>
           <TopBar
             sidebarOpen={sidebarOpen}
@@ -111,8 +111,17 @@ export default function PrivateWrapper({ children }: Props) {
           />
         </Suspense>
 
-        {/* Page content */}
-        <Box as="main" flex={1} minH={0} overflowY="auto" overflowX="hidden" mt="7.2rem" p={{ base: '1.2rem', md: '2rem' }} bg="var(--surface-bg)">
+        {}
+        <Box
+          as="main"
+          flex={1}
+          minH={0}
+          overflowY="auto"
+          overflowX="hidden"
+          mt="7.2rem"
+          p={{ base: '1.2rem', md: '2rem' }}
+          bg="var(--surface-bg)"
+        >
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}

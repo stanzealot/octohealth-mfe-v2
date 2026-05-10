@@ -1,58 +1,50 @@
-/**
- * CompanyTabs — 11-tab animated bar for the single-company view
- *
- * Tabs: Addresses | Contacts | Social Media | Opportunity | Email |
- *       Departments | Documents | Financial Info | Activity | Notes | Attachment
- *
- * Same sliding-indicator pattern as ContactTabs / LeadTabs.
- * Lazy mount with mountedTabs Set — tab is kept in DOM after first visit.
- */
-
-import React, {
-  useState, useRef, useEffect, useCallback, memo,
-} from 'react';
+import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
-import AddressesTab  from './tabs/AddressesTab';
+import AddressesTab from './tabs/AddressesTab';
 import PlaceholderTab from './tabs/PlaceholderTab';
 import type { Entity } from '../types';
 
-interface Props { entity: Entity }
+interface Props {
+  entity: Entity;
+}
 
 function CompanyTabsBase({ entity: _entity }: Props) {
   const tabs = [
-    { label: 'Addresses',      content: <AddressesTab />                           },
-    { label: 'Contacts',       content: <PlaceholderTab name="Contacts"     />     },
-    { label: 'Social Media',   content: <PlaceholderTab name="Social Media" />     },
-    { label: 'Opportunity',    content: <PlaceholderTab name="Opportunity"  />     },
-    { label: 'Email',          content: <PlaceholderTab name="Email"        />     },
-    { label: 'Departments',    content: <PlaceholderTab name="Departments"  />     },
-    { label: 'Documents',      content: <PlaceholderTab name="Documents"    />     },
-    { label: 'Financial Info', content: <PlaceholderTab name="Financial Info" />   },
-    { label: 'Activity',       content: <PlaceholderTab name="Activity"     />     },
-    { label: 'Notes',          content: <PlaceholderTab name="Notes"        />     },
-    { label: 'Attachment',     content: <PlaceholderTab name="Attachment"   />     },
+    { label: 'Addresses', content: <AddressesTab /> },
+    { label: 'Contacts', content: <PlaceholderTab name="Contacts" /> },
+    { label: 'Social Media', content: <PlaceholderTab name="Social Media" /> },
+    { label: 'Opportunity', content: <PlaceholderTab name="Opportunity" /> },
+    { label: 'Email', content: <PlaceholderTab name="Email" /> },
+    { label: 'Departments', content: <PlaceholderTab name="Departments" /> },
+    { label: 'Documents', content: <PlaceholderTab name="Documents" /> },
+    { label: 'Financial Info', content: <PlaceholderTab name="Financial Info" /> },
+    { label: 'Activity', content: <PlaceholderTab name="Activity" /> },
+    { label: 'Notes', content: <PlaceholderTab name="Notes" /> },
+    { label: 'Attachment', content: <PlaceholderTab name="Attachment" /> },
   ] as const;
 
-  const [activeTab,   setActiveTab]   = useState(0);
-  const [indicator,   setIndicator]   = useState({ left: 0, width: 0 });
+  const [activeTab, setActiveTab] = useState(0);
+  const [indicator, setIndicator] = useState({ left: 0, width: 0 });
   const [mountedTabs, setMountedTabs] = useState(() => new Set([0]));
 
-  const tabRefs      = useRef<(HTMLButtonElement | null)[]>([]);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const updateIndicator = useCallback((index: number) => {
-    const el        = tabRefs.current[index];
+    const el = tabRefs.current[index];
     const container = containerRef.current;
     if (!el || !container) return;
     const cRect = container.getBoundingClientRect();
     const tRect = el.getBoundingClientRect();
     setIndicator({
-      left:  tRect.left - cRect.left + container.scrollLeft,
+      left: tRect.left - cRect.left + container.scrollLeft,
       width: tRect.width,
     });
   }, []);
 
-  useEffect(() => { updateIndicator(activeTab); }, [activeTab, updateIndicator]);
+  useEffect(() => {
+    updateIndicator(activeTab);
+  }, [activeTab, updateIndicator]);
 
   useEffect(() => {
     const h = () => updateIndicator(activeTab);
@@ -67,7 +59,7 @@ function CompanyTabsBase({ entity: _entity }: Props) {
 
   return (
     <Box mt="2.4rem">
-      {/* Tab bar */}
+      {}
       <Box position="relative" ref={containerRef}>
         <Flex
           overflowX="auto"
@@ -82,7 +74,9 @@ function CompanyTabsBase({ entity: _entity }: Props) {
             <Box
               key={index}
               as="button"
-              ref={(el: HTMLButtonElement | null) => { tabRefs.current[index] = el; }}
+              ref={(el: HTMLButtonElement | null) => {
+                tabRefs.current[index] = el;
+              }}
               onClick={() => handleTabClick(index)}
               px="2.4rem"
               py="1.6rem"
@@ -103,7 +97,7 @@ function CompanyTabsBase({ entity: _entity }: Props) {
           ))}
         </Flex>
 
-        {/* Sliding underline */}
+        {}
         <Box
           position="absolute"
           bottom="0"
@@ -117,7 +111,7 @@ function CompanyTabsBase({ entity: _entity }: Props) {
         />
       </Box>
 
-      {/* Tab content — lazy mounted */}
+      {}
       <Box mt="2.4rem" minHeight="40rem" position="relative" overflow="hidden">
         {tabs.map((tab, index) => {
           if (!mountedTabs.has(index)) return null;

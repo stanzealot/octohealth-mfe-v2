@@ -11,39 +11,30 @@ import type { SingleValue, MultiValue, ActionMeta } from 'react-select';
 import { ChevronDown, X } from 'lucide-react';
 import { Box, Text } from '@chakra-ui/react';
 
-/* ─── Option type ─────────────────────────────────────────────────────
- *  Extend OptionBase so callers can add any extra fields they need
- *  while still getting label / value / disabled for free.
- * ─────────────────────────────────────────────────────────────────── */
 export interface SelectOption extends OptionBase {
   label: string;
   value: string;
   disabled?: boolean;
 }
 
-/* ─── Props ────────────────────────────────────────────────────────── */
 export interface AppSelectProps<
   IsMulti extends boolean = false,
   Opt extends SelectOption = SelectOption,
 > {
-  /* Data */
   options?: Opt[];
   value?: IsMulti extends true ? MultiValue<Opt> : SingleValue<Opt>;
   defaultValue?: IsMulti extends true ? MultiValue<Opt> : SingleValue<Opt>;
 
-  /* Callbacks */
   onChange?: (
     value: IsMulti extends true ? MultiValue<Opt> : SingleValue<Opt>,
     action: ActionMeta<Opt>,
   ) => void;
 
-  /* Display */
   label?: string;
   placeholder?: string;
   errorMessage?: string;
   required?: boolean;
 
-  /* Behaviour */
   name?: string;
   isMulti?: IsMulti;
   isSearchable?: boolean;
@@ -55,16 +46,14 @@ export interface AppSelectProps<
   menuPlacement?: 'auto' | 'top' | 'bottom';
   menuMaxHeight?: string;
 
-  /* Size */
   height?: string;
   width?: string;
 }
 
-/* ─── Static chakra-style overrides (CSS vars for theming) ─────────── */
-function buildChakraStyles<
-  Opt extends SelectOption,
-  IsMulti extends boolean,
->(height: string, menuMaxHeight: string): ChakraStylesConfig<Opt, IsMulti, GroupBase<Opt>> {
+function buildChakraStyles<Opt extends SelectOption, IsMulti extends boolean>(
+  height: string,
+  menuMaxHeight: string,
+): ChakraStylesConfig<Opt, IsMulti, GroupBase<Opt>> {
   return {
     container: (base) => ({ ...base, width: '100%' }),
 
@@ -79,9 +68,7 @@ function buildChakraStyles<
       fontFamily: 'Montserrat, sans-serif',
       backgroundColor: state.isDisabled ? 'var(--hover-bg)' : 'var(--surface-card)',
       borderColor: state.isFocused ? 'var(--brand-primary)' : 'var(--surface-border)',
-      boxShadow: state.isFocused
-        ? '0 0 0 3px rgba(12,101,37,0.08)'
-        : 'none',
+      boxShadow: state.isFocused ? '0 0 0 3px rgba(12,101,37,0.08)' : 'none',
       transition: 'border-color 0.2s, box-shadow 0.2s',
       cursor: state.isDisabled ? 'not-allowed' : 'default',
       '&:hover': {
@@ -182,9 +169,8 @@ function buildChakraStyles<
 
     option: (base, state) => ({
       ...base,
-      backgroundColor: state.isFocused || state.isSelected
-        ? 'var(--brand-primary-light)'
-        : 'transparent',
+      backgroundColor:
+        state.isFocused || state.isSelected ? 'var(--brand-primary-light)' : 'transparent',
       color: state.isSelected ? 'var(--brand-primary)' : 'var(--text-primary)',
       fontWeight: state.isSelected ? 600 : 400,
       fontSize: '1.4rem',
@@ -217,7 +203,6 @@ function buildChakraStyles<
   };
 }
 
-/* ─── Custom sub-components ─────────────────────────────────────────── */
 function buildComponents<
   Opt extends SelectOption,
   IsMulti extends boolean,
@@ -243,7 +228,10 @@ function buildComponents<
 
     LoadingIndicator: () => (
       <Box
-        w="16px" h="16px" mr="0.8rem" borderRadius="50%"
+        w="16px"
+        h="16px"
+        mr="0.8rem"
+        borderRadius="50%"
         border="2px solid var(--surface-border)"
         borderTopColor="var(--brand-primary)"
         css={{ animation: 'appselect-spin 0.8s linear infinite' }}
@@ -252,12 +240,10 @@ function buildComponents<
   };
 }
 
-/* ─── Spin keyframe (injected once) ────────────────────────────────── */
 const SpinKeyframe = () => (
   <style>{`@keyframes appselect-spin{to{transform:rotate(360deg)}}`}</style>
 );
 
-/* ─── Component ────────────────────────────────────────────────────── */
 export function AppSelect<
   IsMulti extends boolean = false,
   Opt extends SelectOption = SelectOption,
@@ -286,13 +272,13 @@ export function AppSelect<
   const uid = useId();
 
   const chakraStyles = buildChakraStyles<Opt, IsMulti>(height, menuMaxHeight);
-  const components  = buildComponents<Opt, IsMulti>();
+  const components = buildComponents<Opt, IsMulti>();
 
   return (
     <>
       <SpinKeyframe />
       <Box w={width} display="flex" flexDir="column" gap="0.5rem">
-        {/* Label */}
+        {}
         {label && (
           <Text
             as="label"
@@ -307,18 +293,20 @@ export function AppSelect<
           >
             {label}
             {required && (
-              <Text as="span" color="var(--status-danger)" ml="2px" aria-hidden>*</Text>
+              <Text as="span" color="var(--status-danger)" ml="2px" aria-hidden>
+                *
+              </Text>
             )}
           </Text>
         )}
 
-        {/* Select */}
+        {}
         <Select<Opt, IsMulti, GroupBase<Opt>>
           inputId={uid}
           name={name}
           options={options}
-          value={value as any}
-          defaultValue={defaultValue as any}
+          value={value as IsMulti extends true ? MultiValue<Opt> : SingleValue<Opt>}
+          defaultValue={defaultValue as IsMulti extends true ? MultiValue<Opt> : SingleValue<Opt>}
           placeholder={placeholder}
           isMulti={isMulti}
           isSearchable={isSearchable}
@@ -332,14 +320,13 @@ export function AppSelect<
           isOptionDisabled={(opt) => !!(opt as Opt).disabled}
           chakraStyles={chakraStyles}
           components={components}
-          onChange={onChange as any}
-          /* Keep menu above everything including modals */
+          onChange={onChange}
           styles={{
             menuPortal: (base) => ({ ...base, zIndex: 99999 }),
           }}
         />
 
-        {/* Error */}
+        {}
         {errorMessage && (
           <Text
             fontSize="1.2rem"

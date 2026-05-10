@@ -1,34 +1,33 @@
 import React, { useId, memo } from 'react';
 import { AsyncPaginate } from 'react-select-async-paginate';
-import type { StylesConfig, GroupBase, OptionsOrGroups } from 'react-select';
+import type {
+  StylesConfig,
+  GroupBase,
+  OptionsOrGroups,
+  DropdownIndicatorProps,
+  ClearIndicatorProps,
+} from 'react-select';
 import { ChevronDown, X } from 'lucide-react';
 import { Box, Text } from '@chakra-ui/react';
 
-/* ─── Option type ──────────────────────────────────────────────────── */
 export interface AsyncSelectOption {
   label: string;
   value: string;
   disabled?: boolean;
-  [key: string]: unknown; // allow callers to attach extra fields
+  [key: string]: unknown;
 }
 
-/* ─── Async loader result ──────────────────────────────────────────── */
-export interface LoadOptionsResult<
-  Opt = AsyncSelectOption,
-  Additional = unknown,
-> {
+export interface LoadOptionsResult<Opt = AsyncSelectOption, Additional = unknown> {
   options: Opt[];
   hasMore?: boolean;
   additional?: Additional;
 }
 
-/* ─── Props ────────────────────────────────────────────────────────── */
 export interface AppAsyncSelectProps<
   Opt extends AsyncSelectOption = AsyncSelectOption,
   Additional = unknown,
   IsMulti extends boolean = false,
 > {
-  /** Required: async loader called on input change + scroll-to-load-more */
   loadOptions: (
     inputValue: string,
     prevOptions: OptionsOrGroups<Opt, GroupBase<Opt>>,
@@ -36,15 +35,12 @@ export interface AppAsyncSelectProps<
   ) => Promise<LoadOptionsResult<Opt, Additional>>;
 
   value?: IsMulti extends true ? readonly Opt[] : Opt | null;
-  onChange?: (
-    val: IsMulti extends true ? readonly Opt[] : Opt | null,
-  ) => void;
+  onChange?: (val: IsMulti extends true ? readonly Opt[] : Opt | null) => void;
 
-  /** Passed to the first loadOptions call — useful for cursor / page tokens */
   defaultAdditional?: Additional;
-  /** Input debounce in ms (default 300) */
+
   debounceTimeout?: number;
-  /** Reset option cache when any entry changes (e.g. pass [someFilterValue]) */
+
   cacheUniqs?: unknown[];
 
   label?: string;
@@ -59,17 +55,15 @@ export interface AppAsyncSelectProps<
   isLoading?: boolean;
   closeMenuOnSelect?: boolean;
   menuPlacement?: 'auto' | 'top' | 'bottom';
-  menuMaxHeight?: string; // default '22rem'
-  height?: string;        // control height, default '4.4rem'
-  width?: string;         // default '100%'
+  menuMaxHeight?: string;
+  height?: string;
+  width?: string;
 }
 
-/* ─── Spin keyframe (injected once into document) ───────────────────── */
 const SpinKeyframe = () => (
   <style>{`@keyframes appasyncselect-spin{to{transform:rotate(360deg)}}`}</style>
 );
 
-/* ─── CSS-var style builder ─────────────────────────────────────────── */
 function buildStyles<Opt extends AsyncSelectOption, IsMulti extends boolean>(
   height: string,
   menuMaxHeight: string,
@@ -86,15 +80,9 @@ function buildStyles<Opt extends AsyncSelectOption, IsMulti extends boolean>(
       borderRadius: '8px',
       fontSize: '1.4rem',
       fontFamily: 'Montserrat, sans-serif',
-      backgroundColor: state.isDisabled
-        ? 'var(--hover-bg)'
-        : 'var(--surface-card)',
-      borderColor: state.isFocused
-        ? 'var(--brand-primary)'
-        : 'var(--surface-border)',
-      boxShadow: state.isFocused
-        ? '0 0 0 3px rgba(12,101,37,0.08)'
-        : 'none',
+      backgroundColor: state.isDisabled ? 'var(--hover-bg)' : 'var(--surface-card)',
+      borderColor: state.isFocused ? 'var(--brand-primary)' : 'var(--surface-border)',
+      boxShadow: state.isFocused ? '0 0 0 3px rgba(12,101,37,0.08)' : 'none',
       transition: 'border-color 0.2s, box-shadow 0.2s',
       cursor: state.isDisabled ? 'not-allowed' : 'default',
       '&:hover': { borderColor: 'var(--brand-primary)' },
@@ -194,9 +182,7 @@ function buildStyles<Opt extends AsyncSelectOption, IsMulti extends boolean>(
     option: (base, state) => ({
       ...base,
       backgroundColor:
-        state.isFocused || state.isSelected
-          ? 'var(--brand-primary-light)'
-          : 'transparent',
+        state.isFocused || state.isSelected ? 'var(--brand-primary-light)' : 'transparent',
       color: state.isSelected ? 'var(--brand-primary)' : 'var(--text-primary)',
       fontWeight: state.isSelected ? 600 : 400,
       fontSize: '1.4rem',
@@ -225,16 +211,25 @@ function buildStyles<Opt extends AsyncSelectOption, IsMulti extends boolean>(
       padding: '1.2rem',
     }),
 
-    /* Portal target keeps dropdown above modals */
     menuPortal: (base) => ({ ...base, zIndex: 99999 }),
   };
 }
 
-/* ─── Custom sub-components ─────────────────────────────────────────── */
-const DropdownIndicator = (props: any) => {
+const DropdownIndicator = (
+  props: DropdownIndicatorProps<AsyncSelectOption, boolean, GroupBase<AsyncSelectOption>>,
+) => {
   const { innerRef, innerProps, selectProps } = props;
   return (
-    <div ref={innerRef} {...innerProps} style={{ display: 'flex', alignItems: 'center', padding: '0 0.8rem', color: 'var(--text-muted)' }}>
+    <div
+      ref={innerRef}
+      {...innerProps}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 0.8rem',
+        color: 'var(--text-muted)',
+      }}
+    >
       <ChevronDown
         size={16}
         style={{
@@ -246,10 +241,22 @@ const DropdownIndicator = (props: any) => {
   );
 };
 
-const ClearIndicator = (props: any) => {
+const ClearIndicator = (
+  props: ClearIndicatorProps<AsyncSelectOption, boolean, GroupBase<AsyncSelectOption>>,
+) => {
   const { innerRef, innerProps } = props;
   return (
-    <div ref={innerRef} {...innerProps} style={{ display: 'flex', alignItems: 'center', padding: '0 0.4rem', color: 'var(--text-muted)', cursor: 'pointer' }}>
+    <div
+      ref={innerRef}
+      {...innerProps}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 0.4rem',
+        color: 'var(--text-muted)',
+        cursor: 'pointer',
+      }}
+    >
       <X size={14} />
     </div>
   );
@@ -267,7 +274,6 @@ const LoadingIndicator = () => (
   />
 );
 
-/* ─── Component ─────────────────────────────────────────────────────── */
 function AppAsyncSelectBase<
   Opt extends AsyncSelectOption = AsyncSelectOption,
   Additional = unknown,
@@ -301,7 +307,7 @@ function AppAsyncSelectBase<
     <>
       <SpinKeyframe />
       <Box w={width} display="flex" flexDir="column" gap="0.5rem">
-        {/* Label */}
+        {}
         {label && (
           <Text
             as="label"
@@ -323,13 +329,17 @@ function AppAsyncSelectBase<
           </Text>
         )}
 
-        {/* Async select */}
+        {}
         <AsyncPaginate<Opt, GroupBase<Opt>, Additional, IsMulti>
           inputId={uid}
           name={name}
-          value={value as any}
-          onChange={onChange as any}
-          loadOptions={loadOptions as any}
+          value={value as IsMulti extends true ? readonly Opt[] : Opt | null}
+          onChange={
+            onChange as
+              | ((val: IsMulti extends true ? readonly Opt[] : Opt | null) => void)
+              | undefined
+          }
+          loadOptions={loadOptions}
           defaultAdditional={defaultAdditional}
           debounceTimeout={debounceTimeout}
           cacheUniqs={cacheUniqs}
@@ -343,10 +353,8 @@ function AppAsyncSelectBase<
           isOptionDisabled={(opt) => !!(opt as Opt).disabled}
           loadingMessage={() => 'Loading...'}
           noOptionsMessage={() => 'No options found'}
-          menuPortalTarget={
-            typeof document !== 'undefined' ? document.body : undefined
-          }
-          styles={styles as any}
+          menuPortalTarget={typeof document !== 'undefined' ? document.body : undefined}
+          styles={styles}
           components={{
             DropdownIndicator,
             ClearIndicator,
@@ -356,7 +364,7 @@ function AppAsyncSelectBase<
           isClearable
         />
 
-        {/* Error message */}
+        {}
         {errorMessage && (
           <Text
             fontSize="1.2rem"

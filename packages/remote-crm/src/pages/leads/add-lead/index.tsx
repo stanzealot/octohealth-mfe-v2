@@ -1,24 +1,11 @@
-/**
- * add-lead/index.tsx — Create / Edit Lead form
- *
- * Matches the monolith's add-lead/index.tsx exactly:
- *  - react-hook-form with mode:'onChange' (no yup)
- *  - AppSelect Controller fields: needType, source, needMaturity, leadStage, contact
- *  - AppInput for title (required) and entity (optional)
- *  - Green need-type chips shown below needType + contact fields
- *  - Breadcrumb: ← Leads | Add Lead  or  ← View Lead | Edit Lead
- *  - Cancel and Submit buttons flush right
- *  - Responsive 2-column layout on desktop
- */
-
 import React, { useMemo, useCallback, memo } from 'react';
 import { Stack, Flex, Box, Text } from '@chakra-ui/react';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import AppBreadcrumb from 'sharedUi/AppBreadcrumb';
-import AppButton    from 'sharedUi/AppButton';
-import AppInput     from 'sharedUi/AppInput';
-import AppSelect    from 'sharedUi/AppSelect';
+import AppButton from 'sharedUi/AppButton';
+import AppInput from 'sharedUi/AppInput';
+import AppSelect from 'sharedUi/AppSelect';
 import { getLeadById } from '../mock/leads';
 import {
   SOURCE_OPTIONS,
@@ -31,35 +18,32 @@ import {
 } from '../constants';
 import type { NewLeadPayload } from '../types';
 
-/* ─── Component ──────────────────────────────────────────────────── */
-
 function AddLeadPageBase() {
-  const { id }   = useParams<{ id?: string }>();
+  const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
 
-  /* Load existing lead for edit mode */
   const existingLead = useMemo(() => (id ? getLeadById(id) : null), [id]);
 
   const defaultValues = useMemo<NewLeadPayload>(
     () =>
       existingLead
         ? {
-            title:        existingLead.title,
-            needType:     existingLead.needType,
-            source:       existingLead.source,
+            title: existingLead.title,
+            needType: existingLead.needType,
+            source: existingLead.source,
             needMaturity: existingLead.needMaturity,
-            leadStage:    existingLead.leadStage,
-            contact:      existingLead.contact,
-            entity:       existingLead.entity,
+            leadStage: existingLead.leadStage,
+            contact: existingLead.contact,
+            entity: existingLead.entity,
           }
         : {
-            title:        '',
-            needType:     [],
-            source:       '',
+            title: '',
+            needType: [],
+            source: '',
             needMaturity: '',
-            leadStage:    '',
-            contact:      '',
-            entity:       '',
+            leadStage: '',
+            contact: '',
+            entity: '',
           },
     [existingLead],
   );
@@ -76,7 +60,6 @@ function AddLeadPageBase() {
 
   const onSubmit = useCallback(
     (_data: NewLeadPayload) => {
-      // TODO: replace with API call
       navigate('/crm/leads');
     },
     [navigate],
@@ -90,7 +73,7 @@ function AddLeadPageBase() {
 
   return (
     <Stack gap="2.4rem">
-      {/* Breadcrumb */}
+      {}
       <AppBreadcrumb
         link={breadcrumbLink}
         beforeText={id ? 'View Lead' : 'Leads'}
@@ -106,7 +89,7 @@ function AddLeadPageBase() {
         py="2.4rem"
         border="1px solid var(--surface-border)"
       >
-        {/* Section heading */}
+        {}
         <Box>
           <Text
             fontFamily="Montserrat, sans-serif"
@@ -126,11 +109,10 @@ function AddLeadPageBase() {
           </Text>
         </Box>
 
-        {/* Form */}
+        {}
         <Box as="form" onSubmit={handleSubmit(onSubmit)}>
           <Stack gap="2.4rem" w="100%">
-
-            {/* Lead Title — full width */}
+            {}
             <AppInput
               label={FORM_LABELS.LEAD_TITLE}
               placeholder={FORM_PLACEHOLDERS.TITLE}
@@ -139,7 +121,7 @@ function AddLeadPageBase() {
               {...register('title', { required: 'Lead title is required' })}
             />
 
-            {/* Row 1: Need Type + Source */}
+            {}
             <Flex gap="3rem" flexDir={{ base: 'column', md: 'row' }} align="flex-start">
               <Box w={{ base: '100%', md: '50%' }}>
                 <Controller
@@ -152,9 +134,11 @@ function AddLeadPageBase() {
                       placeholder={FORM_PLACEHOLDERS.NEED_TYPE}
                       label={FORM_LABELS.NEED_TYPE}
                       errorMessage={errors.needType?.message}
-                      value={NEED_TYPE_OPTIONS.find((opt) =>
-                        (field.value as string[])?.includes(opt.value),
-                      ) ?? null}
+                      value={
+                        NEED_TYPE_OPTIONS.find((opt) =>
+                          (field.value as string[])?.includes(opt.value),
+                        ) ?? null
+                      }
                       onChange={(opt) => {
                         const v = opt as { value: string } | null;
                         field.onChange(v ? [v.value] : []);
@@ -163,7 +147,7 @@ function AddLeadPageBase() {
                     />
                   )}
                 />
-                {/* Need-type chips */}
+                {}
                 {watchedNeedType && watchedNeedType.length > 0 && (
                   <Flex gap="0.8rem" mt="0.8rem" wrap="wrap">
                     {watchedNeedType.map((type, i) => (
@@ -208,7 +192,7 @@ function AddLeadPageBase() {
               </Box>
             </Flex>
 
-            {/* Row 2: Need Maturity + Lead Stage */}
+            {}
             <Flex gap="3rem" flexDir={{ base: 'column', md: 'row' }} align="flex-start">
               <Box w={{ base: '100%', md: '50%' }}>
                 <Controller
@@ -255,7 +239,7 @@ function AddLeadPageBase() {
               </Box>
             </Flex>
 
-            {/* Row 3: Contact + Entity */}
+            {}
             <Flex gap="3rem" flexDir={{ base: 'column', md: 'row' }} align="flex-start">
               <Box w={{ base: '100%', md: '50%' }}>
                 <Controller
@@ -277,7 +261,7 @@ function AddLeadPageBase() {
                     />
                   )}
                 />
-                {/* Contact chip (matches monolith) */}
+                {}
                 {watchedNeedType && watchedNeedType.length > 0 && (
                   <Flex gap="0.8rem" mt="0.8rem" wrap="wrap">
                     <Box
@@ -306,7 +290,7 @@ function AddLeadPageBase() {
               </Box>
             </Flex>
 
-            {/* Form actions */}
+            {}
             <Flex gap="1.2rem" justify="flex-end" mt="1.6rem">
               <AppButton variant="outline" type="button" onClick={handleCancel}>
                 Cancel
@@ -315,7 +299,6 @@ function AddLeadPageBase() {
                 {id ? 'Update' : 'Add'} lead
               </AppButton>
             </Flex>
-
           </Stack>
         </Box>
       </Stack>

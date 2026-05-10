@@ -1,44 +1,23 @@
-/**
- * ContactTabs
- *
- * Animated tab bar that matches the monolith exactly:
- * - Sliding green underline indicator that tracks the active tab
- * - Tab content slides in with translateY + opacity transition
- * - Horizontal scroll on mobile (scrollbar hidden)
- * - Lazy rendering: tab content is only mounted after first activation,
- *   then kept in DOM (hidden) to preserve scroll position & state
- */
-
 import React, { useState, useRef, useEffect, useCallback, memo, lazy, Suspense } from 'react';
 import { Box, Flex, Spinner } from '@chakra-ui/react';
 import type { ContactDetail } from '../../../../types/contact';
 
-/* ─── Lazy-load heavy tab content ─────────────────────────────────────── */
-
-const ActivitiesTab    = lazy(() => import('./ActivitiesTab'));
+const ActivitiesTab = lazy(() => import('./ActivitiesTab'));
 const AuthorizationTab = lazy(() => import('./AuthorizationTab'));
-const ClaimsTab        = lazy(() => import('./ClaimsTab'));
-const InvoicesTab      = lazy(() => import('./InvoicesTab'));
-const DocumentsTab     = lazy(() => import('./DocumentsTab'));
-const RelationsTab     = lazy(() => import('./RelationsTab'));
-
-/* ─── Placeholder for tabs not yet implemented ─────────────────────────── */
+const ClaimsTab = lazy(() => import('./ClaimsTab'));
+const InvoicesTab = lazy(() => import('./InvoicesTab'));
+const DocumentsTab = lazy(() => import('./DocumentsTab'));
+const RelationsTab = lazy(() => import('./RelationsTab'));
 
 const PlaceholderTab = memo(function PlaceholderTab({ name }: { name: string }) {
   return (
     <Box p="3.2rem" textAlign="center">
-      <Box
-        color="var(--text-muted)"
-        fontFamily="Montserrat, sans-serif"
-        fontSize="1.4rem"
-      >
+      <Box color="var(--text-muted)" fontFamily="Montserrat, sans-serif" fontSize="1.4rem">
         {name} — coming soon
       </Box>
     </Box>
   );
 });
-
-/* ─── Tab loader ──────────────────────────────────────────────────────── */
 
 const TabLoader = memo(function TabLoader() {
   return (
@@ -48,60 +27,78 @@ const TabLoader = memo(function TabLoader() {
   );
 });
 
-/* ─── Props ───────────────────────────────────────────────────────────── */
-
 interface ContactTabsProps {
   contact: ContactDetail;
 }
 
-/* ─── Tab definitions ────────────────────────────────────────────────── */
-
 function buildTabs(contactId: string) {
   return [
     {
-      label:   'Activities',
-      content: <Suspense fallback={<TabLoader />}><ActivitiesTab    contactId={contactId} /></Suspense>,
+      label: 'Activities',
+      content: (
+        <Suspense fallback={<TabLoader />}>
+          <ActivitiesTab contactId={contactId} />
+        </Suspense>
+      ),
     },
     {
-      label:   'Authorization',
-      content: <Suspense fallback={<TabLoader />}><AuthorizationTab contactId={contactId} /></Suspense>,
+      label: 'Authorization',
+      content: (
+        <Suspense fallback={<TabLoader />}>
+          <AuthorizationTab contactId={contactId} />
+        </Suspense>
+      ),
     },
     {
-      label:   'Claims',
-      content: <Suspense fallback={<TabLoader />}><ClaimsTab        contactId={contactId} /></Suspense>,
+      label: 'Claims',
+      content: (
+        <Suspense fallback={<TabLoader />}>
+          <ClaimsTab contactId={contactId} />
+        </Suspense>
+      ),
     },
     {
-      label:   'Invoices',
-      content: <Suspense fallback={<TabLoader />}><InvoicesTab      contactId={contactId} /></Suspense>,
+      label: 'Invoices',
+      content: (
+        <Suspense fallback={<TabLoader />}>
+          <InvoicesTab contactId={contactId} />
+        </Suspense>
+      ),
     },
     {
-      label:   'Notes',
+      label: 'Notes',
       content: <PlaceholderTab name="Notes" />,
     },
     {
-      label:   'Documents',
-      content: <Suspense fallback={<TabLoader />}><DocumentsTab     contactId={contactId} /></Suspense>,
+      label: 'Documents',
+      content: (
+        <Suspense fallback={<TabLoader />}>
+          <DocumentsTab contactId={contactId} />
+        </Suspense>
+      ),
     },
     {
-      label:   'Addresses',
+      label: 'Addresses',
       content: <PlaceholderTab name="Addresses" />,
     },
     {
-      label:   'Emails',
+      label: 'Emails',
       content: <PlaceholderTab name="Emails" />,
     },
     {
-      label:   'Phone Numbers',
+      label: 'Phone Numbers',
       content: <PlaceholderTab name="Phone Numbers" />,
     },
     {
-      label:   'Relations',
-      content: <Suspense fallback={<TabLoader />}><RelationsTab     contactId={contactId} /></Suspense>,
+      label: 'Relations',
+      content: (
+        <Suspense fallback={<TabLoader />}>
+          <RelationsTab contactId={contactId} />
+        </Suspense>
+      ),
     },
   ] as const;
 }
-
-/* ─── Component ──────────────────────────────────────────────────────── */
 
 function ContactTabsBase({ contact }: ContactTabsProps) {
   const contactId = contact.id ?? '';
@@ -110,15 +107,13 @@ function ContactTabsBase({ contact }: ContactTabsProps) {
   const [activeTab, setActiveTab] = useState(0);
   const [indicator, setIndicator] = useState({ left: 0, width: 0 });
 
-  /* Track which tabs have been visited (for lazy mounting) */
   const [mountedTabs, setMountedTabs] = useState<Set<number>>(() => new Set([0]));
 
-  const tabRefs      = useRef<(HTMLButtonElement | null)[]>([]);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  /* Update indicator position when active tab changes */
   const updateIndicator = useCallback((index: number) => {
-    const el        = tabRefs.current[index];
+    const el = tabRefs.current[index];
     const container = containerRef.current;
     if (!el || !container) return;
     const cRect = container.getBoundingClientRect();
@@ -130,7 +125,6 @@ function ContactTabsBase({ contact }: ContactTabsProps) {
     updateIndicator(activeTab);
   }, [activeTab, updateIndicator]);
 
-  /* Recalculate on resize */
   useEffect(() => {
     const handler = () => updateIndicator(activeTab);
     window.addEventListener('resize', handler);
@@ -144,7 +138,7 @@ function ContactTabsBase({ contact }: ContactTabsProps) {
 
   return (
     <Box>
-      {/* Tab bar */}
+      {}
       <Box position="relative" ref={containerRef}>
         <Flex
           overflowX="auto"
@@ -159,7 +153,9 @@ function ContactTabsBase({ contact }: ContactTabsProps) {
             <Box
               key={index}
               as="button"
-              ref={(el: HTMLButtonElement | null) => { tabRefs.current[index] = el; }}
+              ref={(el: HTMLButtonElement | null) => {
+                tabRefs.current[index] = el;
+              }}
               onClick={() => handleTabClick(index)}
               px="2.4rem"
               py="1.6rem"
@@ -180,7 +176,7 @@ function ContactTabsBase({ contact }: ContactTabsProps) {
           ))}
         </Flex>
 
-        {/* Sliding underline indicator */}
+        {}
         <Box
           position="absolute"
           bottom="0"
@@ -194,7 +190,7 @@ function ContactTabsBase({ contact }: ContactTabsProps) {
         />
       </Box>
 
-      {/* Tab content — lazy mounted, kept in DOM after first visit */}
+      {}
       <Box mt="2.4rem" minHeight="40rem" position="relative" overflow="hidden">
         {tabs.map((tab, index) => {
           if (!mountedTabs.has(index)) return null;

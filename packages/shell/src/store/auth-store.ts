@@ -36,18 +36,18 @@ interface AuthState {
 }
 
 interface AuthActions {
-  login: (data: { user: AuthUser; accessToken: string; refreshToken: string; menu: MenuItem[] }) => void;
+  login: (data: {
+    user: AuthUser;
+    accessToken: string;
+    refreshToken: string;
+    menu: MenuItem[];
+  }) => void;
   logout: () => void;
   setTokens: (access: string, refresh: string) => void;
   setLoading: (loading: boolean) => void;
   clearAuth: () => void;
   hydrateFromStorage: () => void;
 }
-
-// ─── Storage helpers ─────────────────────────────────────────────────────────
-// We use plain sessionStorage instead of Zustand persist middleware.
-// Zustand persist uses useSyncExternalStore which conflicts with React 19's
-// concurrent commit phase in federation (causes Error #185 / infinite loop).
 
 const STORAGE_KEY = 'auth-storage';
 
@@ -63,17 +63,14 @@ function readStorage(): Partial<AuthState> {
 function writeStorage(state: Partial<AuthState>) {
   try {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch { /* quota or private browsing */ }
+  } catch {}
 }
 
 function clearStorage() {
-  try { sessionStorage.removeItem(STORAGE_KEY); } catch { /* ignore */ }
+  try {
+    sessionStorage.removeItem(STORAGE_KEY);
+  } catch {}
 }
-
-// ─── Store ───────────────────────────────────────────────────────────────────
-// This store is EXPOSED via federation as 'shell/auth-store'.
-// Because zustand is shared as a singleton, all remotes read the SAME
-// in-memory instance that the shell populated after login.
 
 const initialState: AuthState = {
   isAuthenticated: false,
@@ -87,7 +84,6 @@ const initialState: AuthState = {
 export const useAuthStore = create<AuthState & AuthActions>((set) => ({
   ...initialState,
 
-  // Called after a successful login — API call is done OUTSIDE the store
   login: ({ user, accessToken, refreshToken, menu }) => {
     writeStorage({ isAuthenticated: true, user, accessToken, refreshToken, menu });
     set({ isAuthenticated: true, isLoading: false, user, accessToken, refreshToken, menu });
@@ -111,8 +107,6 @@ export const useAuthStore = create<AuthState & AuthActions>((set) => ({
     set({ ...initialState, isLoading: false });
   },
 
-  // Called once on app mount (from bootstrap useEffect) — reads sessionStorage
-  // and hydrates the in-memory store so the user stays logged in on refresh.
   hydrateFromStorage: () => {
     const saved = readStorage();
     if (saved.isAuthenticated && saved.user && saved.accessToken) {
@@ -131,29 +125,25 @@ export const useAuthStore = create<AuthState & AuthActions>((set) => ({
   },
 }));
 
-// ─── Selectors ───────────────────────────────────────────────────────────────
-// Selectors returning objects MUST use useShallow — otherwise Zustand sees a
-// new object reference every render → schedules another render → infinite loop.
-
 export const useAuth = () =>
   useAuthStore(
     useShallow((s) => ({
       isAuthenticated: s.isAuthenticated,
-      isLoading:       s.isLoading,
-      user:            s.user,
-      menu:            s.menu,
-      accessToken:     s.accessToken,
+      isLoading: s.isLoading,
+      user: s.user,
+      menu: s.menu,
+      accessToken: s.accessToken,
     })),
   );
 
 export const useAuthActions = () =>
   useAuthStore(
     useShallow((s) => ({
-      login:             s.login,
-      logout:            s.logout,
-      setTokens:         s.setTokens,
-      clearAuth:         s.clearAuth,
+      login: s.login,
+      logout: s.logout,
+      setTokens: s.setTokens,
+      clearAuth: s.clearAuth,
       hydrateFromStorage: s.hydrateFromStorage,
-      setLoading:        s.setLoading,
+      setLoading: s.setLoading,
     })),
   );

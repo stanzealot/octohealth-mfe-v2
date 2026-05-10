@@ -1,31 +1,23 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { Flex, Box, Text } from '@chakra-ui/react';
-import {
-  ChevronFirst,
-  ChevronLast,
-  ChevronLeft,
-  ChevronRight,
-} from 'lucide-react';
+import { ChevronFirst, ChevronLast, ChevronLeft, ChevronRight } from 'lucide-react';
 
-/* ─── Types ─────────────────────────────────────────────────────── */
 export interface AppPaginationProps {
-  /** Total number of items (unsliced) */
   totalRows: number;
-  /** Currently active page (1-indexed) */
+
   currentPage: number;
-  /** How many rows are shown per page */
+
   rowsPerPage: number;
-  /** Options shown in the "per page" selector */
+
   rowsPerPageOptions?: number[];
-  /** Called when the user clicks a page button */
+
   onPageChange: (page: number) => void;
-  /** Called when the user picks a new page-size */
+
   onRowsPerPageChange: (size: number) => void;
-  /** Label shown before the per-page selector  */
+
   rowsPerPageLabel?: string;
 }
 
-/* ─── NavButton ─────────────────────────────────────────────────── */
 const NavButton = memo(function NavButton({
   onClick,
   disabled,
@@ -56,9 +48,7 @@ const NavButton = memo(function NavButton({
       color={disabled ? 'var(--text-placeholder)' : 'var(--text-secondary)'}
       opacity={disabled ? 0.45 : 1}
       transition="background 0.15s, color 0.15s"
-      style={{
-        /* can't use _hover on Box-as-button without Chakra v3 factory — inline style pseudo workaround */
-      }}
+      style={{}}
       _hover={!disabled ? { bg: 'var(--hover-bg)', color: 'var(--text-primary)' } : {}}
     >
       {children}
@@ -66,7 +56,6 @@ const NavButton = memo(function NavButton({
   );
 });
 
-/* ─── AppPagination ─────────────────────────────────────────────── */
 const AppPagination = memo(function AppPagination({
   totalRows,
   currentPage,
@@ -76,7 +65,6 @@ const AppPagination = memo(function AppPagination({
   onRowsPerPageChange,
   rowsPerPageLabel = 'Rows per page:',
 }: AppPaginationProps) {
-  /* Derived values — all O(1) */
   const totalPages = useMemo(
     () => Math.max(1, Math.ceil(totalRows / rowsPerPage)),
     [totalRows, rowsPerPage],
@@ -92,16 +80,21 @@ const AppPagination = memo(function AppPagination({
     [currentPage, rowsPerPage, totalRows],
   );
 
-  /* Stable callbacks — don't recreate on every render */
   const goFirst = useCallback(() => onPageChange(1), [onPageChange]);
-  const goPrev  = useCallback(() => onPageChange(Math.max(1, currentPage - 1)), [onPageChange, currentPage]);
-  const goNext  = useCallback(() => onPageChange(Math.min(totalPages, currentPage + 1)), [onPageChange, currentPage, totalPages]);
-  const goLast  = useCallback(() => onPageChange(totalPages), [onPageChange, totalPages]);
+  const goPrev = useCallback(
+    () => onPageChange(Math.max(1, currentPage - 1)),
+    [onPageChange, currentPage],
+  );
+  const goNext = useCallback(
+    () => onPageChange(Math.min(totalPages, currentPage + 1)),
+    [onPageChange, currentPage, totalPages],
+  );
+  const goLast = useCallback(() => onPageChange(totalPages), [onPageChange, totalPages]);
 
   const handleRowsChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       onRowsPerPageChange(Number(e.target.value));
-      onPageChange(1); // reset to page 1 whenever page-size changes
+      onPageChange(1);
     },
     [onRowsPerPageChange, onPageChange],
   );
@@ -119,7 +112,7 @@ const AppPagination = memo(function AppPagination({
       borderRadius="0 0 8px 8px"
       minH="5rem"
     >
-      {/* ── Left: rows-per-page ───────────────────────────────── */}
+      {}
       <Flex align="center" gap="0.8rem">
         <Text
           fontSize="1.3rem"
@@ -154,9 +147,9 @@ const AppPagination = memo(function AppPagination({
         </Box>
       </Flex>
 
-      {/* ── Right: range info + nav buttons ──────────────────── */}
+      {}
       <Flex align="center" gap="0.4rem">
-        {/* "X–Y of Z" */}
+        {}
         <Text
           fontSize="1.3rem"
           color="var(--text-muted)"
@@ -164,9 +157,7 @@ const AppPagination = memo(function AppPagination({
           whiteSpace="nowrap"
           mr="0.8rem"
         >
-          {totalRows === 0
-            ? '0 of 0'
-            : `${rangeStart}–${rangeEnd} of ${totalRows}`}
+          {totalRows === 0 ? '0 of 0' : `${rangeStart}–${rangeEnd} of ${totalRows}`}
         </Text>
 
         <NavButton onClick={goFirst} disabled={currentPage === 1} title="First page">
@@ -176,7 +167,7 @@ const AppPagination = memo(function AppPagination({
           <ChevronLeft size={16} />
         </NavButton>
 
-        {/* Current / total pages pill */}
+        {}
         <Flex
           align="center"
           gap="0.3rem"
@@ -194,11 +185,7 @@ const AppPagination = memo(function AppPagination({
           >
             {currentPage}
           </Text>
-          <Text
-            fontSize="1.3rem"
-            color="var(--text-muted)"
-            fontFamily="Montserrat, sans-serif"
-          >
+          <Text fontSize="1.3rem" color="var(--text-muted)" fontFamily="Montserrat, sans-serif">
             / {totalPages}
           </Text>
         </Flex>

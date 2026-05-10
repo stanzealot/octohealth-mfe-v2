@@ -1,17 +1,45 @@
 {
   "name": "octohealth-mfe-v2",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev:shell":     "pnpm --filter shell dev",
+    "dev:shell": "pnpm --filter shell dev",
     "dev:shared-ui": "pnpm --filter shared-ui dev",
-    "dev:crm":       "pnpm --filter remote-crm dev",
-    "dev:admin":     "pnpm --filter remote-admin dev",
-    "build:all":     "pnpm --filter shared-ui build && pnpm --filter remote-crm build && pnpm --filter remote-admin build",
+    "dev:crm": "pnpm --filter remote-crm dev",
+    "dev:admin": "pnpm --filter remote-admin dev",
+    "build:all": "pnpm --filter shared-ui build && pnpm --filter remote-crm build && pnpm --filter remote-admin build && pnpm --filter remote-sales build",
     "build:shared-ui": "pnpm --filter shared-ui build",
-    "build:crm":     "pnpm --filter remote-crm build",
-    "build:admin":   "pnpm --filter remote-admin build"
+    "build:crm": "pnpm --filter remote-crm build",
+    "build:admin": "pnpm --filter remote-admin build",
+    "dev:sales": "pnpm --filter remote-sales dev",
+    "build:sales": "pnpm --filter remote-sales build",
+    "preview:sales": "pnpm --filter remote-sales preview",
+    "lint": "eslint . --fix",
+    "lint:check": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["@swc/core", "esbuild"]
+    "onlyBuiltDependencies": [
+      "@swc/core",
+      "esbuild"
+    ]
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@typescript-eslint/eslint-plugin": "^8.59.2",
+    "@typescript-eslint/parser": "^8.59.2",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.26",
+    "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.59.2"
   }
 }

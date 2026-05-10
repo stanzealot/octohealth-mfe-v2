@@ -1,59 +1,42 @@
-/**
- * CommunicationsSection.tsx
- *
- * Accordion section for communication channel preferences.
- *
- * Each channel (row) has:
- *   - AppSwitch  → enables / disables the whole channel
- *   - AppCheckbox per supported format (SMS, Email, WhatsApp, etc.)
- *
- * State lives in ContactFormPage and is passed down; this section
- * is intentionally stateless for easy testing.
- */
 import React, { useCallback } from 'react';
-import { Box, Flex, HStack, Text, VStack } from '@chakra-ui/react';
+import { Flex, HStack, Text, VStack } from '@chakra-ui/react';
 import AppAccordionSection from 'sharedUi/AppAccordionSection';
 import AppSwitch from 'sharedUi/AppSwitch';
 import AppCheckbox from 'sharedUi/AppCheckbox';
 import type { CommunicationChannel, CommunicationSetting } from '../../../../types/contact';
 import { ContactMode } from '../../../../types/contact';
 
-/* ─── Label map for ContactMode enum ─────────────────────────────── */
 const MODE_LABELS: Record<ContactMode, string> = {
-  [ContactMode.Sms]:       'SMS',
-  [ContactMode.Email]:     'Email',
-  [ContactMode.RichSMS]:   'Rich SMS',
-  [ContactMode.WhatsApp]:  'WhatsApp',
+  [ContactMode.Sms]: 'SMS',
+  [ContactMode.Email]: 'Email',
+  [ContactMode.RichSMS]: 'Rich SMS',
+  [ContactMode.WhatsApp]: 'WhatsApp',
   [ContactMode.Telephone]: 'Telephone',
 };
 
-/* ─── Props ───────────────────────────────────────────────────────── */
 interface CommunicationsSectionProps {
-  channels:     CommunicationChannel[];
-  settings:     CommunicationSetting[];
-  onToggle:     (channelId: string) => void;
+  channels: CommunicationChannel[];
+  settings: CommunicationSetting[];
+  onToggle: (channelId: string) => void;
   onModeChange: (channelId: string, mode: ContactMode) => void;
 }
 
-/* ─── Component ───────────────────────────────────────────────────── */
 export function CommunicationsSection({
   channels,
   settings,
   onToggle,
   onModeChange,
 }: CommunicationsSectionProps) {
-  /** Find the current setting for a channel (by id) */
   const getSetting = useCallback(
     (channelId: string): CommunicationSetting =>
       settings.find((s) => s.communicationId === channelId) ?? {
-        communicationId:  channelId,
-        isEnabled:        false,
+        communicationId: channelId,
+        isEnabled: false,
         preferredFormats: [],
       },
     [settings],
   );
 
-  /* Hide section entirely when no channels are configured */
   if (!channels.length) return null;
 
   return (
@@ -70,7 +53,7 @@ export function CommunicationsSection({
             py={5}
             borderBottom={idx < channels.length - 1 ? '1px solid var(--surface-border)' : 'none'}
           >
-            {/* Left — switch + title/description */}
+            {}
             <HStack gap={6} flex="0 0 45%">
               <AppSwitch
                 size="sm"
@@ -99,7 +82,7 @@ export function CommunicationsSection({
               </VStack>
             </HStack>
 
-            {/* Right — format checkboxes (only when channel is enabled) */}
+            {}
             <Flex gap="2.4rem" flex="0 0 55%" flexWrap="wrap" px={4}>
               {channel.formats.map((mode) => (
                 <AppCheckbox

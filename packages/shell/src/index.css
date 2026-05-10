@@ -11,50 +11,50 @@
 /* ─── Branding & Design System CSS Custom Properties ──────────────── */
 :root {
   /* Brand colors — overridden at runtime by branding-store */
-  --brand-primary:       #0C6525;
-  --brand-primary-light: #F0F9F5;
-  --brand-primary-dark:  #094a1b;
-  --brand-accent:        #C7522A;
-  --brand-secondary:     #667085;
+  --brand-primary: #0c6525;
+  --brand-primary-light: #f0f9f5;
+  --brand-primary-dark: #094a1b;
+  --brand-accent: #c7522a;
+  --brand-secondary: #667085;
 
   /* Surfaces */
-  --surface-bg:          #F4F6F8;
-  --surface-card:        #FFFFFF;
-  --surface-border:      #E4E7EC;
-  --surface-sidebar:     #FFFFFF;
-  --surface-topbar:      #FFFFFF;
+  --surface-bg: #f4f6f8;
+  --surface-card: #ffffff;
+  --surface-border: #e4e7ec;
+  --surface-sidebar: #ffffff;
+  --surface-topbar: #ffffff;
 
   /* Avatar defaults (overridden in dark mode) */
-  --avatar-fallback-bg:    var(--brand-primary-light);
+  --avatar-fallback-bg: var(--brand-primary-light);
   --avatar-fallback-color: var(--brand-primary);
 
   /* Text */
-  --text-primary:        #101828;
-  --text-secondary:      #344054;
-  --text-muted:          #667085;
-  --text-placeholder:    #98A2B3;
+  --text-primary: #101828;
+  --text-secondary: #344054;
+  --text-muted: #667085;
+  --text-placeholder: #98a2b3;
 
   /* Interaction */
-  --hover-bg:            #F0F2F5;
-  --focus-ring:          var(--brand-primary);
+  --hover-bg: #f0f2f5;
+  --focus-ring: var(--brand-primary);
 
   /* Table */
-  --table-header-bg:     #F9FAFB;
-  --table-border:        #E5E7EB;
-  --table-row-hover:     #F9FAFB;
+  --table-header-bg: #f9fafb;
+  --table-border: #e5e7eb;
+  --table-row-hover: #f9fafb;
 
   /* Status */
-  --status-success:      #12B76A;
-  --status-warning:      #F79009;
-  --status-danger:       #F04438;
-  --status-info:         #2E90FA;
+  --status-success: #12b76a;
+  --status-warning: #f79009;
+  --status-danger: #f04438;
+  --status-info: #2e90fa;
 
   /* Shadows — light mode (subtle) */
-  --shadow-card:     0 1px 3px rgba(16,24,40,0.06), 0 4px 12px rgba(16,24,40,0.04);
-  --shadow-sidebar:  4px 0 24px rgba(16,24,40,0.06);
-  --shadow-topbar:   0 4px 20px rgba(16,24,40,0.06);
-  --shadow-dropdown: 0 4px 20px rgba(16,24,40,0.12), 0 0 0 1px rgba(16,24,40,0.05);
-  --shadow-modal:    0 20px 60px rgba(16,24,40,0.18), 0 0 0 1px rgba(16,24,40,0.06);
+  --shadow-card: 0 1px 3px rgba(16, 24, 40, 0.06), 0 4px 12px rgba(16, 24, 40, 0.04);
+  --shadow-sidebar: 4px 0 24px rgba(16, 24, 40, 0.06);
+  --shadow-topbar: 0 4px 20px rgba(16, 24, 40, 0.06);
+  --shadow-dropdown: 0 4px 20px rgba(16, 24, 40, 0.12), 0 0 0 1px rgba(16, 24, 40, 0.05);
+  --shadow-modal: 0 20px 60px rgba(16, 24, 40, 0.18), 0 0 0 1px rgba(16, 24, 40, 0.06);
 }
 
 /* ─── Dark Mode ───────────────────────────────────────────────────── */
@@ -63,52 +63,47 @@
  * Uses rgba() borders and stronger shadows to create
  * visual depth and elevation between layers.
  */
-[data-theme="dark"] {
+[data-theme='dark'] {
   /* Surface hierarchy: bg < sidebar < card < elevated */
-  --surface-bg:          #111113;   /* page background — deepest layer   */
-  --surface-sidebar:     #18181B;   /* sidebar — sits above bg            */
-  --surface-topbar:      #1C1C1F;   /* topbar — same elevation as card    */
-  --surface-card:        #1C1C1F;   /* cards, modals, inputs              */
+  --surface-bg: #111113; /* page background — deepest layer   */
+  --surface-sidebar: #18181b; /* sidebar — sits above bg            */
+  --surface-topbar: #1c1c1f; /* topbar — same elevation as card    */
+  --surface-card: #1c1c1f; /* cards, modals, inputs              */
 
   /* Borders: rgba white feels more natural than opaque dark colors */
-  --surface-border:      rgba(255, 255, 255, 0.09);
+  --surface-border: rgba(255, 255, 255, 0.09);
 
   /* Avatar defaults for dark mode — translucent green tint */
-  --avatar-fallback-bg:    rgba(12, 101, 37, 0.25);
-  --avatar-fallback-color: #4ADE80;
+  --avatar-fallback-bg: rgba(12, 101, 37, 0.25);
+  --avatar-fallback-color: #4ade80;
 
   /* Text */
-  --text-primary:        #E8E8EA;   /* off-white — easier on eyes than pure white */
-  --text-secondary:      #A1A1AB;   /* secondary labels                           */
-  --text-muted:          #6E6E7C;   /* hints, captions                            */
-  --text-placeholder:    #4E4E5A;   /* empty inputs                               */
+  --text-primary: #e8e8ea; /* off-white — easier on eyes than pure white */
+  --text-secondary: #a1a1ab; /* secondary labels                           */
+  --text-muted: #6e6e7c; /* hints, captions                            */
+  --text-placeholder: #4e4e5a; /* empty inputs                               */
 
   /* Interaction */
-  --hover-bg:            rgba(255, 255, 255, 0.06);
-  --focus-ring:          var(--brand-primary);
+  --hover-bg: rgba(255, 255, 255, 0.06);
+  --focus-ring: var(--brand-primary);
 
   /* Table */
-  --table-header-bg:     #18181B;   /* matches sidebar for cohesion */
-  --table-border:        rgba(255, 255, 255, 0.07);
-  --table-row-hover:     rgba(255, 255, 255, 0.04);
+  --table-header-bg: #18181b; /* matches sidebar for cohesion */
+  --table-border: rgba(255, 255, 255, 0.07);
+  --table-row-hover: rgba(255, 255, 255, 0.04);
 
   /* Status — slightly desaturated to not scream on dark bg */
-  --status-success:      #34D399;
-  --status-warning:      #FBBF24;
-  --status-danger:       #F87171;
-  --status-info:         #60A5FA;
+  --status-success: #34d399;
+  --status-warning: #fbbf24;
+  --status-danger: #f87171;
+  --status-info: #60a5fa;
 
   /* Shadows — dark mode needs MUCH stronger shadows for depth */
-  --shadow-card:     0 2px 8px rgba(0,0,0,0.55),
-                     0 0 0 1px rgba(255,255,255,0.06);
-  --shadow-sidebar:  4px 0 32px rgba(0,0,0,0.6),
-                     1px 0 0 rgba(255,255,255,0.05);
-  --shadow-topbar:   0 4px 24px rgba(0,0,0,0.5),
-                     0 1px 0 rgba(255,255,255,0.05);
-  --shadow-dropdown: 0 8px 32px rgba(0,0,0,0.6),
-                     0 0 0 1px rgba(255,255,255,0.08);
-  --shadow-modal:    0 24px 80px rgba(0,0,0,0.7),
-                     0 0 0 1px rgba(255,255,255,0.07);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-sidebar: 4px 0 32px rgba(0, 0, 0, 0.6), 1px 0 0 rgba(255, 255, 255, 0.05);
+  --shadow-topbar: 0 4px 24px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-dropdown: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --shadow-modal: 0 24px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.07);
 }
 
 html {
@@ -129,12 +124,25 @@ body {
 }
 
 #nprogress .peg {
-  box-shadow: 0 0 10px var(--brand-primary), 0 0 5px var(--brand-primary) !important;
+  box-shadow:
+    0 0 10px var(--brand-primary),
+    0 0 5px var(--brand-primary) !important;
+}
+
+/* Spinner circle — both border segments must use brand-primary */
+#nprogress .spinner-icon {
+  border-top-color: var(--brand-primary) !important;
+  border-left-color: var(--brand-primary) !important;
 }
 
 /* ─── Smooth dark mode transition ─────────────────────────────────── */
-*, *::before, *::after {
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease;
+*,
+*::before,
+*::after {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.15s ease;
 }
 /* Don't animate these — causes layout jitter */
 *:where(svg, img, video, canvas, input, select, textarea) {

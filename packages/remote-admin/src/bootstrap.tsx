@@ -1,8 +1,3 @@
-/**
- * Standalone dev preview for remote-admin.
- * In production (federation), ChakraProvider comes from shell.
- * This file is only used when running remote-admin preview directly.
- */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
@@ -11,10 +6,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SettingsModule from './pages/settings/SettingsModule';
 
-// Minimal system for standalone preview — shell provides the real theme in production
 const system = createSystem(defaultConfig);
 
-// Apply default CSS vars for standalone dev
 const root = document.documentElement;
 root.style.setProperty('--brand-primary', '#0C6525');
 root.style.setProperty('--brand-primary-light', '#F0F9F5');

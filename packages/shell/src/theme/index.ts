@@ -5,15 +5,15 @@ const customConfig = defineConfig({
     tokens: {
       colors: {
         brand: {
-          primary:      { value: 'var(--brand-primary)' },
+          primary: { value: 'var(--brand-primary)' },
           primaryLight: { value: 'var(--brand-primary-light)' },
-          primaryDark:  { value: 'var(--brand-primary-dark)' },
-          secondary:    { value: 'var(--brand-secondary)' },
+          primaryDark: { value: 'var(--brand-primary-dark)' },
+          secondary: { value: 'var(--brand-secondary)' },
         },
       },
       fonts: {
         heading: { value: 'Montserrat, sans-serif' },
-        body:    { value: 'Montserrat, sans-serif' },
+        body: { value: 'Montserrat, sans-serif' },
       },
     },
     semanticTokens: {

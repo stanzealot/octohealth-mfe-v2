@@ -13,10 +13,6 @@ function readColorMode(): ColorMode {
   }
 }
 
-/**
- * Sets data-theme="dark" on <html> — CSS var overrides in index.css
- * pick this up automatically, including in all federation remotes.
- */
 function applyColorMode(mode: ColorMode) {
   if (mode === 'dark') {
     document.documentElement.setAttribute('data-theme', 'dark');
@@ -30,10 +26,9 @@ interface ColorModeState {
 }
 
 interface ColorModeActions {
-  /** Called once on mount — reads localStorage and applies to DOM */
   hydrateColorMode: () => void;
-  setColorMode:     (mode: ColorMode) => void;
-  toggleColorMode:  () => void;
+  setColorMode: (mode: ColorMode) => void;
+  toggleColorMode: () => void;
 }
 
 export const useColorModeStore = create<ColorModeState & ColorModeActions>((set, get) => ({
@@ -46,20 +41,22 @@ export const useColorModeStore = create<ColorModeState & ColorModeActions>((set,
   },
 
   setColorMode: (mode) => {
-    try { localStorage.setItem(COLOR_MODE_KEY, mode); } catch { /* ignore */ }
+    try {
+      localStorage.setItem(COLOR_MODE_KEY, mode);
+    } catch {}
     applyColorMode(mode);
     set({ colorMode: mode });
   },
 
   toggleColorMode: () => {
     const next: ColorMode = get().colorMode === 'light' ? 'dark' : 'light';
-    try { localStorage.setItem(COLOR_MODE_KEY, next); } catch { /* ignore */ }
+    try {
+      localStorage.setItem(COLOR_MODE_KEY, next);
+    } catch {}
     applyColorMode(next);
     set({ colorMode: next });
   },
 }));
-
-// ─── Selectors ───────────────────────────────────────────────────────────────
 
 export const useColorMode = () =>
   useColorModeStore(useShallow((s) => ({ colorMode: s.colorMode })));
@@ -68,7 +65,7 @@ export const useColorModeActions = () =>
   useColorModeStore(
     useShallow((s) => ({
       hydrateColorMode: s.hydrateColorMode,
-      setColorMode:     s.setColorMode,
-      toggleColorMode:  s.toggleColorMode,
+      setColorMode: s.setColorMode,
+      toggleColorMode: s.toggleColorMode,
     })),
   );

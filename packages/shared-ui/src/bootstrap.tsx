@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-// Standalone preview entry — components rely on shell's ChakraProvider via singleton
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <div style={{ padding: '2rem', fontFamily: 'Montserrat, sans-serif' }}>
     <h2>Shared UI — Components loaded via Module Federation</h2>

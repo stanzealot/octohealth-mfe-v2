@@ -1,15 +1,5 @@
-/**
- * CompaniesList — `/crm/companies`
- *
- * Matches the monolith's companies-entry.tsx:
- *  - Search + Filter + View toggle (grid ↔ list)
- *  - Import file + Add Entity buttons
- *  - Manual pagination (8 per page in grid, 10 in list)
- *  - Grid view: GridCard layout  |  List view: ReusableDataTable
- */
-
 import React, { useState, useMemo, useCallback, memo } from 'react';
-import { Stack, Flex, Box, Text, Button } from '@chakra-ui/react';
+import { Stack, Flex, Box, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { Upload, Plus, Filter, LayoutGrid, List } from 'lucide-react';
 import AppButton from 'sharedUi/AppButton';
@@ -19,7 +9,6 @@ import { mockEntities, filterEntities } from './mock/entities';
 
 type ViewType = 'grid' | 'list';
 
-/* ─── Simple search input ─────────────────────────────────────────── */
 const SearchBox = memo(function SearchBox({
   value,
   onChange,
@@ -48,13 +37,15 @@ const SearchBox = memo(function SearchBox({
       outline="none"
       css={{
         '&::placeholder': { color: 'var(--text-placeholder)' },
-        '&:focus':         { borderColor: 'var(--brand-primary)', boxShadow: '0 0 0 3px rgba(12,101,37,0.08)' },
+        '&:focus': {
+          borderColor: 'var(--brand-primary)',
+          boxShadow: '0 0 0 3px rgba(12,101,37,0.08)',
+        },
       }}
     />
   );
 });
 
-/* ─── Grid / List toggle ──────────────────────────────────────────── */
 const ViewToggle = memo(function ViewToggle({
   view,
   onChange,
@@ -63,12 +54,7 @@ const ViewToggle = memo(function ViewToggle({
   onChange: (v: ViewType) => void;
 }) {
   return (
-    <Flex
-      border="1px solid var(--surface-border)"
-      borderRadius="8px"
-      overflow="hidden"
-      h="4rem"
-    >
+    <Flex border="1px solid var(--surface-border)" borderRadius="8px" overflow="hidden" h="4rem">
       {(['grid', 'list'] as ViewType[]).map((v) => {
         const active = view === v;
         return (
@@ -95,7 +81,6 @@ const ViewToggle = memo(function ViewToggle({
   );
 });
 
-/* ─── Pagination bar ──────────────────────────────────────────────── */
 const Pagination = memo(function Pagination({
   currentPage,
   totalPages,
@@ -110,7 +95,7 @@ const Pagination = memo(function Pagination({
   onPage: (p: number) => void;
 }) {
   const start = (currentPage - 1) * itemsPerPage + 1;
-  const end   = Math.min(currentPage * itemsPerPage, totalItems);
+  const end = Math.min(currentPage * itemsPerPage, totalItems);
 
   return (
     <Flex
@@ -184,20 +169,15 @@ const Pagination = memo(function Pagination({
   );
 });
 
-/* ─── Main page ───────────────────────────────────────────────────── */
-
 function CompaniesListBase() {
   const navigate = useNavigate();
-  const [searchTerm,  setSearchTerm]  = useState('');
-  const [viewType,    setViewType]    = useState<ViewType>('grid');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [viewType, setViewType] = useState<ViewType>('grid');
   const [currentPage, setCurrentPage] = useState(1);
 
   const ITEMS_PER_PAGE = viewType === 'grid' ? 8 : 10;
 
-  const filtered = useMemo(
-    () => filterEntities(mockEntities, searchTerm),
-    [searchTerm],
-  );
+  const filtered = useMemo(() => filterEntities(mockEntities, searchTerm), [searchTerm]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
 
@@ -206,7 +186,6 @@ function CompaniesListBase() {
     return filtered.slice(start, start + ITEMS_PER_PAGE);
   }, [filtered, currentPage, ITEMS_PER_PAGE]);
 
-  // Reset to page 1 when search or view changes
   const handleSearch = useCallback((v: string) => {
     setSearchTerm(v);
     setCurrentPage(1);
@@ -217,25 +196,34 @@ function CompaniesListBase() {
     setCurrentPage(1);
   }, []);
 
-  const handleView   = useCallback((id: string) => navigate(`/crm/companies/${id}`),         [navigate]);
-  const handleEdit   = useCallback((id: string) => navigate(`/crm/companies/edit/${id}`),    [navigate]);
-  const handleDelete = useCallback((_id: string) => { /* TODO: implement */ }, []);
-  const handleAdd    = useCallback(() => navigate('/crm/companies/add'), [navigate]);
+  const handleView = useCallback((id: string) => navigate(`/crm/companies/${id}`), [navigate]);
+  const handleEdit = useCallback((id: string) => navigate(`/crm/companies/edit/${id}`), [navigate]);
+  const handleDelete = useCallback((_id: string) => {}, []);
+  const handleAdd = useCallback(() => navigate('/crm/companies/add'), [navigate]);
 
-  const actionButtons = useMemo(() => (
-    <>
-      <AppButton variant="gray-outline" leftIcon={<Filter size={16} />} buttonSize="md">
-        Filter
-      </AppButton>
-      <ViewToggle view={viewType} onChange={handleViewChange} />
-      <AppButton variant="outline" leftIcon={<Upload size={16} />} enableRipple buttonSize="md">
-        Import file
-      </AppButton>
-      <AppButton variant="primary" leftIcon={<Plus size={16} />} enableRipple buttonSize="md" onClick={handleAdd}>
-        Add Entity
-      </AppButton>
-    </>
-  ), [viewType, handleViewChange, handleAdd]);
+  const actionButtons = useMemo(
+    () => (
+      <>
+        <AppButton variant="gray-outline" leftIcon={<Filter size={16} />} buttonSize="md">
+          Filter
+        </AppButton>
+        <ViewToggle view={viewType} onChange={handleViewChange} />
+        <AppButton variant="outline" leftIcon={<Upload size={16} />} enableRipple buttonSize="md">
+          Import file
+        </AppButton>
+        <AppButton
+          variant="primary"
+          leftIcon={<Plus size={16} />}
+          enableRipple
+          buttonSize="md"
+          onClick={handleAdd}
+        >
+          Add Entity
+        </AppButton>
+      </>
+    ),
+    [viewType, handleViewChange, handleAdd],
+  );
 
   return (
     <Stack
@@ -245,7 +233,7 @@ function CompaniesListBase() {
       borderRadius=".8rem"
       border="1px solid var(--surface-border)"
     >
-      {/* ── Heading ──────────────────────────────────────────── */}
+      {}
       <Text
         fontFamily="Montserrat, sans-serif"
         fontSize="2rem"
@@ -255,7 +243,7 @@ function CompaniesListBase() {
         Entities
       </Text>
 
-      {/* ── Toolbar ──────────────────────────────────────────── */}
+      {}
       <Flex
         flexDir={{ base: 'column', lg: 'row' }}
         justify="space-between"
@@ -263,12 +251,17 @@ function CompaniesListBase() {
         gap="1.2rem"
       >
         <SearchBox value={searchTerm} onChange={handleSearch} />
-        <Flex gap="1.2rem" align="center" flexWrap="wrap" justify={{ base: 'flex-end', lg: 'flex-start' }}>
+        <Flex
+          gap="1.2rem"
+          align="center"
+          flexWrap="wrap"
+          justify={{ base: 'flex-end', lg: 'flex-start' }}
+        >
           {actionButtons}
         </Flex>
       </Flex>
 
-      {/* ── Content ──────────────────────────────────────────── */}
+      {}
       {viewType === 'grid' ? (
         <GridCompanies
           entities={paginated}
@@ -289,7 +282,7 @@ function CompaniesListBase() {
         </Box>
       )}
 
-      {/* ── Pagination ───────────────────────────────────────── */}
+      {}
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

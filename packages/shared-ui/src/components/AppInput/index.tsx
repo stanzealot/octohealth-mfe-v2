@@ -2,33 +2,25 @@ import React, { useState, useRef, useCallback, useId, type CSSProperties } from 
 import { Box, Text } from '@chakra-ui/react';
 import { Eye, EyeOff, X } from 'lucide-react';
 
-/* ─── Props ─────────────────────────────────────────────────────────── */
-export interface AppInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
-  /* Layout */
+export interface AppInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string;
   errorMessage?: string;
-  hint?: string;          // helper text shown below the input
+  hint?: string;
   width?: string;
 
-  /* Addons */
-  leftIcon?: React.ReactNode;    // icon rendered inside, on the left
-  rightElement?: React.ReactNode; // custom element on the right (overrides built-ins)
+  leftIcon?: React.ReactNode;
+  rightElement?: React.ReactNode;
 
-  /* Behaviour */
-  /** Show eye-toggle button (use with type="password") */
   showPasswordToggle?: boolean;
-  /** Show × clear button when the input has a value */
+
   clearable?: boolean;
   onClear?: () => void;
 
-  /* Style overrides */
   containerStyle?: CSSProperties;
   inputStyle?: CSSProperties;
   labelStyle?: CSSProperties;
 }
 
-/* ─── Component ─────────────────────────────────────────────────────── */
 export function AppInput({
   label,
   errorMessage,
@@ -56,18 +48,17 @@ export function AppInput({
   const uid = useId();
   const inputRef = useRef<HTMLInputElement>(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [isFocused,    setIsFocused]    = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
-  const hasError    = !!errorMessage;
-  const hasValue    = value !== undefined ? String(value).length > 0 : false;
-  const inputType   = showPasswordToggle ? (showPassword ? 'text' : 'password') : type;
+  const hasError = !!errorMessage;
+  const hasValue = value !== undefined ? String(value).length > 0 : false;
+  const inputType = showPasswordToggle ? (showPassword ? 'text' : 'password') : type;
 
-  /* Computed border colour */
   const borderColor = hasError
     ? 'var(--status-danger)'
     : isFocused
-    ? 'var(--brand-primary)'
-    : 'var(--surface-border)';
+      ? 'var(--brand-primary)'
+      : 'var(--surface-border)';
 
   const boxShadow = isFocused
     ? hasError
@@ -75,10 +66,9 @@ export function AppInput({
       : '0 0 0 3px rgba(12,101,37,0.08)'
     : 'none';
 
-  /* Whether we render any right-side built-in element */
-  const showClearBtn     = clearable && hasValue && !disabled;
-  const showPasswordBtn  = showPasswordToggle && !rightElement;
-  const hasRightSlot     = !!(rightElement || showClearBtn || showPasswordBtn);
+  const showClearBtn = clearable && hasValue && !disabled;
+  const showPasswordBtn = showPasswordToggle && !rightElement;
+  const hasRightSlot = !!(rightElement || showClearBtn || showPasswordBtn);
 
   const handleClear = useCallback(() => {
     onClear?.();
@@ -86,14 +76,8 @@ export function AppInput({
   }, [onClear]);
 
   return (
-    <Box
-      display="flex"
-      flexDir="column"
-      gap="0.5rem"
-      w={width}
-      style={containerStyle}
-    >
-      {/* ── Label ──────────────────────────────────────────────────── */}
+    <Box display="flex" flexDir="column" gap="0.5rem" w={width} style={containerStyle}>
+      {}
       {label && (
         <Text
           as="label"
@@ -106,12 +90,14 @@ export function AppInput({
         >
           {label}
           {required && (
-            <Text as="span" color="var(--status-danger)" ml="2px" aria-hidden>*</Text>
+            <Text as="span" color="var(--status-danger)" ml="2px" aria-hidden>
+              *
+            </Text>
           )}
         </Text>
       )}
 
-      {/* ── Input wrapper ──────────────────────────────────────────── */}
+      {}
       <Box
         position="relative"
         display="flex"
@@ -123,7 +109,7 @@ export function AppInput({
         transition="border-color 0.2s, box-shadow 0.2s"
         overflow="hidden"
       >
-        {/* Left icon */}
+        {}
         {leftIcon && (
           <Box
             position="absolute"
@@ -138,7 +124,7 @@ export function AppInput({
           </Box>
         )}
 
-        {/* The actual input */}
+        {}
         <input
           ref={inputRef}
           id={uid}
@@ -152,7 +138,7 @@ export function AppInput({
           style={{
             width: '100%',
             height: '4.4rem',
-            paddingLeft:  leftIcon  ? '3.8rem' : '1.4rem',
+            paddingLeft: leftIcon ? '3.8rem' : '1.4rem',
             paddingRight: hasRightSlot ? '3.8rem' : '1.4rem',
             border: 'none',
             outline: 'none',
@@ -167,26 +153,14 @@ export function AppInput({
           {...rest}
         />
 
-        {/* Right slot — custom element takes priority */}
+        {}
         {rightElement ? (
-          <Box
-            position="absolute"
-            right="1rem"
-            display="flex"
-            alignItems="center"
-            gap="0.4rem"
-          >
+          <Box position="absolute" right="1rem" display="flex" alignItems="center" gap="0.4rem">
             {rightElement}
           </Box>
         ) : (
-          <Box
-            position="absolute"
-            right="1rem"
-            display="flex"
-            alignItems="center"
-            gap="0.4rem"
-          >
-            {/* Clear button */}
+          <Box position="absolute" right="1rem" display="flex" alignItems="center" gap="0.4rem">
+            {}
             {showClearBtn && (
               <Box
                 as="button"
@@ -210,7 +184,7 @@ export function AppInput({
               </Box>
             )}
 
-            {/* Password toggle */}
+            {}
             {showPasswordBtn && (
               <Box
                 as="button"
@@ -237,22 +211,14 @@ export function AppInput({
         )}
       </Box>
 
-      {/* ── Error / Hint ───────────────────────────────────────────── */}
+      {}
       {errorMessage && (
-        <Text
-          fontSize="1.2rem"
-          color="var(--status-danger)"
-          fontFamily="Montserrat, sans-serif"
-        >
+        <Text fontSize="1.2rem" color="var(--status-danger)" fontFamily="Montserrat, sans-serif">
           {errorMessage}
         </Text>
       )}
       {!errorMessage && hint && (
-        <Text
-          fontSize="1.2rem"
-          color="var(--text-muted)"
-          fontFamily="Montserrat, sans-serif"
-        >
+        <Text fontSize="1.2rem" color="var(--text-muted)" fontFamily="Montserrat, sans-serif">
           {hint}
         </Text>
       )}

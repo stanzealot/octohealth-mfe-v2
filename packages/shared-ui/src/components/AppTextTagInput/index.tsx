@@ -1,9 +1,8 @@
 import React, { memo, useCallback, useId } from 'react';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { Plus, X } from 'lucide-react';
-import type { UseFormReturn } from 'react-hook-form';
+import type { UseFormReturn, FieldValues } from 'react-hook-form';
 
-/* ─── Tag pill ───────────────────────────────────────────────────────── */
 const TextTag = memo(function TextTag({
   label,
   onRemove,
@@ -53,19 +52,11 @@ const TextTag = memo(function TextTag({
   );
 });
 
-/* ─── Props ──────────────────────────────────────────────────────────── */
 export interface AppTextTagInputProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handler: UseFormReturn<any>;
-  /**
-   * Field name for the current single-line input (cleared after adding).
-   * @default "input"
-   */
+  handler: UseFormReturn<FieldValues>;
+
   title?: string;
-  /**
-   * Field name for the confirmed tag array.
-   * @default "tagList"
-   */
+
   listName?: string;
 
   label?: string;
@@ -74,11 +65,10 @@ export interface AppTextTagInputProps {
   disabled?: boolean;
   errorMessage?: string;
   id?: string;
-  /** Render tags above or below the input row (@default "bottom") */
+
   tagPlacement?: 'top' | 'bottom';
 }
 
-/* ─── Component ──────────────────────────────────────────────────────── */
 function AppTextTagInputBase({
   handler,
   title = 'input',
@@ -91,12 +81,12 @@ function AppTextTagInputBase({
   id,
   tagPlacement = 'bottom',
 }: AppTextTagInputProps) {
-  const uid    = useId();
+  const uid = useId();
   const htmlId = id ?? uid;
 
   const { register, watch, setValue } = handler;
-  const tagList: string[]  = watch(listName) || [];
-  const currentInput       = watch(title) || '';
+  const tagList: string[] = watch(listName) || [];
+  const currentInput = watch(title) || '';
 
   const addTag = useCallback(() => {
     const trimmed = currentInput?.toString().trim();
@@ -108,7 +98,11 @@ function AppTextTagInputBase({
   }, [currentInput, tagList, listName, title, setValue]);
 
   const removeTag = useCallback(
-    (index: number) => setValue(listName, tagList.filter((_, i) => i !== index)),
+    (index: number) =>
+      setValue(
+        listName,
+        tagList.filter((_, i) => i !== index),
+      ),
     [tagList, listName, setValue],
   );
 
@@ -118,7 +112,7 @@ function AppTextTagInputBase({
         e.preventDefault();
         addTag();
       }
-      /* Backspace on empty input removes last tag */
+
       if (e.key === 'Backspace' && !currentInput && tagList.length > 0) {
         removeTag(tagList.length - 1);
       }
@@ -136,7 +130,7 @@ function AppTextTagInputBase({
 
   return (
     <Box display="flex" flexDir="column" gap="0.5rem" w="100%">
-      {/* Label */}
+      {}
       {label && (
         <Text
           as="label"
@@ -158,10 +152,10 @@ function AppTextTagInputBase({
         </Text>
       )}
 
-      {/* Tags above */}
+      {}
       {tagPlacement === 'top' && tagNodes}
 
-      {/* Input row */}
+      {}
       <Flex
         align="center"
         w="100%"
@@ -222,10 +216,10 @@ function AppTextTagInputBase({
         )}
       </Flex>
 
-      {/* Tags below */}
+      {}
       {tagPlacement === 'bottom' && tagNodes}
 
-      {/* Error */}
+      {}
       {errorMessage && (
         <Text
           fontSize="1.2rem"

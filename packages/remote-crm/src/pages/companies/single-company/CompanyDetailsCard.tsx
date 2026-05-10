@@ -1,55 +1,47 @@
-/**
- * CompanyDetailsCard — Entity header card
- *
- * Shows:
- *  - "Entity Details" heading + "Edit information" button (bottom-bordered)
- *  - Logo or initials avatar (80×80, green bg)
- *  - Entity name
- *  - ThreeColumnDetailGrid: Name/Industry/Category | Employees/Legal/Revenue | OwnerID/LeadID/CAC
- */
-
 import React, { useState, memo } from 'react';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { Pencil } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import AppButton              from 'sharedUi/AppButton';
+import AppButton from 'sharedUi/AppButton';
 import { ThreeColumnDetailGrid } from 'sharedUi/DetailGridPresets';
 import type { Entity } from '../types';
 import { getInitials } from '../constants';
 
-interface Props { entity: Entity }
+interface Props {
+  entity: Entity;
+}
 
 function CompanyDetailsCardBase({ entity }: Props) {
-  const navigate     = useNavigate();
+  const navigate = useNavigate();
   const [imgError, setImgError] = useState(false);
 
   const sections = [
     {
       items: [
-        { label: 'Name',     value: entity.name   },
-        { label: 'Industry', value: 'Health'       },
-        { label: 'Category', value: 'Pharmacy'     },
+        { label: 'Name', value: entity.name },
+        { label: 'Industry', value: 'Health' },
+        { label: 'Category', value: 'Pharmacy' },
       ],
     },
     {
       items: [
-        { label: 'No of Employees',   value: '34'               },
+        { label: 'No of Employees', value: '34' },
         { label: 'Legal Entity Type', value: 'Limited Liability' },
-        { label: 'Annual Revenue',    value: '₦857,967.09'      },
+        { label: 'Annual Revenue', value: '₦857,967.09' },
       ],
     },
     {
       items: [
-        { label: 'Owner ID', value: '98765'       },
-        { label: 'Lead ID',  value: '98765'       },
-        { label: 'CAC',      value: entity.cac || '98765' },
+        { label: 'Owner ID', value: '98765' },
+        { label: 'Lead ID', value: '98765' },
+        { label: 'CAC', value: entity.cac || '98765' },
       ],
     },
   ];
 
   return (
     <>
-      {/* Header row */}
+      {}
       <Box borderBottom="1px solid var(--surface-border)" pb="2.4rem">
         <Flex justify="space-between" align="center">
           <Text
@@ -71,10 +63,10 @@ function CompanyDetailsCardBase({ entity }: Props) {
         </Flex>
       </Box>
 
-      {/* Body */}
+      {}
       <Box mt="2.8rem">
         <Flex align="flex-start" gap="2.4rem" mb="3.2rem" flexDir={{ base: 'column', sm: 'row' }}>
-          {/* Avatar / logo */}
+          {}
           {!imgError && entity.logo ? (
             <Box
               as="img"

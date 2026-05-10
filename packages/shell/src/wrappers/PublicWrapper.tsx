@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Flex, Text } from '@chakra-ui/react';
+import bastionLogo from '../assets/bastionLogo.svg';
+import iconLogo from '../assets/iconLogo.png';
 
 interface PublicWrapperProps {
   children: React.ReactNode;
@@ -11,7 +13,7 @@ interface PublicWrapperProps {
 export default function PublicWrapper({ children, title, description }: PublicWrapperProps) {
   return (
     <Flex flexDir="column" bg="var(--surface-bg)" minH="100vh">
-      {/* Header bar */}
+      {}
       <Flex
         w="100%"
         h="86px"
@@ -22,26 +24,11 @@ export default function PublicWrapper({ children, title, description }: PublicWr
         flexShrink={0}
       >
         <Link to="/" style={{ textDecoration: 'none' }}>
-          <Flex align="center" gap="8px">
-            <Box
-              w="36px"
-              h="36px"
-              bg="var(--brand-primary)"
-              borderRadius="8px"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Text color="white" fontWeight="800" fontSize="18px">B</Text>
-            </Box>
-            <Text fontWeight="700" fontSize="18px" color="var(--brand-primary)" fontFamily="Montserrat, sans-serif">
-              Bastion
-            </Text>
-          </Flex>
+          <Box as="img" src={bastionLogo} alt="Bastion" h="40px" display="block" />
         </Link>
       </Flex>
 
-      {/* Content area */}
+      {}
       <Flex justify="center" align="center" flex={1} pb="2rem" mt="20px" px="2rem">
         <Flex
           w="100%"
@@ -53,40 +40,41 @@ export default function PublicWrapper({ children, title, description }: PublicWr
           overflow="hidden"
           boxShadow="0 4px 24px rgba(0,0,0,0.06)"
         >
-          {/* Left — form panel */}
-          <Box
-            flex="1"
-            h="100%"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
+          {}
+          <Box flex="1" h="100%" display="flex" alignItems="center" justifyContent="center">
             <Box
               w="100%"
               maxW={{ base: '400px', lg: '500px' }}
               mx={{ base: '24px', sm: '32px', md: '40px', lg: '60px' }}
             >
               <Box mb="32px" textAlign="center">
-                <Box
-                  w="48px"
-                  h="48px"
-                  bg="var(--brand-primary)"
-                  borderRadius="12px"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  mx="auto"
-                  mb="16px"
-                >
-                  <Text color="white" fontWeight="800" fontSize="22px">O</Text>
+                <Box w="48px" h="48px" borderRadius="12px" overflow="hidden" mx="auto" mb="16px">
+                  <Box
+                    as="img"
+                    src={iconLogo}
+                    alt="OctoHealth"
+                    w="100%"
+                    h="100%"
+                    style={{ objectFit: 'cover' }}
+                  />
                 </Box>
                 {title && (
-                  <Text fontSize="24px" fontWeight="600" color="var(--text-primary)" mb="8px" fontFamily="Montserrat, sans-serif">
+                  <Text
+                    fontSize="24px"
+                    fontWeight="600"
+                    color="var(--text-primary)"
+                    mb="8px"
+                    fontFamily="Montserrat, sans-serif"
+                  >
                     {title}
                   </Text>
                 )}
                 {description && (
-                  <Text fontSize="16px" color="var(--text-muted)" fontFamily="Montserrat, sans-serif">
+                  <Text
+                    fontSize="16px"
+                    color="var(--text-muted)"
+                    fontFamily="Montserrat, sans-serif"
+                  >
                     {description}
                   </Text>
                 )}
@@ -95,7 +83,7 @@ export default function PublicWrapper({ children, title, description }: PublicWr
             </Box>
           </Box>
 
-          {/* Right — video panel (lg screens only) */}
+          {}
           <Box
             flex="1"
             display={{ base: 'none', lg: 'block' }}

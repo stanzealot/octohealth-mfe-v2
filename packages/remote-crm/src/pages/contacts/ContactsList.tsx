@@ -1,12 +1,6 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Plus,
-  Upload,
-  SlidersHorizontal,
-  LayoutGrid,
-  List,
-} from 'lucide-react';
+import { Plus, Upload, SlidersHorizontal, LayoutGrid, List } from 'lucide-react';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import type { TableColumn } from 'react-data-table-component';
 import ReusableDataTable from 'sharedUi/ReusableDataTable';
@@ -20,78 +14,17 @@ import { AppSelect as CustomSelect } from 'sharedUi/AppSelect';
 import AppPagination from 'sharedUi/AppPagination';
 import { filterContacts, type Contact } from '../../mock/contacts';
 import { toast } from 'react-toastify';
+import {
+  GRID_PAGE_SIZE_OPTIONS,
+  DEFAULT_GRID_PAGE_SIZE,
+  ADD_CONTACT_PREFIX_OPTIONS,
+  ADD_CONTACT_GENDER_OPTIONS,
+} from './constants';
+import { calculateAge, StatusBadge, ContactAvatar } from './utils/contact-helpers';
 
-/* ─── Constants ──────────────────────────────────────────────────── */
-const GRID_PAGE_SIZE_OPTIONS = [8, 12, 20, 32];
-const DEFAULT_GRID_PAGE_SIZE = 12; // divisible by 4 — fills the 4-column grid cleanly
-
-/* ─── Helpers ────────────────────────────────────────────────────── */
-function StatusBadge({ status }: { status: Contact['contactStatus'] }) {
-  const map: Record<string, { bg: string; color: string }> = {
-    Active: { bg: 'rgba(18,183,106,0.12)', color: 'var(--status-success)' },
-    Inactive: { bg: 'var(--hover-bg)', color: 'var(--text-muted)' },
-    Suspended: { bg: 'rgba(240,68,56,0.12)', color: 'var(--status-danger)' },
-  };
-  const s = map[status] ?? map.Inactive;
-  return (
-    <span
-      style={{
-        display: 'inline-block',
-        padding: '0.3rem 1rem',
-        borderRadius: '2rem',
-        fontSize: '1.2rem',
-        fontWeight: 500,
-        background: s.bg,
-        color: s.color,
-      }}
-    >
-      {status}
-    </span>
-  );
-}
-
-function ContactAvatar({
-  firstName,
-  lastName,
-}: {
-  firstName: string;
-  lastName: string;
-}) {
-  return (
-    <Flex
-      align="center"
-      justify="center"
-      w="4rem"
-      h="4rem"
-      borderRadius="50%"
-      bg="var(--avatar-fallback-bg)"
-      color="var(--avatar-fallback-color)"
-      fontWeight={700}
-      fontSize="1.3rem"
-      flexShrink={0}
-      fontFamily="Montserrat, sans-serif"
-    >
-      {firstName[0]}
-      {lastName[0]}
-    </Flex>
-  );
-}
-
-function calculateAge(dob: string | undefined): string {
-  if (!dob) return '-';
-  const birth = new Date(dob);
-  const today = new Date();
-  let age = today.getFullYear() - birth.getFullYear();
-  const m = today.getMonth() - birth.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
-  return String(age);
-}
-
-/* ─── Component ──────────────────────────────────────────────────── */
 export default function ContactsList() {
   const navigate = useNavigate();
 
-  /* ── UI state ──────────────────────────────────────────────────── */
   const [search, setSearch] = useState('');
   const [viewType, setViewType] = useState<'grid' | 'list'>('grid');
   const [addOpen, setAddOpen] = useState(false);
@@ -105,13 +38,9 @@ export default function ContactsList() {
     phone: '',
   });
 
-  /* ── Grid pagination state ─────────────────────────────────────── */
   const [gridPage, setGridPage] = useState(1);
-  const [gridRowsPerPage, setGridRowsPerPage] = useState(
-    DEFAULT_GRID_PAGE_SIZE,
-  );
+  const [gridRowsPerPage, setGridRowsPerPage] = useState(DEFAULT_GRID_PAGE_SIZE);
 
-  /* ── Derived data — memoised so filter only re-runs when search changes ── */
   const filtered = useMemo(() => filterContacts(search), [search]);
 
   const activeCount = useMemo(
@@ -123,25 +52,21 @@ export default function ContactsList() {
     [filtered],
   );
 
-  /* Grid slice — only recomputes when page / pageSize / filtered list changes */
   const gridSlice = useMemo(() => {
     const start = (gridPage - 1) * gridRowsPerPage;
     return filtered.slice(start, start + gridRowsPerPage);
   }, [filtered, gridPage, gridRowsPerPage]);
 
-  /* Reset to page 1 whenever the search changes so you never land on an empty page */
   useEffect(() => {
     setGridPage(1);
   }, [search]);
 
-  /* Stable callbacks — won't cause GridCard re-renders */
   const handleGridPageChange = useCallback((p: number) => setGridPage(p), []);
   const handleGridRowsPerPageChange = useCallback((size: number) => {
     setGridRowsPerPage(size);
     setGridPage(1);
   }, []);
 
-  /* ── Table columns ─────────────────────────────────────────────── */
   const columns: TableColumn<Contact>[] = useMemo(
     () => [
       {
@@ -154,10 +79,7 @@ export default function ContactsList() {
             onClick={() => navigate(`/crm/contacts/${row.id}`)}
           >
             <ContactAvatar firstName={row.firstName} lastName={row.lastName} />
-            <Text
-              fontFamily="Montserrat, sans-serif"
-              color="var(--text-primary)"
-            >
+            <Text fontFamily="Montserrat, sans-serif" color="var(--text-primary)">
               {`${row.firstName} ${row.lastName}`}
             </Text>
           </Flex>
@@ -212,7 +134,6 @@ export default function ContactsList() {
     [navigate],
   );
 
-  /* ── Render ────────────────────────────────────────────────────── */
   return (
     <Box
       bg="var(--surface-card)"
@@ -231,7 +152,7 @@ export default function ContactsList() {
         Contacts
       </Text>
 
-      {/* ── Toolbar ──────────────────────────────────────────────── */}
+      {}
       <Flex
         flexDir={{ base: 'column', md: 'row' }}
         align={{ base: 'stretch', md: 'center' }}
@@ -239,9 +160,9 @@ export default function ContactsList() {
         gap="1.2rem"
         mb="1.6rem"
       >
-        {/* Left — search + filter */}
+        {}
         <Flex align="center" gap="1rem" flexWrap="wrap">
-          {/* Search */}
+          {}
           <Box position="relative" flex={{ base: 1, md: 'none' }} minW={0}>
             <Box
               position="absolute"
@@ -266,7 +187,7 @@ export default function ContactsList() {
             </Box>
             <input
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
               placeholder="Search here..."
               style={{
                 height: '4rem',
@@ -283,10 +204,10 @@ export default function ContactsList() {
                 background: 'var(--surface-bg)',
                 transition: 'border-color 0.2s',
               }}
-              onFocus={(e) => {
+              onFocus={(e: React.FocusEvent<HTMLInputElement>) => {
                 e.target.style.borderColor = 'var(--brand-primary)';
               }}
-              onBlur={(e) => {
+              onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
                 e.target.style.borderColor = 'var(--surface-border)';
               }}
             />
@@ -300,19 +221,15 @@ export default function ContactsList() {
           </AdvancedButton>
         </Flex>
 
-        {/* Right — view toggle + action buttons */}
+        {}
         <Flex
           align="center"
           gap="1rem"
           flexWrap="wrap"
           justify={{ base: 'flex-end', md: 'flex-start' }}
         >
-          {/* Grid / List toggle */}
-          <Flex
-            border="1px solid var(--surface-border)"
-            borderRadius="0.8rem"
-            overflow="hidden"
-          >
+          {}
+          <Flex border="1px solid var(--surface-border)" borderRadius="0.8rem" overflow="hidden">
             {(['grid', 'list'] as const).map((v) => (
               <Box
                 key={v}
@@ -324,14 +241,8 @@ export default function ContactsList() {
                 display="flex"
                 alignItems="center"
                 gap="0.4rem"
-                bg={
-                  viewType === v
-                    ? 'var(--brand-primary-light)'
-                    : 'var(--surface-card)'
-                }
-                color={
-                  viewType === v ? 'var(--brand-primary)' : 'var(--text-muted)'
-                }
+                bg={viewType === v ? 'var(--brand-primary-light)' : 'var(--surface-card)'}
+                color={viewType === v ? 'var(--brand-primary)' : 'var(--text-muted)'}
                 fontSize="1.3rem"
                 fontFamily="Montserrat, sans-serif"
                 fontWeight={viewType === v ? 600 : 400}
@@ -366,14 +277,8 @@ export default function ContactsList() {
         </Flex>
       </Flex>
 
-      {/* ── Status summary ───────────────────────────────────────── */}
-      <Flex
-        justify="space-between"
-        align="center"
-        mb="1.6rem"
-        flexWrap="wrap"
-        gap="1rem"
-      >
+      {}
+      <Flex justify="space-between" align="center" mb="1.6rem" flexWrap="wrap" gap="1rem">
         <Flex gap="1rem">
           <Flex
             align="center"
@@ -391,13 +296,7 @@ export default function ContactsList() {
               Active
             </Text>
           </Flex>
-          <Flex
-            align="center"
-            px="0.8rem"
-            h="3rem"
-            bg="rgba(240,68,56,0.12)"
-            borderRadius="0.5rem"
-          >
+          <Flex align="center" px="0.8rem" h="3rem" bg="rgba(240,68,56,0.12)" borderRadius="0.5rem">
             <Text
               fontSize="1.3rem"
               color="var(--status-danger)"
@@ -408,40 +307,20 @@ export default function ContactsList() {
             </Text>
           </Flex>
         </Flex>
-        <Text
-          fontSize="1.4rem"
-          color="var(--text-muted)"
-          fontFamily="Montserrat, sans-serif"
-        >
+        <Text fontSize="1.4rem" color="var(--text-muted)" fontFamily="Montserrat, sans-serif">
           Total contacts:{' '}
-          <strong style={{ color: 'var(--text-primary)' }}>
-            {filtered.length}
-          </strong>{' '}
-          Active:{' '}
-          <strong style={{ color: 'var(--status-success)' }}>
-            {activeCount}
-          </strong>{' '}
-          Inactive:{' '}
-          <strong style={{ color: 'var(--status-danger)' }}>
-            {inactiveCount}
-          </strong>
+          <strong style={{ color: 'var(--text-primary)' }}>{filtered.length}</strong> Active:{' '}
+          <strong style={{ color: 'var(--status-success)' }}>{activeCount}</strong> Inactive:{' '}
+          <strong style={{ color: 'var(--status-danger)' }}>{inactiveCount}</strong>
         </Text>
       </Flex>
 
-      {/* ── Grid view ────────────────────────────────────────────── */}
+      {}
       {viewType === 'grid' && (
-        <Box
-          border="1px solid var(--surface-border)"
-          borderRadius="1rem"
-          overflow="hidden"
-        >
+        <Box border="1px solid var(--surface-border)" borderRadius="1rem" overflow="hidden">
           {filtered.length === 0 ? (
             <Flex align="center" justify="center" minH="20rem">
-              <Text
-                color="var(--text-muted)"
-                fontSize="1.4rem"
-                fontFamily="Montserrat, sans-serif"
-              >
+              <Text color="var(--text-muted)" fontSize="1.4rem" fontFamily="Montserrat, sans-serif">
                 No contacts found
               </Text>
             </Flex>
@@ -467,7 +346,7 @@ export default function ContactsList() {
                         value: c.membership?.regNumber || '-',
                       },
                     ]}
-                    onCardClick={(id) => navigate(`/crm/contacts/${id}`)}
+                    onCardClick={(id: string) => navigate(`/crm/contacts/${id}`)}
                     actions={[
                       { label: 'View', cta: () => navigate(`/crm/contacts/${c.id}`) },
                       {
@@ -491,7 +370,7 @@ export default function ContactsList() {
             </Box>
           )}
 
-          {/* Pagination bar — same visual style as react-data-table */}
+          {}
           <AppPagination
             totalRows={filtered.length}
             currentPage={gridPage}
@@ -503,7 +382,7 @@ export default function ContactsList() {
         </Box>
       )}
 
-      {/* ── List view ────────────────────────────────────────────── */}
+      {}
       {viewType === 'list' && (
         <ReusableDataTable
           data={filtered}
@@ -519,24 +398,20 @@ export default function ContactsList() {
         />
       )}
 
-      {/* ── Add Contact modal ─────────────────────────────────────── */}
+      {}
       <AnimatedModal
         isOpen={addOpen}
         onClose={() => setAddOpen(false)}
         title="Add Contact"
         size="md"
       >
-        <Box
-          display="grid"
-          gridTemplateColumns={{ base: '1fr', md: '1fr 1fr' }}
-          gap="1.6rem"
-        >
+        <Box display="grid" gridTemplateColumns={{ base: '1fr', md: '1fr 1fr' }} gap="1.6rem">
           <CustomSelect
             label="Title"
             required
             value={form.prefix}
-            onChange={(v) => setForm((p) => ({ ...p, prefix: v }))}
-            options={['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'].map((o) => ({
+            onChange={(v: string) => setForm((p) => ({ ...p, prefix: v }))}
+            options={ADD_CONTACT_PREFIX_OPTIONS.map((o) => ({
               label: o,
               value: o,
             }))}
@@ -545,19 +420,19 @@ export default function ContactsList() {
             label="Gender"
             required
             value={form.gender}
-            onChange={(v) => setForm((p) => ({ ...p, gender: v }))}
-            options={['Male', 'Female'].map((o) => ({ label: o, value: o }))}
+            onChange={(v: string) => setForm((p) => ({ ...p, gender: v }))}
+            options={ADD_CONTACT_GENDER_OPTIONS.map((o) => ({
+              label: o,
+              value: o,
+            }))}
           />
           <AppInput
             label="First Name"
             required
             placeholder="Enter first name"
             value={form.firstName}
-            onChange={(e) =>
-              setForm((p) => ({
-                ...p,
-                firstName: (e.target as HTMLInputElement).value,
-              }))
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setForm((p) => ({ ...p, firstName: e.target.value }))
             }
           />
           <AppInput
@@ -565,11 +440,8 @@ export default function ContactsList() {
             required
             placeholder="Enter last name"
             value={form.lastName}
-            onChange={(e) =>
-              setForm((p) => ({
-                ...p,
-                lastName: (e.target as HTMLInputElement).value,
-              }))
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setForm((p) => ({ ...p, lastName: e.target.value }))
             }
           />
           <AppInput
@@ -578,11 +450,8 @@ export default function ContactsList() {
             type="email"
             placeholder="Enter email"
             value={form.email}
-            onChange={(e) =>
-              setForm((p) => ({
-                ...p,
-                email: (e.target as HTMLInputElement).value,
-              }))
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setForm((p) => ({ ...p, email: e.target.value }))
             }
             style={{ gridColumn: '1 / -1' }}
           />
@@ -591,20 +460,14 @@ export default function ContactsList() {
             required
             placeholder="+234..."
             value={form.phone}
-            onChange={(e) =>
-              setForm((p) => ({
-                ...p,
-                phone: (e.target as HTMLInputElement).value,
-              }))
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setForm((p) => ({ ...p, phone: e.target.value }))
             }
             style={{ gridColumn: '1 / -1' }}
           />
         </Box>
         <Flex gap="1.2rem" justify="flex-end" mt="2.4rem">
-          <AdvancedButton
-            variant="gray-outline"
-            onClick={() => setAddOpen(false)}
-          >
+          <AdvancedButton variant="gray-outline" onClick={() => setAddOpen(false)}>
             Cancel
           </AdvancedButton>
           <AdvancedButton
@@ -613,9 +476,7 @@ export default function ContactsList() {
                 toast.error('First and last name are required');
                 return;
               }
-              toast.success(
-                `Contact ${form.firstName} ${form.lastName} added! (mock)`,
-              );
+              toast.success(`Contact ${form.firstName} ${form.lastName} added! (mock)`);
               setAddOpen(false);
               setForm({
                 firstName: '',
@@ -632,7 +493,7 @@ export default function ContactsList() {
         </Flex>
       </AnimatedModal>
 
-      {/* ── Confirm delete modal ──────────────────────────────────── */}
+      {}
       <ConfirmDeleteModal
         isOpen={Boolean(deleteTarget)}
         onClose={() => setDeleteTarget(null)}

@@ -56,7 +56,10 @@ export default function SharedActionMenu({ actions }: ActionMenuProps) {
         color="#667085"
         transition="all 0.2s"
         _hover={{ bg: '#F9FAFB', borderColor: '#D0D5DD', color: '#344054' }}
-        onClick={() => { setOpen((p) => !p); setConfirmAction(null); }}
+        onClick={() => {
+          setOpen((p) => !p);
+          setConfirmAction(null);
+        }}
       >
         <MoreHorizontal size={16} />
       </Box>
@@ -77,7 +80,6 @@ export default function SharedActionMenu({ actions }: ActionMenuProps) {
             }}
           >
             {confirmAction ? (
-              /* Confirmation popover */
               <Box
                 bg="white"
                 borderRadius="10px"
@@ -86,7 +88,12 @@ export default function SharedActionMenu({ actions }: ActionMenuProps) {
                 p="1.2rem"
                 minW="22rem"
               >
-                <Text fontSize="1.3rem" color="#344054" fontFamily="Montserrat, sans-serif" mb="1.2rem">
+                <Text
+                  fontSize="1.3rem"
+                  color="#344054"
+                  fontFamily="Montserrat, sans-serif"
+                  mb="1.2rem"
+                >
                   {confirmAction.confirmationText}
                 </Text>
                 <Flex gap="0.8rem" justify="flex-end">
@@ -116,14 +123,17 @@ export default function SharedActionMenu({ actions }: ActionMenuProps) {
                     fontSize="1.3rem"
                     fontFamily="Montserrat, sans-serif"
                     cursor="pointer"
-                    onClick={() => { setOpen(false); setConfirmAction(null); confirmAction.cta(); }}
+                    onClick={() => {
+                      setOpen(false);
+                      setConfirmAction(null);
+                      confirmAction.cta();
+                    }}
                   >
                     Delete
                   </Box>
                 </Flex>
               </Box>
             ) : (
-              /* Normal menu */
               <Box
                 bg="white"
                 borderRadius="10px"

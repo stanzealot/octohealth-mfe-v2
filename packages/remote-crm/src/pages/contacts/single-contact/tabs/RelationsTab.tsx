@@ -2,10 +2,7 @@ import React, { useState, useMemo, memo } from 'react';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { CheckCircle, Plus, SlidersHorizontal } from 'lucide-react';
 import AppButton from 'sharedUi/AppButton';
-import AppInput from 'sharedUi/AppInput';
 import { mockRelations, type Relation } from './types';
-
-/* ─── Relation card ──────────────────────────────────────────────────── */
 
 const RelationCard = memo(function RelationCard({ relation }: { relation: Relation }) {
   return (
@@ -20,7 +17,7 @@ const RelationCard = memo(function RelationCard({ relation }: { relation: Relati
       transition="box-shadow 0.2s"
       _hover={{ boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
     >
-      {/* Header: initials chip + checkmark */}
+      {}
       <Flex justify="space-between" align="center">
         <Box
           bg="var(--hover-bg)"
@@ -37,7 +34,7 @@ const RelationCard = memo(function RelationCard({ relation }: { relation: Relati
         <CheckCircle size={18} color="var(--brand-primary)" />
       </Flex>
 
-      {/* Name */}
+      {}
       <Text
         fontFamily="Montserrat, sans-serif"
         fontSize="1.6rem"
@@ -47,28 +44,40 @@ const RelationCard = memo(function RelationCard({ relation }: { relation: Relati
         {relation.name}
       </Text>
 
-      {/* Details */}
+      {}
       <Box>
         <Flex justify="space-between" mb="0.4rem">
-          <Text fontFamily="Montserrat, sans-serif" fontSize="1.4rem" color="var(--text-muted)">Gender:</Text>
-          <Text fontFamily="Montserrat, sans-serif" fontSize="1.4rem" color="var(--text-primary)">{relation.gender}</Text>
+          <Text fontFamily="Montserrat, sans-serif" fontSize="1.4rem" color="var(--text-muted)">
+            Gender:
+          </Text>
+          <Text fontFamily="Montserrat, sans-serif" fontSize="1.4rem" color="var(--text-primary)">
+            {relation.gender}
+          </Text>
         </Flex>
         <Flex justify="space-between" mb="0.4rem">
-          <Text fontFamily="Montserrat, sans-serif" fontSize="1.4rem" color="var(--text-muted)">Age:</Text>
-          <Text fontFamily="Montserrat, sans-serif" fontSize="1.4rem" color="var(--text-primary)">{relation.age} years</Text>
+          <Text fontFamily="Montserrat, sans-serif" fontSize="1.4rem" color="var(--text-muted)">
+            Age:
+          </Text>
+          <Text fontFamily="Montserrat, sans-serif" fontSize="1.4rem" color="var(--text-primary)">
+            {relation.age} years
+          </Text>
         </Flex>
         <Flex justify="space-between">
-          <Text fontFamily="Montserrat, sans-serif" fontSize="1.4rem" color="var(--text-muted)">Relationship:</Text>
-          <Text fontFamily="Montserrat, sans-serif" fontSize="1.4rem" color="var(--text-primary)">{relation.relationship}</Text>
+          <Text fontFamily="Montserrat, sans-serif" fontSize="1.4rem" color="var(--text-muted)">
+            Relationship:
+          </Text>
+          <Text fontFamily="Montserrat, sans-serif" fontSize="1.4rem" color="var(--text-primary)">
+            {relation.relationship}
+          </Text>
         </Flex>
       </Box>
     </Box>
   );
 });
 
-/* ─── Main tab ───────────────────────────────────────────────────────── */
-
-interface Props { contactId: string }
+interface Props {
+  contactId: string;
+}
 
 function RelationsTabBase({ contactId: _contactId }: Props) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -76,9 +85,8 @@ function RelationsTabBase({ contactId: _contactId }: Props) {
   const filtered = useMemo(() => {
     if (!searchTerm) return mockRelations;
     const q = searchTerm.toLowerCase();
-    return mockRelations.filter((r) =>
-      r.name.toLowerCase().includes(q) ||
-      r.relationship.toLowerCase().includes(q),
+    return mockRelations.filter(
+      (r) => r.name.toLowerCase().includes(q) || r.relationship.toLowerCase().includes(q),
     );
   }, [searchTerm]);
 
@@ -89,7 +97,7 @@ function RelationsTabBase({ contactId: _contactId }: Props) {
       bg="var(--surface-card)"
       overflow="hidden"
     >
-      {/* Toolbar */}
+      {}
       <Flex
         direction={{ base: 'column', lg: 'row' }}
         justify="space-between"
@@ -101,8 +109,7 @@ function RelationsTabBase({ contactId: _contactId }: Props) {
       >
         <Flex gap="1.2rem" align="center" flex="1">
           <Box maxW={{ base: '100%', md: '32rem' }} w="100%">
-            <Box
-              as="input"
+            <input
               type="text"
               placeholder="Search relations…"
               value={searchTerm}
@@ -118,11 +125,19 @@ function RelationsTabBase({ contactId: _contactId }: Props) {
                 color: 'var(--text-primary)',
                 outline: 'none',
               }}
-              onFocus={(e: React.FocusEvent<HTMLInputElement>) => { e.target.style.borderColor = 'var(--brand-primary)'; }}
-              onBlur={(e: React.FocusEvent<HTMLInputElement>) => { e.target.style.borderColor = 'var(--surface-border)'; }}
+              onFocus={(e: React.FocusEvent<HTMLInputElement>) => {
+                e.target.style.borderColor = 'var(--brand-primary)';
+              }}
+              onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+                e.target.style.borderColor = 'var(--surface-border)';
+              }}
             />
           </Box>
-          <AppButton variant="gray-outline" leftIcon={<SlidersHorizontal size={16} />} buttonSize="md">
+          <AppButton
+            variant="gray-outline"
+            leftIcon={<SlidersHorizontal size={16} />}
+            buttonSize="md"
+          >
             Filter
           </AppButton>
         </Flex>
@@ -132,15 +147,11 @@ function RelationsTabBase({ contactId: _contactId }: Props) {
         </AppButton>
       </Flex>
 
-      {/* Grid */}
+      {}
       <Box p="2.4rem">
         {filtered.length === 0 ? (
           <Box textAlign="center" py="3.2rem">
-            <Text
-              fontFamily="Montserrat, sans-serif"
-              color="var(--text-muted)"
-              fontSize="1.4rem"
-            >
+            <Text fontFamily="Montserrat, sans-serif" color="var(--text-muted)" fontSize="1.4rem">
               No relations found
             </Text>
           </Box>

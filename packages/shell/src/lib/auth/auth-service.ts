@@ -21,12 +21,12 @@ export const authService = {
   },
 
   logout: async (): Promise<void> => {
-    await api.post(API_ENDPOINTS.AUTH.LOGOUT).catch(() => {
-      // Ignore logout API errors — always clear local state
-    });
+    await api.post(API_ENDPOINTS.AUTH.LOGOUT).catch(() => {});
   },
 
-  refreshToken: async (refreshToken: string): Promise<{ accessToken: string; refreshToken: string }> => {
+  refreshToken: async (
+    refreshToken: string,
+  ): Promise<{ accessToken: string; refreshToken: string }> => {
     const { data } = await api.post<{ accessToken: string; refreshToken: string }>(
       API_ENDPOINTS.AUTH.REFRESH,
       { refreshToken },

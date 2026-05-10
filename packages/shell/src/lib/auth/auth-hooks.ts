@@ -9,15 +9,13 @@ export function useLogin() {
   const navigate = useNavigate();
 
   return useMutation({
-    // API call lives here — not inside the store
     mutationFn: (credentials: LoginCredentials) => authService.login(credentials),
     onSuccess: (data) => {
-      // Populate the in-memory store (and sessionStorage) with the response
       login({
-        user:         data.user,
-        accessToken:  data.access_token,
+        user: data.user,
+        accessToken: data.access_token,
         refreshToken: data.refresh_token,
-        menu:         data.menu,
+        menu: data.menu,
       });
       navigate('/crm/contacts', { replace: true });
     },

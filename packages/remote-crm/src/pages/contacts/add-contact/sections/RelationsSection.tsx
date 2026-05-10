@@ -1,12 +1,3 @@
-/**
- * RelationsSection.tsx
- *
- * Accordion section for related contacts.
- *
- * Uses react-hook-form's useFieldArray for dynamic add / remove.
- * "Contact Person" is an async paginated search (AppAsyncSelect).
- * "Relationship type" is a static AppSelect populated from the API.
- */
 import React, { useEffect, useState } from 'react';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { useFieldArray, type UseFormReturn } from 'react-hook-form';
@@ -18,17 +9,14 @@ import type { ContactFormPayload } from '../schema';
 import { loadContactOptions, fetchRelationships } from '../../../../lib/contacts-api';
 import type { StrOption } from '../../../../lib/contacts-api';
 
-/* ─── Props ───────────────────────────────────────────────────────── */
 interface RelationsSectionProps {
   handler: UseFormReturn<ContactFormPayload>;
 }
 
-/* ─── Component ───────────────────────────────────────────────────── */
 export function RelationsSection({ handler }: RelationsSectionProps) {
   const { control, setValue, watch } = handler;
   const [relationshipOptions, setRelationshipOptions] = useState<StrOption[]>([]);
 
-  /* Load relationship type options once */
   useEffect(() => {
     fetchRelationships().then(setRelationshipOptions);
   }, []);
@@ -83,7 +71,7 @@ export function RelationsSection({ handler }: RelationsSectionProps) {
 
           return (
             <Flex key={field.id} align="flex-end" gap="1.2rem">
-              {/* Contact person async search */}
+              {}
               <Box flex={1}>
                 <AppAsyncSelect
                   label="Contact Person"
@@ -104,7 +92,7 @@ export function RelationsSection({ handler }: RelationsSectionProps) {
                 />
               </Box>
 
-              {/* Relationship type */}
+              {}
               <Box flex={1}>
                 <AppSelect
                   label="Relationship Type"
@@ -125,7 +113,7 @@ export function RelationsSection({ handler }: RelationsSectionProps) {
                 />
               </Box>
 
-              {/* Remove row */}
+              {}
               <Box
                 as="button"
                 type="button"
@@ -152,7 +140,7 @@ export function RelationsSection({ handler }: RelationsSectionProps) {
           );
         })}
 
-        {/* Add button */}
+        {}
         <Flex
           as="button"
           type="button"

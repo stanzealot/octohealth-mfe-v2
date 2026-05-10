@@ -12,17 +12,10 @@ function Loader() {
   );
 }
 
-/**
- * EXPOSED via federation as 'remoteAdmin/SettingsModule'.
- * Shell mounts this at /admin/* — routes here handle everything under /admin/
- */
 export default function SettingsModule() {
   return (
     <Routes>
-      {/*
-       * Shell mounts this at /admin/settings/*
-       * Paths here are relative to /admin/settings/
-       */}
+      {}
       <Route
         path="branding"
         element={
@@ -32,12 +25,7 @@ export default function SettingsModule() {
         }
       />
 
-      {/*
-       * <Route index> only fires when the URL is EXACTLY /admin/settings (no sub-path).
-       * This is intentionally NOT a catch-all (*) — a wildcard caused infinite loops
-       * because it also fired during transitions to unrelated routes like /crm/contacts,
-       * which Chrome then throttled as a navigation attack.
-       */}
+      {}
       <Route index element={<Navigate to="/admin/settings/branding" replace />} />
     </Routes>
   );

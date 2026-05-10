@@ -6,9 +6,6 @@ import { Calendar } from 'lucide-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './styles.module.css';
 
-/* ─── Helpers ───────────────────────────────────────────────────────── */
-
-/** Parse a stored "YYYY-MM-DD" string → native Date (or null) */
 function parseISODate(value: unknown): Date | null {
   if (!value) return null;
   if (value instanceof Date) return isNaN(value.getTime()) ? null : value;
@@ -19,7 +16,6 @@ function parseISODate(value: unknown): Date | null {
   return null;
 }
 
-/** Format a Date → "YYYY-MM-DD" (ISO, no timezone shift) */
 function toISODate(date: Date | null): string | null {
   if (!date) return null;
   const y = date.getFullYear();
@@ -28,11 +24,6 @@ function toISODate(date: Date | null): string | null {
   return `${y}-${m}-${d}`;
 }
 
-/* ─── Custom input (forwardRef) ─────────────────────────────────────── */
-/**
- * react-datepicker passes `value`, `onClick`, and `ref` down to the customInput.
- * We own the full layout, so icon positioning is trivial inline flex.
- */
 interface DateCustomInputProps {
   value?: string;
   onClick?: () => void;
@@ -58,7 +49,7 @@ const DateCustomInput = forwardRef<HTMLInputElement, DateCustomInputProps>(
         disabled={disabled}
         className={styles.app_date_picker}
         style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
-        onChange={() => {/* react-datepicker controls value — suppress React warning */}}
+        onChange={() => {}}
       />
       <span
         style={{
@@ -68,21 +59,16 @@ const DateCustomInput = forwardRef<HTMLInputElement, DateCustomInputProps>(
           flexShrink: 0,
         }}
       >
-        <Calendar
-          size={18}
-          style={{ color: 'var(--text-muted)', display: 'block' }}
-        />
+        <Calendar size={18} style={{ color: 'var(--text-muted)', display: 'block' }} />
       </span>
     </div>
   ),
 );
 DateCustomInput.displayName = 'DateCustomInput';
 
-/* ─── Props ─────────────────────────────────────────────────────────── */
 export interface AppDatePickerProps<T extends FieldValues = FieldValues> {
-  /** react-hook-form field path */
   title: Path<T>;
-  /** react-hook-form return value */
+
   handler: UseFormReturn<T>;
 
   label?: string;
@@ -91,25 +77,17 @@ export interface AppDatePickerProps<T extends FieldValues = FieldValues> {
   errorMessage?: string;
   disabled?: boolean;
 
-  /** Earliest selectable date */
   minDate?: Date;
-  /** Latest selectable date */
+
   maxDate?: Date;
 
-  /**
-   * Display format for the input.
-   * Uses react-datepicker's dateFormat tokens (e.g. "dd/MM/yyyy", "MM/yyyy").
-   * Defaults to "dd/MM/yyyy".
-   */
   dateFormat?: string;
 
-  /** Show month+year picker only (no day grid) */
   showMonthYearPicker?: boolean;
-  /** Show year-only picker */
+
   showYearPicker?: boolean;
 }
 
-/* ─── Component ─────────────────────────────────────────────────────── */
 function AppDatePickerBase<T extends FieldValues = FieldValues>({
   title,
   handler,
@@ -126,13 +104,12 @@ function AppDatePickerBase<T extends FieldValues = FieldValues>({
 }: AppDatePickerProps<T>) {
   const { control } = handler;
 
-  /* Derive a sensible default display format */
-  const resolvedFormat = dateFormat
-    ?? (showYearPicker ? 'yyyy' : showMonthYearPicker ? 'MM/yyyy' : 'dd/MM/yyyy');
+  const resolvedFormat =
+    dateFormat ?? (showYearPicker ? 'yyyy' : showMonthYearPicker ? 'MM/yyyy' : 'dd/MM/yyyy');
 
   return (
     <Box display="flex" flexDir="column" gap="0.5rem" w="100%">
-      {/* Label */}
+      {}
       {label && (
         <Text
           fontSize="1.4rem"
@@ -152,7 +129,7 @@ function AppDatePickerBase<T extends FieldValues = FieldValues>({
         </Text>
       )}
 
-      {/* Picker */}
+      {}
       <Controller
         control={control}
         name={title}
@@ -170,30 +147,22 @@ function AppDatePickerBase<T extends FieldValues = FieldValues>({
               disabled={disabled}
               minDate={minDate}
               maxDate={maxDate}
-              /* Always show month + year dropdowns in the header */
               showMonthDropdown
               showYearDropdown
               dropdownMode="select"
-              /* Peek adjacent months for context */
               peekNextMonth
-              /* CSS classes */
               calendarClassName={styles.app_calender}
               popperClassName={styles.app_popper}
-              /* Use fixed strategy so the popup escapes overflow:hidden parents (e.g. accordions) */
               popperProps={{ strategy: 'fixed' }}
-              /* Custom input gives us full layout control — icon positioning is just inline flex */
               customInput={
-                <DateCustomInput
-                  placeholder={placeholder ?? 'Select date…'}
-                  disabled={disabled}
-                />
+                <DateCustomInput placeholder={placeholder ?? 'Select date…'} disabled={disabled} />
               }
             />
           );
         }}
       />
 
-      {/* Error */}
+      {}
       {errorMessage && (
         <Text
           fontSize="1.2rem"

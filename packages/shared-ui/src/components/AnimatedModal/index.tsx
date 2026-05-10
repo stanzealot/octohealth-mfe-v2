@@ -6,10 +6,10 @@ import { AnimatePresence, motion } from 'framer-motion';
 type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
 const SIZE_MAP: Record<ModalSize, string> = {
-  sm:   '40rem',
-  md:   '52rem',
-  lg:   '72rem',
-  xl:   '90rem',
+  sm: '40rem',
+  md: '52rem',
+  lg: '72rem',
+  xl: '90rem',
   full: '98vw',
 };
 
@@ -46,7 +46,9 @@ export default function AnimatedModal({
             padding: '2rem',
             zIndex: 1000,
           }}
-          onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) onClose();
+          }}
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -63,7 +65,7 @@ export default function AnimatedModal({
               boxShadow: 'var(--shadow-modal)',
             }}
           >
-            {/* Header */}
+            {}
             {title && (
               <Flex
                 align="center"
@@ -101,7 +103,7 @@ export default function AnimatedModal({
               </Flex>
             )}
 
-            {/* Body */}
+            {}
             <Box px="2.4rem" py="2rem">
               {children}
             </Box>

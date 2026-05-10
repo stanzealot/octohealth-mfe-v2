@@ -1,7 +1,3 @@
-/**
- * mock/leads.ts — Mock leads data + helper functions
- */
-
 import type { Lead } from '../types';
 
 export const mockLeads: Lead[] = [
@@ -131,10 +127,7 @@ export function getLeadById(id: string): Lead | undefined {
   return mockLeads.find((lead) => lead.id === id);
 }
 
-export function filterLeadsData(
-  leads: Lead[],
-  filters: { search?: string },
-): Lead[] {
+export function filterLeadsData(leads: Lead[], filters: { search?: string }): Lead[] {
   if (!filters.search) return leads;
   const q = filters.search.toLowerCase();
   return leads.filter(

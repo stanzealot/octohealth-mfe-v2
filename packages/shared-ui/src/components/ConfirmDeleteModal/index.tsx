@@ -33,7 +33,13 @@ export default function ConfirmDeleteModal({
           <Trash2 size={28} color="var(--status-danger)" />
         </Flex>
         <Box>
-          <Text fontSize="1.8rem" fontWeight={700} color="var(--text-primary)" fontFamily="Montserrat, sans-serif" mb="0.8rem">
+          <Text
+            fontSize="1.8rem"
+            fontWeight={700}
+            color="var(--text-primary)"
+            fontFamily="Montserrat, sans-serif"
+            mb="0.8rem"
+          >
             {title}
           </Text>
           <Text fontSize="1.4rem" color="var(--text-muted)" fontFamily="Montserrat, sans-serif">
@@ -71,7 +77,10 @@ export default function ConfirmDeleteModal({
             fontFamily="Montserrat, sans-serif"
             cursor="pointer"
             _hover={{ bg: '#C91C1C' }}
-            onClick={() => { onConfirm(); onClose(); }}
+            onClick={() => {
+              onConfirm();
+              onClose();
+            }}
           >
             Delete
           </Box>

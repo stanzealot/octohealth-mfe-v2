@@ -15,7 +15,7 @@ export default function LogoUploadField({ logoUrl, onChange, onFile }: LogoUploa
     const file = e.target.files?.[0];
     if (file) {
       onFile(file);
-      // Reset input so the same file can be re-selected
+
       e.target.value = '';
     }
   };
@@ -34,7 +34,6 @@ export default function LogoUploadField({ logoUrl, onChange, onFile }: LogoUploa
 
       <Flex align="center" gap="1.6rem" flexWrap="wrap">
         {logoUrl ? (
-          /* Logo preview + remove button */
           <Box position="relative" display="inline-flex">
             <Box
               as="img"
@@ -69,7 +68,6 @@ export default function LogoUploadField({ logoUrl, onChange, onFile }: LogoUploa
             </Box>
           </Box>
         ) : (
-          /* Upload drop zone */
           <Flex
             direction="column"
             align="center"
@@ -92,13 +90,17 @@ export default function LogoUploadField({ logoUrl, onChange, onFile }: LogoUploa
             <Text fontSize="1.2rem" color="var(--text-muted)" fontFamily="Montserrat, sans-serif">
               Click to upload
             </Text>
-            <Text fontSize="1.1rem" color="var(--text-placeholder)" fontFamily="Montserrat, sans-serif">
+            <Text
+              fontSize="1.1rem"
+              color="var(--text-placeholder)"
+              fontFamily="Montserrat, sans-serif"
+            >
               PNG, JPG, SVG
             </Text>
           </Flex>
         )}
 
-        {/* Change button when logo is set */}
+        {}
         {logoUrl && (
           <Flex
             as="button"

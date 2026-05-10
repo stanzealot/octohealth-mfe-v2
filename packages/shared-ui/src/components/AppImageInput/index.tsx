@@ -1,23 +1,20 @@
 import React, { useRef, useState, useCallback, memo } from 'react';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { Upload, RefreshCw, X } from 'lucide-react';
-import type { UseFormReturn } from 'react-hook-form';
+import type { UseFormReturn, FieldValues } from 'react-hook-form';
 
-/* ─── Props ──────────────────────────────────────────────────────────── */
 export interface AppImageInputProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handler: UseFormReturn<any>;
-  /** react-hook-form field name that stores the value (URL string or File) */
+  handler: UseFormReturn<FieldValues>;
+
   title: string;
   label?: string;
   required?: boolean;
-  /** Max allowed file size in MB (default: 2) */
+
   maxSizeMB?: number;
-  /** Accepted MIME types (default: image/jpg,image/jpeg,image/png,image/gif) */
+
   accept?: string;
 }
 
-/* ─── Component ──────────────────────────────────────────────────────── */
 function AppImageInputBase({
   handler,
   title,
@@ -29,11 +26,16 @@ function AppImageInputBase({
   const fileRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const { watch, setValue, setError, clearErrors, formState: { errors } } = handler;
+  const {
+    watch,
+    setValue,
+    setError,
+    clearErrors,
+    formState: { errors },
+  } = handler;
   const savedUrl = watch(title) as string | undefined;
   const errorMessage = errors[title]?.message?.toString();
 
-  /* Show preview blob if user just picked a file, else show saved URL */
   const displaySrc = previewUrl ?? savedUrl ?? null;
 
   const handleFileChange = useCallback(
@@ -50,7 +52,7 @@ function AppImageInputBase({
       }
 
       clearErrors(title);
-      setValue(title, file as unknown as string); // stored as File; cast for RHF
+      setValue(title, file as unknown as string);
       setPreviewUrl(URL.createObjectURL(file));
     },
     [maxSizeMB, title, setError, clearErrors, setValue],
@@ -69,7 +71,7 @@ function AppImageInputBase({
 
   return (
     <Box display="flex" flexDir="column" gap="0.5rem" w="100%">
-      {/* Label */}
+      {}
       {label && (
         <Text
           fontSize="1.4rem"
@@ -86,7 +88,7 @@ function AppImageInputBase({
         </Text>
       )}
 
-      {/* Hidden file input */}
+      {}
       <input
         ref={fileRef}
         type="file"
@@ -96,7 +98,6 @@ function AppImageInputBase({
       />
 
       {displaySrc ? (
-        /* ── Preview state ─────────────────────────────────────── */
         <Flex
           direction="column"
           align="center"
@@ -119,7 +120,7 @@ function AppImageInputBase({
                 border: '2px solid var(--surface-border)',
               }}
             />
-            {/* Remove button */}
+            {}
             <Box
               as="button"
               type="button"
@@ -167,7 +168,6 @@ function AppImageInputBase({
           </Box>
         </Flex>
       ) : (
-        /* ── Empty state (dropzone) ──────────────────────────────── */
         <Flex
           align="center"
           justify="space-between"
@@ -202,11 +202,7 @@ function AppImageInputBase({
               >
                 Tap to Upload
               </Text>
-              <Text
-                fontSize="1.2rem"
-                color="var(--text-muted)"
-                fontFamily="Montserrat, sans-serif"
-              >
+              <Text fontSize="1.2rem" color="var(--text-muted)" fontFamily="Montserrat, sans-serif">
                 JPG, PNG, GIF — max {maxSizeMB} MB
               </Text>
             </Box>
@@ -230,13 +226,9 @@ function AppImageInputBase({
         </Flex>
       )}
 
-      {/* Error */}
+      {}
       {errorMessage && (
-        <Text
-          fontSize="1.2rem"
-          color="var(--status-danger)"
-          fontFamily="Montserrat, sans-serif"
-        >
+        <Text fontSize="1.2rem" color="var(--status-danger)" fontFamily="Montserrat, sans-serif">
           {errorMessage}
         </Text>
       )}

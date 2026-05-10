@@ -2,36 +2,32 @@ import React, { useRef, useCallback, useId, memo } from 'react';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { Check } from 'lucide-react';
 
-/* ─── Size tokens ──────────────────────────────────────────────────── */
 const SIZE = {
   sm: { box: '1.6rem', gap: '0.6rem', font: '1.2rem', icon: 10 },
   md: { box: '1.8rem', gap: '0.7rem', font: '1.4rem', icon: 12 },
-  lg: { box: '2rem',   gap: '0.8rem', font: '1.4rem', icon: 13 },
+  lg: { box: '2rem', gap: '0.8rem', font: '1.4rem', icon: 13 },
 } as const;
 
-/* ─── Props ────────────────────────────────────────────────────────── */
 export interface AppCheckboxProps {
-  /** Controlled checked state */
   checked?: boolean;
-  /** Alias for checked (Chakra-style) */
+
   isChecked?: boolean;
-  /** Indeterminate state — shows a dash instead of a checkmark */
+
   isIndeterminate?: boolean;
   label?: string;
   children?: React.ReactNode;
   size?: 'sm' | 'md' | 'lg';
   disabled?: boolean;
-  /** Shown below the label */
+
   description?: string;
   id?: string;
   name?: string;
   value?: string;
   onChange?: (checked: boolean) => void;
-  /** Extra click handler (fires before onChange) */
+
   onClick?: () => void;
 }
 
-/* ─── Component ────────────────────────────────────────────────────── */
 function AppCheckboxBase({
   checked,
   isChecked,
@@ -47,11 +43,10 @@ function AppCheckboxBase({
   onChange,
   onClick,
 }: AppCheckboxProps) {
-  const uid   = useId();
+  const uid = useId();
   const inputRef = useRef<HTMLInputElement>(null);
-  const htmlId   = id ?? uid;
+  const htmlId = id ?? uid;
 
-  /* Resolve checked value — prefer prop over isChecked alias */
   const isOn = checked ?? isChecked ?? false;
 
   const { box, gap, font, icon } = SIZE[size];
@@ -81,7 +76,7 @@ function AppCheckboxBase({
       onClick={handleClick}
       role="group"
     >
-      {/* Hidden native input — keeps form/a11y working */}
+      {}
       <input
         ref={inputRef}
         type="checkbox"
@@ -90,12 +85,12 @@ function AppCheckboxBase({
         value={value}
         checked={isOn}
         disabled={disabled}
-        onChange={() => {}} // controlled via onClick
+        onChange={() => {}}
         aria-checked={isIndeterminate ? 'mixed' : isOn}
         style={{ position: 'absolute', opacity: 0, width: 0, height: 0 }}
       />
 
-      {/* Visual box */}
+      {}
       <Box
         as="span"
         role="checkbox"
@@ -103,7 +98,7 @@ function AppCheckboxBase({
         tabIndex={disabled ? -1 : 0}
         onKeyDown={handleKeyDown}
         flexShrink={0}
-        mt="0.1rem" /* optical alignment with text baseline */
+        mt="0.1rem"
         w={box}
         h={box}
         borderRadius="4px"
@@ -123,14 +118,13 @@ function AppCheckboxBase({
         }}
       >
         {isIndeterminate ? (
-          /* Dash for indeterminate */
           <Box w={`${icon - 2}px`} h="2px" bg="white" borderRadius="1px" />
         ) : isOn ? (
           <Check size={icon} color="white" strokeWidth={2.5} />
         ) : null}
       </Box>
 
-      {/* Label + description */}
+      {}
       {(label || children || description) && (
         <Flex direction="column" gap="0.1rem">
           {(label || children) && (

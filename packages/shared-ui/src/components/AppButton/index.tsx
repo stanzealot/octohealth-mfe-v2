@@ -2,20 +2,20 @@ import React, { useState, useCallback, type ReactNode } from 'react';
 import { Button, type ButtonProps, Spinner, Flex, Text, Box } from '@chakra-ui/react';
 import { keyframes } from '@emotion/react';
 
-/* ─── Ripple keyframe ────────────────────────────────────────────── */
 const rippleAnim = keyframes`
   0%   { transform: scale(0); opacity: 1; }
   100% { transform: scale(1); opacity: 0; }
 `;
 
-/* ─── Types ──────────────────────────────────────────────────────── */
-type Variant    = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'gray-outline';
+type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'gray-outline';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
-interface Ripple { id: number; x: number; y: number }
+interface Ripple {
+  id: number;
+  x: number;
+  y: number;
+}
 
-/* ─── Helpers ────────────────────────────────────────────────────── */
-/** Reads a CSS custom property from :root and converts to rgba() */
 function cssVarToRgba(varName: string, alpha: number): string {
   try {
     const hex = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
@@ -31,11 +31,10 @@ function cssVarToRgba(varName: string, alpha: number): string {
 
 const SIZE_MAP: Record<ButtonSize, { h: string; fontSize: string; px: string }> = {
   sm: { h: '3.2rem', fontSize: '1.2rem', px: '1.2rem' },
-  md: { h: '4rem',   fontSize: '1.4rem', px: '1.6rem' },
-  lg: { h: '4.8rem', fontSize: '1.6rem', px: '2rem'   },
+  md: { h: '4rem', fontSize: '1.4rem', px: '1.6rem' },
+  lg: { h: '4.8rem', fontSize: '1.6rem', px: '2rem' },
 };
 
-/* ─── Variant config ─────────────────────────────────────────────── */
 interface VariantConfig {
   base: object;
   hover: (primaryGlow: string) => object;
@@ -45,7 +44,11 @@ interface VariantConfig {
   rippleBg: (primaryGlow: string) => string;
 }
 
-function buildVariants(primaryGlow25: string, primaryGlow35: string): Record<Variant, VariantConfig> {
+function buildVariants(
+  primaryGlow25: string,
+  primaryGlow35: string,
+  primaryGlow10: string,
+): Record<Variant, VariantConfig> {
   return {
     primary: {
       base: {
@@ -82,9 +85,6 @@ function buildVariants(primaryGlow25: string, primaryGlow35: string): Record<Var
       rippleBg: (g) => g,
     },
 
-    /* Matches monolith outline exactly:
-       neutral gray start → brand primary on hover (border + text + bg all shift)
-       Shine uses white so it's visible against the light-green hover background */
     outline: {
       base: {
         bg: 'var(--surface-card)',
@@ -103,12 +103,11 @@ function buildVariants(primaryGlow25: string, primaryGlow35: string): Record<Var
         bg: 'var(--brand-primary-light)',
         borderColor: 'var(--brand-primary)',
       },
-      shineColor: 'rgba(255,255,255,0.6)',
+      shineColor: primaryGlow10,
       shineOpacity: 1,
       rippleBg: (g) => g,
     },
 
-    /* Subtle variant — stays neutral on hover, no color shift */
     'gray-outline': {
       base: {
         bg: 'var(--surface-card)',
@@ -127,7 +126,6 @@ function buildVariants(primaryGlow25: string, primaryGlow35: string): Record<Var
       rippleBg: () => 'rgba(0,0,0,0.05)',
     },
 
-    /* Ghost shine uses white so it's visible against the light-green hover background */
     ghost: {
       base: {
         bg: 'transparent',
@@ -165,7 +163,6 @@ function buildVariants(primaryGlow25: string, primaryGlow35: string): Record<Var
   };
 }
 
-/* ─── Props ──────────────────────────────────────────────────────── */
 interface AppButtonProps extends Omit<ButtonProps, 'variant' | 'loading' | 'loadingText' | 'size'> {
   variant?: Variant;
   buttonSize?: ButtonSize;
@@ -178,7 +175,6 @@ interface AppButtonProps extends Omit<ButtonProps, 'variant' | 'loading' | 'load
   fullWidth?: boolean;
 }
 
-/* ─── Component ──────────────────────────────────────────────────── */
 export function AdvancedButton({
   variant = 'primary',
   buttonSize = 'md',
@@ -195,23 +191,22 @@ export function AdvancedButton({
 }: AppButtonProps) {
   const [ripples, setRipples] = useState<Ripple[]>([]);
 
-  /* Compute glow colours once per render (reads a single CSS property) */
+  const primaryGlow10 = cssVarToRgba('--brand-primary', 0.1);
   const primaryGlow25 = cssVarToRgba('--brand-primary', 0.25);
   const primaryGlow35 = cssVarToRgba('--brand-primary', 0.35);
 
-  const variants = buildVariants(primaryGlow25, primaryGlow35);
-  const cfg      = variants[variant];
-  const sizes    = SIZE_MAP[buttonSize];
+  const variants = buildVariants(primaryGlow25, primaryGlow35, primaryGlow10);
+  const cfg = variants[variant];
+  const sizes = SIZE_MAP[buttonSize];
 
-  /* Click handler — adds a ripple at cursor position then cleans up after 600 ms */
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       if (enableRipple && !disabled && !loading) {
         const rect = e.currentTarget.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height);
-        const x    = e.clientX - rect.left  - size / 2;
-        const y    = e.clientY - rect.top   - size / 2;
-        const id   = Date.now();
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        const id = Date.now();
         setRipples((prev) => [...prev, { id, x, y }]);
         setTimeout(() => setRipples((prev) => prev.filter((r) => r.id !== id)), 600);
       }
@@ -222,27 +217,21 @@ export function AdvancedButton({
 
   return (
     <Button
-      /* Base variant styles */
       {...cfg.base}
-      /* Size */
       h={sizes.h}
       px={sizes.px}
       fontSize={sizes.fontSize}
-      /* Layout */
       position="relative"
       overflow="hidden"
       width={fullWidth ? '100%' : 'auto'}
-      /* Typography */
       fontWeight="600"
       fontFamily="Montserrat, sans-serif"
       borderRadius="8px"
       transition="all 0.25s ease-in-out"
-      /* Interaction */
       _hover={cfg.hover(primaryGlow25) as object}
       _active={cfg.active as object}
       disabled={disabled || loading}
       onClick={handleClick}
-      /* Shine pseudo-element + content z-index via emotion css prop */
       css={{
         '&::after': {
           content: '""',
@@ -262,12 +251,12 @@ export function AdvancedButton({
         '&:hover::after': {
           transform: 'translate(-50%, -50%) scale(1)',
         },
-        /* Ensure all child elements sit above the shine/ripple layers */
+
         '& > *': { position: 'relative', zIndex: 1 },
       }}
       {...rest}
     >
-      {/* ── Main content ─────────────────────────────────────── */}
+      {}
       {loading ? (
         <Flex align="center" gap="0.8rem" position="relative" zIndex={1}>
           <Spinner size="sm" />
@@ -275,13 +264,13 @@ export function AdvancedButton({
         </Flex>
       ) : (
         <Flex align="center" gap="0.6rem" position="relative" zIndex={1}>
-          {leftIcon  && <span style={{ display: 'flex', alignItems: 'center' }}>{leftIcon}</span>}
+          {leftIcon && <span style={{ display: 'flex', alignItems: 'center' }}>{leftIcon}</span>}
           <span>{children}</span>
           {rightIcon && <span style={{ display: 'flex', alignItems: 'center' }}>{rightIcon}</span>}
         </Flex>
       )}
 
-      {/* ── Ripple waves ─────────────────────────────────────── */}
+      {}
       {ripples.map((r) => (
         <Box
           key={r.id}
@@ -295,7 +284,6 @@ export function AdvancedButton({
           zIndex={0}
           pointerEvents="none"
           css={{
-            /* css prop (not style) so emotion injects the @keyframes rule */
             animation: `${rippleAnim} 0.6s ease-out forwards`,
           }}
         />

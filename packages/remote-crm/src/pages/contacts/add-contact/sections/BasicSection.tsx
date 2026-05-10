@@ -1,11 +1,3 @@
-/**
- * BasicSection.tsx
- *
- * Accordion section for personal information:
- *   NIN · Prefix · First/Last · Maiden/Former · DOB · Gender
- *   Email tags · Phone tags · Religion · Contact modes
- *   Photo · Handle with Care
- */
 import React, { useMemo, useCallback } from 'react';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import type { UseFormReturn } from 'react-hook-form';
@@ -21,59 +13,60 @@ import AppMultiPhoneInput from 'sharedUi/AppMultiPhoneInput';
 import type { ContactFormPayload } from '../schema';
 import { ContactMode } from '../../../../types/contact';
 
-/* ─── Static option lists ─────────────────────────────────────────── */
 const GENDER_OPTIONS = [
-  { label: 'Male',   value: 'Male'   },
+  { label: 'Male', value: 'Male' },
   { label: 'Female', value: 'Female' },
 ];
 
 const TITLE_OPTIONS = [
-  { label: 'Mr.',    value: 'Mr.'    },
-  { label: 'Mrs.',   value: 'Mrs.'   },
-  { label: 'Ms.',    value: 'Ms.'    },
-  { label: 'Dr.',    value: 'Dr.'    },
-  { label: 'Prof.',  value: 'Prof.'  },
-  { label: 'Rev.',   value: 'Rev.'   },
-  { label: 'Chief',  value: 'Chief'  },
+  { label: 'Mr.', value: 'Mr.' },
+  { label: 'Mrs.', value: 'Mrs.' },
+  { label: 'Ms.', value: 'Ms.' },
+  { label: 'Dr.', value: 'Dr.' },
+  { label: 'Prof.', value: 'Prof.' },
+  { label: 'Rev.', value: 'Rev.' },
+  { label: 'Chief', value: 'Chief' },
   { label: 'Alhaji', value: 'Alhaji' },
 ];
 
 const RELIGION_OPTIONS = [
-  { label: 'Christianity',                  value: '61744660-18b9-4090-ab86-a840d7f812b6' },
-  { label: 'Muslim',                        value: '84d453f3-5ea9-4b53-a447-68ad52016df0' },
-  { label: 'Atheist',                       value: 'd679ab54-d7d2-4718-aad3-35f218bb177c' },
-  { label: 'Christianity – Jehovah Witness',value: 'b20a0ea6-1a57-463e-b87d-e4e36f75331e' },
-  { label: 'Other',                         value: '76dd9369-2b0c-4230-9c61-f2461e3d7b3d' },
+  { label: 'Christianity', value: '61744660-18b9-4090-ab86-a840d7f812b6' },
+  { label: 'Muslim', value: '84d453f3-5ea9-4b53-a447-68ad52016df0' },
+  { label: 'Atheist', value: 'd679ab54-d7d2-4718-aad3-35f218bb177c' },
+  { label: 'Christianity – Jehovah Witness', value: 'b20a0ea6-1a57-463e-b87d-e4e36f75331e' },
+  { label: 'Other', value: '76dd9369-2b0c-4230-9c61-f2461e3d7b3d' },
 ];
 
-/* ─── Props ───────────────────────────────────────────────────────── */
 interface BasicSectionProps {
   handler: UseFormReturn<ContactFormPayload>;
 }
 
-/* ─── Component ───────────────────────────────────────────────────── */
 export function BasicSection({ handler }: BasicSectionProps) {
-  const { register, watch, setValue, formState: { errors } } = handler;
+  const {
+    register,
+    watch,
+    setValue,
+    formState: { errors },
+  } = handler;
 
   const handleWithCare = watch('handleWithCare') ?? false;
-  const contactModes   = watch('contactModes') ?? [];
-  const religion       = watch('religion');
-  const gender         = watch('gender');
-  const prefix         = watch('prefix');
+  const contactModes = watch('contactModes') ?? [];
+  const religion = watch('religion');
+  const gender = watch('gender');
+  const prefix = watch('prefix');
 
-  /* Memoised default values for controlled selects */
   const defaultReligion = useMemo(
-    () => religion?.value ? { label: religion.label ?? '', value: religion.value } : undefined,
+    () => (religion?.value ? { label: religion.label ?? '', value: religion.value } : undefined),
     [religion],
   );
 
   const defaultGender = useMemo(
-    () => gender ? GENDER_OPTIONS.find((o) => o.value === gender) : undefined,
+    () => (gender ? GENDER_OPTIONS.find((o) => o.value === gender) : undefined),
     [gender],
   );
 
   const defaultPrefix = useMemo(
-    () => prefix ? TITLE_OPTIONS.find((o) => o.value === prefix) : undefined,
+    () => (prefix ? TITLE_OPTIONS.find((o) => o.value === prefix) : undefined),
     [prefix],
   );
 
@@ -82,9 +75,7 @@ export function BasicSection({ handler }: BasicSectionProps) {
       const current = contactModes as string[];
       setValue(
         'contactModes',
-        current.includes(mode)
-          ? current.filter((m) => m !== mode)
-          : [...current, mode],
+        current.includes(mode) ? current.filter((m) => m !== mode) : [...current, mode],
       );
     },
     [contactModes, setValue],
@@ -92,7 +83,7 @@ export function BasicSection({ handler }: BasicSectionProps) {
 
   return (
     <AppAccordionSection title="Basic Information" defaultOpen>
-      {/* Row 1 — NIN + Prefix */}
+      {}
       <Flex gap="3rem" flexDir={{ base: 'column', md: 'row' }} align="flex-end">
         <Flex gap="1.2rem" align="flex-end" flex={1}>
           <Box flex={1}>
@@ -120,7 +111,7 @@ export function BasicSection({ handler }: BasicSectionProps) {
         </Box>
       </Flex>
 
-      {/* Row 2 — First + Last */}
+      {}
       <Flex gap="3rem" flexDir={{ base: 'column', md: 'row' }}>
         <Box flex={1}>
           <AppInput
@@ -142,7 +133,7 @@ export function BasicSection({ handler }: BasicSectionProps) {
         </Box>
       </Flex>
 
-      {/* Row 3 — Maiden + Former */}
+      {}
       <Flex gap="3rem" flexDir={{ base: 'column', md: 'row' }}>
         <Box flex={1}>
           <AppInput
@@ -162,7 +153,7 @@ export function BasicSection({ handler }: BasicSectionProps) {
         </Box>
       </Flex>
 
-      {/* Row 4 — DOB + Gender */}
+      {}
       <Flex gap="3rem" flexDir={{ base: 'column', md: 'row' }}>
         <Box flex={1}>
           <AppDatePicker
@@ -188,7 +179,7 @@ export function BasicSection({ handler }: BasicSectionProps) {
         </Box>
       </Flex>
 
-      {/* Row 5 — Email tags + Phone tags */}
+      {}
       <Flex gap="3rem" flexDir={{ base: 'column', md: 'row' }}>
         <Box flex={1}>
           <AppTextTagInput
@@ -212,7 +203,7 @@ export function BasicSection({ handler }: BasicSectionProps) {
         </Box>
       </Flex>
 
-      {/* Row 6 — Religion + Contact modes */}
+      {}
       <Flex gap="3rem" flexDir={{ base: 'column', md: 'row' }} align="flex-start">
         <Box flex={1}>
           <AppSelect
@@ -236,20 +227,22 @@ export function BasicSection({ handler }: BasicSectionProps) {
             Communication Preference
           </Text>
           <Flex gap="2rem" flexWrap="wrap">
-            {[ContactMode.Sms, ContactMode.Email, ContactMode.WhatsApp, ContactMode.Telephone].map((mode) => (
-              <AppCheckbox
-                key={mode}
-                size="sm"
-                label={mode === ContactMode.Sms ? 'SMS' : mode}
-                checked={(contactModes as string[]).includes(mode)}
-                onChange={() => toggleMode(mode)}
-              />
-            ))}
+            {[ContactMode.Sms, ContactMode.Email, ContactMode.WhatsApp, ContactMode.Telephone].map(
+              (mode) => (
+                <AppCheckbox
+                  key={mode}
+                  size="sm"
+                  label={mode === ContactMode.Sms ? 'SMS' : mode}
+                  checked={(contactModes as string[]).includes(mode)}
+                  onChange={() => toggleMode(mode)}
+                />
+              ),
+            )}
           </Flex>
         </Flex>
       </Flex>
 
-      {/* Row 7 — Photo + Handle with Care */}
+      {}
       <Flex gap="3rem" flexDir={{ base: 'column', md: 'row' }} align="flex-start">
         <Box flex={1}>
           <AppImageInput handler={handler} title="photo" label="Photo" />

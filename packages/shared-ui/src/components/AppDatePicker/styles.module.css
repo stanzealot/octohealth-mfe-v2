@@ -10,7 +10,9 @@
   font-weight: 400;
   align-items: center;
   padding: 0 !important;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .app_wrapper:focus-within {
@@ -76,7 +78,8 @@
   border-color: var(--text-secondary) !important;
 }
 
-.app_calender :global(.react-datepicker__navigation:hover .react-datepicker__navigation-icon::before) {
+.app_calender
+  :global(.react-datepicker__navigation:hover .react-datepicker__navigation-icon::before) {
   border-color: var(--brand-primary) !important;
 }
 
@@ -198,6 +201,7 @@
 }
 
 /* Triangle/arrow above popper — hide it, use box-shadow instead */
-.app_popper :global(.react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle) {
+.app_popper
+  :global(.react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle) {
   display: none;
 }

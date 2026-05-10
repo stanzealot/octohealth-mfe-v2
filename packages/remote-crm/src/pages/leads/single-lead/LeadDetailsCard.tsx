@@ -1,12 +1,3 @@
-/**
- * LeadDetailsCard — Lead header card
- *
- * Shows:
- *  - "Lead" heading  +  "Edit information" button  (bottom-bordered row)
- *  - Lead title (bold, 2rem)
- *  - Needs: <comma-joined needType> (label muted, value bold)
- */
-
 import React, { memo } from 'react';
 import { Box, Flex, Text, Stack } from '@chakra-ui/react';
 import { Pencil } from 'lucide-react';
@@ -23,7 +14,7 @@ function LeadDetailsCardBase({ lead }: Props) {
 
   return (
     <>
-      {/* Header row — bottom border */}
+      {}
       <Box borderBottom="1px solid var(--surface-border)" pb="1.6rem">
         <Flex justify="space-between" align="center">
           <Text
@@ -45,7 +36,7 @@ function LeadDetailsCardBase({ lead }: Props) {
         </Flex>
       </Box>
 
-      {/* Lead body */}
+      {}
       <Box mt="2.8rem">
         <Stack gap="1.6rem">
           <Text
@@ -56,11 +47,7 @@ function LeadDetailsCardBase({ lead }: Props) {
           >
             {lead.title}
           </Text>
-          <Text
-            fontFamily="Montserrat, sans-serif"
-            fontSize="1.4rem"
-            color="var(--text-muted)"
-          >
+          <Text fontFamily="Montserrat, sans-serif" fontSize="1.4rem" color="var(--text-muted)">
             Needs:{' '}
             <Box as="span" color="var(--text-primary)" fontWeight="600">
               {lead.needType.join(', ')}

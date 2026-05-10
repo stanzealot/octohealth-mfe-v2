@@ -20,8 +20,6 @@ const queryClient = new QueryClient({
 });
 
 function Root() {
-  // Hydrate all stores from localStorage/sessionStorage once on mount.
-  // Called AFTER FOUC prevention script has already applied initial CSS vars.
   useEffect(() => {
     useAuthStore.getState().hydrateFromStorage();
     useBrandingStore.getState().fetchBranding();

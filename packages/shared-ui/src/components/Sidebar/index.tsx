@@ -3,10 +3,10 @@ import { Box, Flex, VStack, Text } from '@chakra-ui/react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { BASTION_WHITE_LOGO, OCTOHEALTH_LOGO } from '../../assets/logos';
+import bastionLogo from '../../assets/bastion-logo.png';
+import octohealthLogo from '../../assets/octohealth-logo.png';
 import { getNavIcon } from './icons';
 
-/* ─── Types ─────────────────────────────────────────────────────────── */
 export interface MenuItem {
   id?: string;
   label: string;
@@ -19,11 +19,12 @@ export interface MenuItem {
 export interface SidebarProps {
   isOpen: boolean;
   onToggle?: () => void;
-  /** Passed from shell (PrivateWrapper reads auth-store directly) */
+
   menu?: MenuItem[];
+
+  logoUrl?: string | null;
 }
 
-/* ─── Helpers ───────────────────────────────────────────────────────── */
 const normalizePath = (path: string | undefined): string | null => {
   if (!path) return null;
   const clean = path.replace(/^\/+/, '');
@@ -39,7 +40,6 @@ const hasActiveChild = (children: MenuItem[] | undefined, currentPath: string): 
   });
 };
 
-/* ─── NavItem ───────────────────────────────────────────────────────── */
 function NavItem({
   item,
   depth = 0,
@@ -102,7 +102,6 @@ function NavItem({
     transition: 'background 0.15s',
   };
 
-  /* Icon for top-level: module SVG icon; for children: small accent dot */
   const NavIcon = () =>
     depth === 0 ? (
       <Box flexShrink={0} display="flex" alignItems="center" opacity={isActive ? 1 : 0.55}>
@@ -118,7 +117,6 @@ function NavItem({
       />
     );
 
-  /* Parent with children */
   if (hasChildren) {
     return (
       <Box>
@@ -178,13 +176,14 @@ function NavItem({
     );
   }
 
-  /* Leaf node */
   if (itemPath) {
     return (
       <NavLink
         to={itemPath}
         style={({ isActive: navActive }) => (navActive ? activeStyle : { ...normalStyle })}
-        onClick={() => { if (window.innerWidth < 768) onClose?.(); }}
+        onClick={() => {
+          if (window.innerWidth < 768) onClose?.();
+        }}
         onMouseEnter={(e) => {
           if (!(e.currentTarget as HTMLAnchorElement).classList.contains('active'))
             (e.currentTarget as HTMLElement).style.background = 'var(--brand-primary-light)';
@@ -208,7 +207,12 @@ function NavItem({
     <Box style={normalStyle} _hover={{ background: 'var(--brand-primary-light)' }}>
       <Flex align="center" gap="1rem">
         <NavIcon />
-        <Text as="span" fontSize="1.4rem" fontFamily="Montserrat, sans-serif" color="var(--text-secondary)">
+        <Text
+          as="span"
+          fontSize="1.4rem"
+          fontFamily="Montserrat, sans-serif"
+          color="var(--text-secondary)"
+        >
           {item.label}
         </Text>
       </Flex>
@@ -216,8 +220,7 @@ function NavItem({
   );
 }
 
-/* ─── Sidebar ───────────────────────────────────────────────────────── */
-export default function Sidebar({ isOpen, onToggle, menu = [] }: SidebarProps) {
+export default function Sidebar({ isOpen, onToggle, menu = [], logoUrl }: SidebarProps) {
   return (
     <Box
       id="left-panel"
@@ -234,24 +237,28 @@ export default function Sidebar({ isOpen, onToggle, menu = [] }: SidebarProps) {
       display="flex"
       flexDir="column"
     >
-      {/* Header — Bastion white logo */}
+      {}
       <Flex
         bg="var(--brand-primary)"
         h="7.2rem"
         flexShrink={0}
         align="center"
-        justify="center"
+        justify="flex-start"
+        px="2rem"
       >
         <Box
           as="img"
-          src={BASTION_WHITE_LOGO}
-          alt="Bastion"
-          h="3.2rem"
+          src={logoUrl || bastionLogo}
+          alt="Logo"
+          maxH="4rem"
+          w="auto"
+          maxW="80%"
           display="block"
+          style={{ objectFit: 'contain' }}
         />
       </Flex>
 
-      {/* Scrollable nav */}
+      {}
       <Box
         flex={1}
         minH={0}
@@ -260,43 +267,50 @@ export default function Sidebar({ isOpen, onToggle, menu = [] }: SidebarProps) {
         css={{
           '&::-webkit-scrollbar': { width: '6px' },
           '&::-webkit-scrollbar-track': { background: 'transparent' },
-          '&::-webkit-scrollbar-thumb': { background: 'var(--surface-border)', borderRadius: '3px' },
+          '&::-webkit-scrollbar-thumb': {
+            background: 'var(--surface-border)',
+            borderRadius: '3px',
+          },
         }}
       >
         <VStack px="1rem" py="2.4rem" align="stretch" gap="0.2rem">
           {menu.length === 0 ? (
             <Box px="1.4rem" py="1rem">
-              <Text fontSize="1.2rem" color="var(--text-placeholder)" fontFamily="Montserrat, sans-serif">
+              <Text
+                fontSize="1.2rem"
+                color="var(--text-placeholder)"
+                fontFamily="Montserrat, sans-serif"
+              >
                 No menu items
               </Text>
             </Box>
           ) : (
             menu.map((item, i) => (
-              <NavItem
-                key={item.id ?? item.label ?? i}
-                item={item}
-                onClose={onToggle}
-              />
+              <NavItem key={item.id ?? item.label ?? i} item={item} onClose={onToggle} />
             ))
           )}
         </VStack>
       </Box>
 
-      {/* Footer — OctoHealth logo */}
+      {}
       <Flex
         h="7.6rem"
         flexShrink={0}
         borderTop="1px solid var(--surface-border)"
         align="center"
-        justify="center"
+        justify="flex-start"
+        px="2rem"
         bg="var(--surface-sidebar)"
       >
         <Box
           as="img"
-          src={OCTOHEALTH_LOGO}
+          src={octohealthLogo}
           alt="OctoHealth"
-          h="2.2rem"
+          maxH="2.8rem"
+          w="auto"
+          maxW="80%"
           display="block"
+          style={{ objectFit: 'contain' }}
         />
       </Flex>
     </Box>

@@ -13,13 +13,13 @@ export interface TopBarUser {
 export interface TopBarProps {
   sidebarOpen: boolean;
   onToggleSidebar: () => void;
-  /** Passed from shell (PrivateWrapper reads auth-store directly) */
+
   user?: TopBarUser | null;
-  /** Called when user clicks Log out */
+
   onLogout?: () => void;
-  /** Current color mode — passed from shell color-mode-store */
+
   colorMode?: 'light' | 'dark';
-  /** Called when user clicks the sun/moon toggle */
+
   onToggleColorMode?: () => void;
 }
 
@@ -79,7 +79,7 @@ export default function TopBar({
       boxShadow="var(--shadow-topbar)"
       zIndex={100}
     >
-      {/* Hamburger */}
+      {}
       <Box
         as="button"
         display="flex"
@@ -99,9 +99,9 @@ export default function TopBar({
         <Menu size={20} />
       </Box>
 
-      {/* Right — dark mode + bell + avatar */}
+      {}
       <Flex align="center" gap="1.2rem">
-        {/* Dark mode toggle */}
+        {}
         <Flex
           as="button"
           align="center"
@@ -117,13 +117,14 @@ export default function TopBar({
           onClick={onToggleColorMode}
           title={colorMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
         >
-          {colorMode === 'dark'
-            ? <Sun size={18} color="var(--text-secondary)" />
-            : <Moon size={18} color="var(--text-secondary)" />
-          }
+          {colorMode === 'dark' ? (
+            <Sun size={18} color="var(--text-secondary)" />
+          ) : (
+            <Moon size={18} color="var(--text-secondary)" />
+          )}
         </Flex>
 
-        {/* Bell */}
+        {}
         <Flex
           align="center"
           justify="center"
@@ -138,7 +139,7 @@ export default function TopBar({
           <Bell size={18} color="var(--text-secondary)" />
         </Flex>
 
-        {/* Avatar + dropdown */}
+        {}
         <Box position="relative" ref={dropdownRef}>
           <Flex
             align="center"
@@ -181,7 +182,7 @@ export default function TopBar({
                   border="1px solid var(--surface-border)"
                   overflow="hidden"
                 >
-                  {/* User info */}
+                  {}
                   <Flex gap="1.2rem" p="1.6rem" borderBottom="1px solid var(--surface-border)">
                     <Flex
                       align="center"
@@ -217,17 +218,26 @@ export default function TopBar({
                         {userEmail}
                       </Text>
                       <Flex gap="0.4rem" mt="0.4rem">
-                        <Text fontSize="1.1rem" color="var(--text-muted)" fontFamily="Montserrat, sans-serif">
+                        <Text
+                          fontSize="1.1rem"
+                          color="var(--text-muted)"
+                          fontFamily="Montserrat, sans-serif"
+                        >
                           Role:
                         </Text>
-                        <Text fontSize="1.1rem" fontWeight="500" color="var(--text-primary)" fontFamily="Montserrat, sans-serif">
+                        <Text
+                          fontSize="1.1rem"
+                          fontWeight="500"
+                          color="var(--text-primary)"
+                          fontFamily="Montserrat, sans-serif"
+                        >
                           {userRole}
                         </Text>
                       </Flex>
                     </Flex>
                   </Flex>
 
-                  {/* Actions */}
+                  {}
                   <Box p="0.8rem">
                     <Flex
                       as="button"
@@ -242,10 +252,22 @@ export default function TopBar({
                       _hover={{ bg: 'var(--hover-bg)' }}
                       transition="background 0.2s"
                     >
-                      <Flex align="center" justify="center" w="32px" h="32px" borderRadius="8px" bg="var(--hover-bg)">
+                      <Flex
+                        align="center"
+                        justify="center"
+                        w="32px"
+                        h="32px"
+                        borderRadius="8px"
+                        bg="var(--hover-bg)"
+                      >
                         <LockKeyhole size={16} color="var(--text-muted)" />
                       </Flex>
-                      <Text fontSize="1.4rem" color="var(--text-secondary)" fontWeight="500" fontFamily="Montserrat, sans-serif">
+                      <Text
+                        fontSize="1.4rem"
+                        color="var(--text-secondary)"
+                        fontWeight="500"
+                        fontFamily="Montserrat, sans-serif"
+                      >
                         Reset password
                       </Text>
                     </Flex>
@@ -265,10 +287,22 @@ export default function TopBar({
                       mt="0.4rem"
                       onClick={handleLogout}
                     >
-                      <Flex align="center" justify="center" w="32px" h="32px" borderRadius="8px" bg="#FEE2E2">
+                      <Flex
+                        align="center"
+                        justify="center"
+                        w="32px"
+                        h="32px"
+                        borderRadius="8px"
+                        bg="#FEE2E2"
+                      >
                         <LogOut size={16} color="var(--status-danger)" />
                       </Flex>
-                      <Text fontSize="1.4rem" color="var(--status-danger)" fontWeight="500" fontFamily="Montserrat, sans-serif">
+                      <Text
+                        fontSize="1.4rem"
+                        color="var(--status-danger)"
+                        fontWeight="500"
+                        fontFamily="Montserrat, sans-serif"
+                      >
                         Log out
                       </Text>
                     </Flex>

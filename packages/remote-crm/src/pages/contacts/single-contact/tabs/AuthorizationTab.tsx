@@ -7,23 +7,13 @@ import ReusableDataTable from 'sharedUi/ReusableDataTable';
 import AppButton from 'sharedUi/AppButton';
 import ActionMenu from 'sharedUi/ActionMenu';
 import { mockAuthorizations, type Authorization } from './types';
+import { TAB_TABLE_CUSTOM_STYLES } from './shared/styles';
+import { formatCurrency } from './shared/formatters';
+import { AUTHORIZATION_STATUS_COLORS } from './shared/status-colors';
 
-const STATUS_COLORS: Record<Authorization['status'], string> = {
-  'Completed':   'green',
-  'Pending':     'orange',
-  'In-progress': 'blue',
-  'Past due':    'red',
-};
-
-const fmt = (n: number) =>
-  new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(n);
-
-const customStyles = {
-  headCells: { style: { color: 'var(--text-muted)', fontWeight: '500', fontSize: '1.2rem', textTransform: 'uppercase' as const, letterSpacing: '0.5px' } },
-  cells:     { style: { color: 'var(--text-primary)', fontSize: '1.4rem', paddingTop: '1.2rem', paddingBottom: '1.2rem', borderBottom: '1px solid var(--table-border)' } },
-};
-
-interface Props { contactId: string }
+interface Props {
+  contactId: string;
+}
 
 function AuthorizationTabBase({ contactId }: Props) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -31,41 +21,87 @@ function AuthorizationTabBase({ contactId }: Props) {
   const filtered = useMemo(() => {
     if (!searchTerm) return mockAuthorizations;
     const q = searchTerm.toLowerCase();
-    return mockAuthorizations.filter((a) =>
-      a.authNumber.toLowerCase().includes(q) ||
-      a.providerName.toLowerCase().includes(q) ||
-      a.submittedBy.toLowerCase().includes(q),
+    return mockAuthorizations.filter(
+      (a) =>
+        a.authNumber.toLowerCase().includes(q) ||
+        a.providerName.toLowerCase().includes(q) ||
+        a.submittedBy.toLowerCase().includes(q),
     );
   }, [searchTerm]);
 
-  const columns: TableColumn<Authorization>[] = [
-    { name: 'Auth Number',    selector: (r) => r.authNumber,       sortable: true, minWidth: '14rem' },
-    { name: 'Provider',       selector: (r) => r.providerName,     sortable: true, minWidth: '13rem' },
-    { name: 'Type',           selector: (r) => r.type,             sortable: true, minWidth: '9rem',  cell: (r) => <Badge colorPalette={r.type === 'IP' ? 'blue' : 'purple'} size="sm">{r.type}</Badge> },
-    { name: 'Request Amt.',   selector: (r) => r.requestAmount,    sortable: true, minWidth: '14rem', cell: (r) => fmt(r.requestAmount) },
-    { name: 'Approved Amt.',  selector: (r) => r.approvedAmount,   sortable: true, minWidth: '14rem', cell: (r) => fmt(r.approvedAmount) },
-    { name: 'Created Date',   selector: (r) => r.authCreatedDate,  sortable: true, minWidth: '14rem' },
-    { name: 'Submitted By',   selector: (r) => r.submittedBy,      sortable: true, minWidth: '14rem' },
-    { name: 'Processed By',   selector: (r) => r.processedBy,      sortable: true, minWidth: '14rem' },
-    { name: 'Status',         selector: (r) => r.status,           sortable: true, minWidth: '13rem', cell: (r) => <Badge colorPalette={STATUS_COLORS[r.status]} size="sm">{r.status}</Badge> },
-    { name: 'Last Updated',   selector: (r) => r.lastUpdated,      sortable: true, minWidth: '13rem' },
-    {
-      name: 'Actions',
-      cell: (row) => (
-        <ActionMenu
-          actions={[
-            { label: 'View',   cta: () => console.log('View auth',   row.id, contactId) },
-            { label: 'Edit',   cta: () => console.log('Edit auth',   row.id) },
-            { label: 'Delete', cta: () => console.log('Delete auth', row.id), allowPopover: true, confirmationText: 'Delete this authorization?' },
-          ]}
-        />
-      ),
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-      width: '10rem',
-    },
-  ];
+  const columns: TableColumn<Authorization>[] = useMemo(
+    () => [
+      { name: 'Auth Number', selector: (r) => r.authNumber, sortable: true, minWidth: '14rem' },
+      { name: 'Provider', selector: (r) => r.providerName, sortable: true, minWidth: '13rem' },
+      {
+        name: 'Type',
+        selector: (r) => r.type,
+        sortable: true,
+        minWidth: '9rem',
+        cell: (r) => (
+          <Badge colorPalette={r.type === 'IP' ? 'blue' : 'purple'} size="sm">
+            {r.type}
+          </Badge>
+        ),
+      },
+      {
+        name: 'Request Amt.',
+        selector: (r) => r.requestAmount,
+        sortable: true,
+        minWidth: '14rem',
+        cell: (r) => formatCurrency(r.requestAmount),
+      },
+      {
+        name: 'Approved Amt.',
+        selector: (r) => r.approvedAmount,
+        sortable: true,
+        minWidth: '14rem',
+        cell: (r) => formatCurrency(r.approvedAmount),
+      },
+      {
+        name: 'Created Date',
+        selector: (r) => r.authCreatedDate,
+        sortable: true,
+        minWidth: '14rem',
+      },
+      { name: 'Submitted By', selector: (r) => r.submittedBy, sortable: true, minWidth: '14rem' },
+      { name: 'Processed By', selector: (r) => r.processedBy, sortable: true, minWidth: '14rem' },
+      {
+        name: 'Status',
+        selector: (r) => r.status,
+        sortable: true,
+        minWidth: '13rem',
+        cell: (r) => (
+          <Badge colorPalette={AUTHORIZATION_STATUS_COLORS[r.status]} size="sm">
+            {r.status}
+          </Badge>
+        ),
+      },
+      { name: 'Last Updated', selector: (r) => r.lastUpdated, sortable: true, minWidth: '13rem' },
+      {
+        name: 'Actions',
+        cell: (row) => (
+          <ActionMenu
+            actions={[
+              { label: 'View', cta: () => console.log('View auth', row.id, contactId) },
+              { label: 'Edit', cta: () => console.log('Edit auth', row.id) },
+              {
+                label: 'Delete',
+                cta: () => console.log('Delete auth', row.id),
+                allowPopover: true,
+                confirmationText: 'Delete this authorization?',
+              },
+            ]}
+          />
+        ),
+        ignoreRowClick: true,
+        allowOverflow: true,
+        button: true,
+        width: '10rem',
+      },
+    ],
+    [contactId],
+  );
 
   return (
     <Box>
@@ -79,7 +115,7 @@ function AuthorizationTabBase({ contactId }: Props) {
         pagination
         paginationPerPage={10}
         paginationRowsPerPageOptions={[10, 25, 50]}
-        customStyles={customStyles}
+        customStyles={TAB_TABLE_CUSTOM_STYLES}
         fixedHeader
         fixedHeaderScrollHeight="50rem"
         hasFixedActionColumn

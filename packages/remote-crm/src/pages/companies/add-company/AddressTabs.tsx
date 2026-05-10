@@ -1,21 +1,18 @@
-/**
- * AddressTabs — secondary tab bar inside the Add/Edit Company form
- *
- * Matches monolith's address-tabs.tsx:
- * Tabs: Addresses | Contacts | Social Media | Opportunity |
- *       Departments | Documents | Financial info | Activity | Notes | Attachment
- *
- * Addresses tab has a working data table + Add Address modal.
- * All other tabs are "coming soon" placeholders.
- */
-
 import React, { useState, useRef, useEffect, memo } from 'react';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import AddressesTabContent from './tabs/AddressesTabContent';
 
 const TABS = [
-  'Addresses', 'Contacts', 'Social Media', 'Opportunity',
-  'Departments', 'Documents', 'Financial info', 'Activity', 'Notes', 'Attachment',
+  'Addresses',
+  'Contacts',
+  'Social Media',
+  'Opportunity',
+  'Departments',
+  'Documents',
+  'Financial info',
+  'Activity',
+  'Notes',
+  'Attachment',
 ];
 
 const PlaceholderContent = memo(({ name }: { name: string }) => (
@@ -30,11 +27,11 @@ function AddressTabsBase() {
   const [activeTab, setActiveTab] = useState(0);
   const [indicator, setIndicator] = useState({ left: 0, width: 0 });
 
-  const tabRefs      = useRef<(HTMLButtonElement | null)[]>([]);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const el        = tabRefs.current[activeTab];
+    const el = tabRefs.current[activeTab];
     const container = containerRef.current;
     if (!el || !container) return;
     const cRect = container.getBoundingClientRect();
@@ -48,7 +45,7 @@ function AddressTabsBase() {
 
   return (
     <Box>
-      {/* Tab bar */}
+      {}
       <Box position="relative" ref={containerRef}>
         <Flex
           overflowX="auto"
@@ -60,8 +57,14 @@ function AddressTabsBase() {
               key={i}
               as="button"
               type="button"
-              ref={(el: HTMLButtonElement | null) => { tabRefs.current[i] = el; }}
-              onClick={(e: React.MouseEvent) => { e.preventDefault(); e.stopPropagation(); setActiveTab(i); }}
+              ref={(el: HTMLButtonElement | null) => {
+                tabRefs.current[i] = el;
+              }}
+              onClick={(e: React.MouseEvent) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setActiveTab(i);
+              }}
               px="2.4rem"
               py="1.6rem"
               whiteSpace="nowrap"
@@ -94,7 +97,7 @@ function AddressTabsBase() {
         />
       </Box>
 
-      {/* Tab content */}
+      {}
       <Box mt="2.4rem" minH="20rem">
         {TABS.map((_, i) => (
           <Box key={i} display={activeTab === i ? 'block' : 'none'}>

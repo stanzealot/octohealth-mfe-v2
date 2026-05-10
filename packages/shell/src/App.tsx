@@ -7,7 +7,8 @@ import PrivateWrapper from './wrappers/PrivateWrapper';
 import LoginPage from './pages/login/LoginPage';
 
 const ContactsModule = lazy(() => import('remoteCrm/ContactsModule'));
-const SettingsModule  = lazy(() => import('remoteAdmin/SettingsModule'));
+const SettingsModule = lazy(() => import('remoteAdmin/SettingsModule'));
+const OpportunitiesModule = lazy(() => import('remoteSales/OpportunitiesModule'));
 
 function PageLoader() {
   return (
@@ -20,7 +21,6 @@ function PageLoader() {
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
 
-  // Still hydrating from sessionStorage — don't redirect yet
   if (isLoading) return <PageLoader />;
 
   if (!isAuthenticated) return <Navigate to="/" replace />;
@@ -30,7 +30,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <Routes>
-      {/* Public */}
+      {}
       <Route
         path="/"
         element={
@@ -40,7 +40,7 @@ export default function App() {
         }
       />
 
-      {/* CRM remote */}
+      {}
       <Route
         path="/crm/*"
         element={
@@ -54,8 +54,7 @@ export default function App() {
         }
       />
 
-      {/* Admin remote — mounted at /admin/settings/* to avoid colliding with
-          other /admin/* routes (e.g. /admin/users from the API menu) */}
+      {}
       <Route
         path="/admin/settings/*"
         element={
@@ -69,7 +68,21 @@ export default function App() {
         }
       />
 
-      {/* Fallback */}
+      {}
+      <Route
+        path="/sales/*"
+        element={
+          <ProtectedRoute>
+            <PrivateWrapper>
+              <Suspense fallback={<PageLoader />}>
+                <OpportunitiesModule />
+              </Suspense>
+            </PrivateWrapper>
+          </ProtectedRoute>
+        }
+      />
+
+      {}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
