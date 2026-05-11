@@ -1,8 +1,8 @@
 {
   "framework": null,
-  "buildCommand": "cd ../.. && NODE_OPTIONS='--max-old-space-size=3072' pnpm --filter shell build",
+  "buildCommand": "NODE_OPTIONS='--max-old-space-size=3072' pnpm --filter shell build",
   "outputDirectory": "dist",
-  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
+  "installCommand": "pnpm install --frozen-lockfile",
   "headers": [
     {
       "source": "/assets/remoteEntry.js",
