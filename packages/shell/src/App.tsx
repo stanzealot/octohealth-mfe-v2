@@ -9,6 +9,7 @@ import LoginPage from './pages/login/LoginPage';
 const ContactsModule = lazy(() => import('remoteCrm/ContactsModule'));
 const SettingsModule = lazy(() => import('remoteAdmin/SettingsModule'));
 const OpportunitiesModule = lazy(() => import('remoteSales/OpportunitiesModule'));
+const ProvidersModule = lazy(() => import('remoteProviders/ProvidersModule'));
 
 function PageLoader() {
   return (
@@ -76,6 +77,20 @@ export default function App() {
             <PrivateWrapper>
               <Suspense fallback={<PageLoader />}>
                 <OpportunitiesModule />
+              </Suspense>
+            </PrivateWrapper>
+          </ProtectedRoute>
+        }
+      />
+
+      {}
+      <Route
+        path="/providers/*"
+        element={
+          <ProtectedRoute>
+            <PrivateWrapper>
+              <Suspense fallback={<PageLoader />}>
+                <ProvidersModule />
               </Suspense>
             </PrivateWrapper>
           </ProtectedRoute>

@@ -11,6 +11,7 @@ declare module 'sharedUi/CustomSelect';
 declare module 'remoteCrm/ContactsModule';
 declare module 'remoteAdmin/SettingsModule';
 declare module 'remoteSales/OpportunitiesModule';
+declare module 'remoteProviders/ProvidersModule';
 declare module 'sharedUi/StageSummaryCards';
 declare module 'sharedUi/OpportunityCard';
 declare module 'sharedUi/KanbanColumn';

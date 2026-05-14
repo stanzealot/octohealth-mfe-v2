@@ -12,6 +12,7 @@ const shared = {
   zustand: { singleton: true },
   '@tanstack/react-query': { singleton: true },
   axios: { singleton: true },
+  'react-hook-form': { singleton: true },
 };
 
 export default defineConfig(({ mode }) => {
@@ -21,19 +22,13 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       federation({
-        name: 'shell',
+        name: 'remoteProviders',
         exposes: {
-          './auth-store': './src/store/auth-store.ts',
-          './branding-store': './src/store/branding-store.ts',
-          './color-mode-store': './src/store/color-mode-store.ts',
+          './ProvidersModule': './src/pages/ProvidersModule.tsx',
         },
         remotes: {
+          shell: env.VITE_SHELL_URL || 'http://localhost:3000/assets/remoteEntry.js',
           sharedUi: env.VITE_SHARED_UI_URL || 'http://localhost:3005/assets/remoteEntry.js',
-          remoteCrm: env.VITE_REMOTE_CRM_URL || 'http://localhost:3001/assets/remoteEntry.js',
-          remoteAdmin: env.VITE_REMOTE_ADMIN_URL || 'http://localhost:3002/assets/remoteEntry.js',
-          remoteSales: env.VITE_REMOTE_SALES_URL || 'http://localhost:3003/assets/remoteEntry.js',
-          remoteProviders:
-            env.VITE_REMOTE_PROVIDERS_URL || 'http://localhost:3004/assets/remoteEntry.js',
         },
         shared,
       }),
@@ -42,8 +37,9 @@ export default defineConfig(({ mode }) => {
       target: 'esnext',
       minify: false,
     },
-    server: {
-      port: 3000,
+    preview: {
+      port: 3004,
+      strictPort: true,
     },
   };
 });

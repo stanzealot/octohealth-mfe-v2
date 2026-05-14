@@ -38,6 +38,7 @@ const BASE_STYLES: TableStyles = {
       minHeight: '48px',
       borderBottom: '1px solid var(--table-border)',
       backgroundColor: 'var(--surface-card)',
+      overflow: 'visible' as const,
       '&:hover': {
         backgroundColor: 'var(--table-row-hover)',
         cursor: 'pointer',
@@ -54,6 +55,7 @@ const BASE_STYLES: TableStyles = {
       paddingTop: '12px',
       paddingBottom: '12px',
       fontFamily: 'Montserrat, sans-serif',
+      overflow: 'visible' as const,
     },
   },
   pagination: {
